@@ -19,7 +19,6 @@ import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { User, UserService } from '../service/user.service';
 
-
 @Component({
     selector: 'app-users',
     standalone: true,
@@ -37,9 +36,7 @@ import { User, UserService } from '../service/user.service';
         TabsModule,
         MenubarModule,
         InputTextModule,
-        TabsModule,
         StepperModule,
-        TabsModule,
         IconField,
         InputIcon,
         Fluid,
@@ -67,8 +64,8 @@ import { User, UserService } from '../service/user.service';
                     </div>
                 </div>
             </p-fluid>
-            <!-- Table Staff Profile -->
 
+            <!-- User Table -->
             <p-table [value]="usersList" [scrollable]="true" scrollHeight="400px" styleClass="mt-4">
                 <ng-template #header>
                     <tr>
@@ -77,8 +74,8 @@ import { User, UserService } from '../service/user.service';
                         <th style="min-width:200px">Name</th>
                         <th style="min-width:200px">Last Login Date</th>
                         <th style="min-width:245px">Email</th>
-                        <th style="min-width:200px">Status</th>
-                        <th style="min-width:200px">Active</th>
+                        <th style="min-width:150px">Status</th>
+                        <th style="min-width:200px">Actions</th>
                     </tr>
                 </ng-template>
                 <ng-template #body let-users>
@@ -88,12 +85,14 @@ import { User, UserService } from '../service/user.service';
                         <td>{{ users.name }}</td>
                         <td>{{ users.lastlogindate }}</td>
                         <td>{{ users.email }}</td>
-                        <td>{{ users.status }}</td>
-                        <div class="flex flex-wrap gap-1">
-                            <p-button icon="pi pi-eye" text raised rounded />
-                            <p-button icon="pi pi-pen-to-square" severity="info" text raised rounded />
-                            <p-button icon="pi pi-trash" severity="danger" text raised rounded />
-                        </div>
+                        <td>{{ getStatusLabel(users.status) }}</td>
+                        <td>
+                            <div class="flex flex-wrap gap-1">
+                                <p-button icon="pi pi-eye" text raised rounded />
+                                <p-button icon="pi pi-pen-to-square" severity="info" text raised rounded (onClick)="EditUser(users)" />
+                                <p-button icon="pi pi-trash" severity="danger" text raised rounded />
+                            </div>
+                        </td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -112,9 +111,9 @@ export class Users {
     ) {}
 
     ngOnInit() {
-        //this.UserService.getUserInfo().then(users => {this.usersList = users;});
         this.UserService.getUsersMedium().then((users) => (this.usersList = users));
     }
+
     load(index: number) {
         this.loading[index] = true;
         setTimeout(() => (this.loading[index] = false), 1000);
@@ -124,4 +123,16 @@ export class Users {
         this.router.navigate(['/adduser']);
     }
 
+    EditUser(user: User) {
+        this.router.navigate(['/edituser'], { state: { user } });
+    }
+
+    getStatusLabel(code: string): string {
+        const map: Record<string, string> = {
+            A: 'Active',
+            B: 'Block',
+            C: 'Close'
+        };
+        return map[code] || code;
+    }
 }
