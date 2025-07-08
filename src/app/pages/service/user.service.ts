@@ -1,41 +1,45 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment'; // ✅ adjust based on path
+import { Observable } from 'rxjs';
+// import { User } from '../../models/user.model'; // or wherever your User model is
 
 export interface User {
-    id?: number | undefined;
+    id?: number;
     username?: string;
     name?: string;
-    lastlogindate?: string;
     email?: string;
-    status?: string;
     password?: string;
-    description: string;
+    status?: string;
+    description?: string;
 }
 
-@Injectable({ providedIn: 'root' })
-export class UserService {
-    private users: User[] = [
-        { id: 10001, username: 'admin', name: 'Administrator', lastlogindate: '01/June/2025', email: 'uonpheasa.up@gmail.com', status: 'A', password: '12345678', description: 'Admin System' },
-        { id: 10002, username: 'dara', name: 'GM Sovandara', lastlogindate: '01/June/2025', email: 'uonpheasa.up@gmail.com', status: 'A', password: '12345678', description: 'User System' },
-        { id: 10003, username: 'pheasa', name: 'Pheasa', lastlogindate: '01/June/2025', email: 'uonpheasa.up@gmail.com', status: 'A', password: '12345678', description: 'User System' },
-        { id: 10004, username: 'chhunhai', name: 'GM Chhunhai', lastlogindate: '01/June/2025', email: 'uonpheasa.up@gmail.com', status: 'B', password: '12345678', description: 'User System' },
-        { id: 10005, username: 'mey', name: 'Srey Mey', lastlogindate: '01/June/2025', email: 'uonpheasa.up@gmail.com', status: 'C', password: '12345678', description: 'User System' },
-        { id: 10006, username: 'neth', name: 'Srey Neth', lastlogindate: '01/June/2025', email: 'uonpheasa.up@gmail.com', status: 'C', password: '12345678', description: 'User System' }
-    ];
 
-    getUsersMedium(): Promise<User[]> {
-        return Promise.resolve(this.users);
+@Injectable({
+    providedIn: 'root'
+})
+export class UserService {
+    private apiUrl = environment.apiBase + environment.apiEndpoints.users;
+
+    constructor(private http: HttpClient) {}
+
+    getAllUsers(): Observable<User[]> {
+        return this.http.get<User[]>(this.apiUrl);
+    }
+
+    addUser(user: User): Observable<User> {
+        return this.http.post<User>(this.apiUrl, user);
     }
 
     updateUser(user: User): Observable<User> {
-        // Simulate HTTP request delay
-        const index = this.users.findIndex(u => u.id === user.id);
-        if (index !== -1) {
-            this.users[index] = { ...user };
-            return of(user).pipe(delay(1000)); // simulate success response after 1s
-        } else {
-            return throwError(() => new Error('User not found')).pipe(delay(1000));
-        }
+        return this.http.put<User>(`${this.apiUrl}/${user.id}`, user);
+    }
+
+    deleteUser(userId: number): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/${userId}`);
+    }
+
+    getUserById(userId: number): Observable<User> {
+        return this.http.get<User>(`${this.apiUrl}/${userId}`);
     }
 }

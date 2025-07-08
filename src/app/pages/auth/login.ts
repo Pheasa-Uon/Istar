@@ -7,11 +7,15 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { AppFloatingConfigurator } from '../../layout/component/app.floatingconfigurator';
+import { AuthService } from './auth.service'; // uncomment this
+import { Router } from '@angular/router';     // also required for redirection
+import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator],
+    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator,CommonModule],
     template: `
         <app-floating-configurator />
         <div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
@@ -36,13 +40,13 @@ import { AppFloatingConfigurator } from '../../layout/component/app.floatingconf
                                     />
                                 </g>
                             </svg>
-                            <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to PrimeLand!</div>
-                            <span class="text-muted-color font-medium">Sign in to continue</span>
+                            <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to Istar Reports System</div>
+                            <span class="text-muted-color font-medium">Login to continue</span>
                         </div>
 
                         <div>
-                            <label for="email1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
-                            <input pInputText id="email1" type="text" placeholder="Email address" class="w-full md:w-[30rem] mb-8" [(ngModel)]="email" />
+                            <label for="username1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Username</label>
+                            <input pInputText id="username1" type="text" placeholder="Username" class="w-full md:w-[30rem] mb-8" [(ngModel)]="username" />
 
                             <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Password</label>
                             <p-password id="password1" [(ngModel)]="password" placeholder="Password" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false"></p-password>
@@ -54,7 +58,13 @@ import { AppFloatingConfigurator } from '../../layout/component/app.floatingconf
                                 </div>
                                 <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot password?</span>
                             </div>
-                            <p-button label="Sign In" styleClass="w-full" routerLink="/"></p-button>
+                            <div *ngIf="error" class="text-red-500 text-center mb-4">
+                                {{ error }}
+                            </div>
+<!--                            <p-button label="Login" styleClass="w-full" (onClick)="onLogin()"></p-button>-->
+                            <!-- ✅ CORRECT -->
+                            <p-button label="Login" styleClass="w-full" (onClick)="onLogin()" type="button"></p-button>
+
                         </div>
                     </div>
                 </div>
@@ -63,9 +73,92 @@ import { AppFloatingConfigurator } from '../../layout/component/app.floatingconf
     `
 })
 export class Login {
-    email: string = '';
-
-    password: string = '';
-
     checked: boolean = false;
+
+    username = '';
+    password = '';
+    error = '';
+    loading = false;
+
+    constructor(private authService: AuthService, private router: Router) {}
+
+    // onLogin() {
+    //     this.authService.login(this.username, this.password).subscribe({
+    //         next: (res) => {
+    //             this.authService.saveToken(res.token);
+    //             this.router.navigate(['/dashboard']);
+    //         },
+    //         error: () => {
+    //             this.error = 'Invalid username or password';
+    //         }
+    //     });
+    // }
+
+    // login.component.ts
+    // onLogin() {
+    //     this.error = ''; // Clear previous errors
+    //     this.loading = true; // Add loading state
+    //
+    //     this.authService.login(this.username, this.password).subscribe({
+    //         next: (token) => {
+    //             console.log('Received token:', token); // Debug log
+    //             if (token) {
+    //                 this.authService.saveToken(token);
+    //                 this.router.navigate(['/dashboard']);
+    //             } else {
+    //                 this.error = 'Authentication failed';
+    //             }
+    //             this.loading = false;
+    //         },
+    //         error: (err) => {
+    //             console.error('Login error:', err); // Detailed error logging
+    //             this.error = this.getErrorMessage(err);
+    //             this.loading = false;
+    //         }
+    //     });
+    // }
+
+    // login.component.ts
+    onLogin() {
+        this.error = '';
+        this.loading = true;
+
+        this.authService.login(this.username, this.password).subscribe({
+            next: (token) => {
+                this.authService.saveToken(token);
+
+                // Try navigation, then handle result
+                this.router.navigate(['/dashboard'])
+                    .then(success => {
+                        if (!success) {
+                            console.error('Navigation failed - check AuthGuard');
+                            this.error = 'Login successful but navigation failed';
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Navigation error:', err);
+                        this.error = 'Login successful but navigation failed';
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+            },
+            error: (err) => {
+                this.error = 'Invalid username or password';
+                this.loading = false;
+            }
+        });
+    }
+
+    private getErrorMessage(error: any): string {
+        if (error.status === 0) {
+            return 'Network error - please check your connection';
+        } else if (error.status === 401) {
+            return 'Invalid username or password';
+        } else {
+            return 'Login failed - please try again';
+        }
+    }
+
+
 }

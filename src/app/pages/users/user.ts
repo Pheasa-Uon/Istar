@@ -1,59 +1,50 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { TieredMenuModule } from 'primeng/tieredmenu';
-import { ContextMenuModule } from 'primeng/contextmenu';
 import { CommonModule } from '@angular/common';
-import { MenuModule } from 'primeng/menu';
-import { ButtonModule } from 'primeng/button';
-import { MegaMenuModule } from 'primeng/megamenu';
-import { PanelMenuModule } from 'primeng/panelmenu';
-import { TabsModule } from 'primeng/tabs';
-import { MenubarModule } from 'primeng/menubar';
-import { InputTextModule } from 'primeng/inputtext';
-import { StepperModule } from 'primeng/stepper';
-import { IconField, IconFieldModule } from 'primeng/iconfield';
-import { InputIcon, InputIconModule } from 'primeng/inputicon';
-import { Fluid } from 'primeng/fluid';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
-import { User, UserService } from '../service/user.service';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { DialogModule } from 'primeng/dialog';
+import { Fluid } from 'primeng/fluid';
+import { DividerModule } from 'primeng/divider';
+import { UserService, User } from '../service/user.service';
+import { RolePermissionService, RolePermission } from '../service/role.permission.service';
+import { TreeTableModule } from 'primeng/treetable';
+import { CheckboxModule } from 'primeng/checkbox';
+import { MessageService } from '../message/message.service';
 
 @Component({
     selector: 'app-users',
     standalone: true,
     imports: [
         CommonModule,
-        BreadcrumbModule,
-        TieredMenuModule,
+        FormsModule,
+        TableModule,
+        InputTextModule,
+        ButtonModule,
         IconFieldModule,
         InputIconModule,
-        MenuModule,
-        ButtonModule,
-        ContextMenuModule,
-        MegaMenuModule,
-        PanelMenuModule,
-        TabsModule,
-        MenubarModule,
-        InputTextModule,
-        StepperModule,
-        IconField,
-        InputIcon,
+        DialogModule,
         Fluid,
-        FormsModule,
-        TableModule
+        DividerModule,
+        TreeTableModule,
+        CheckboxModule
     ],
     template: `
         <div class="card">
-            <div class="font-semibold text-xl mb-4">User Profile</div>
+            <div class="font-semibold text-xl mb-4">Users Profile</div>
+
             <p-fluid class="flex flex-col md:flex-row gap-2 justify-end items-center">
                 <div class="flex flex-wrap gap-2 md:w-1/2">
-                    <p-button label="Add New" icon="pi pi-user-plus" (onClick)="addNewUser()"></p-button>
+                    <p-button label="Add New" icon="pi pi-user-plus" (click)="addNewUser()"></p-button>
                 </div>
                 <div class="md:w-1/2">
                     <div class="card flex flex-col gap-2">
                         <p-iconfield iconPosition="left">
-                            <input pInputText type="text" placeholder="Search" />
+                            <input pInputText type="text" placeholder="Search" [(ngModel)]="searchText" />
                             <p-inputicon class="pi pi-search" />
                         </p-iconfield>
                     </div>
@@ -65,9 +56,8 @@ import { User, UserService } from '../service/user.service';
                 </div>
             </p-fluid>
 
-            <!-- User Table -->
-            <p-table [value]="usersList" [scrollable]="true" scrollHeight="400px" styleClass="mt-4">
-                <ng-template #header>
+            <p-table [value]="filteredUsers" [scrollable]="true" scrollHeight="400px" class="mt-4">
+                <ng-template pTemplate="header">
                     <tr>
                         <th style="min-width:100px">Id</th>
                         <th style="min-width:200px">UserName</th>
@@ -78,40 +68,138 @@ import { User, UserService } from '../service/user.service';
                         <th style="min-width:200px">Actions</th>
                     </tr>
                 </ng-template>
-                <ng-template #body let-users>
+                <ng-template pTemplate="body" let-user>
                     <tr>
-                        <td>{{ users.id }}</td>
-                        <td>{{ users.username }}</td>
-                        <td>{{ users.name }}</td>
-                        <td>{{ users.lastlogindate }}</td>
-                        <td>{{ users.email }}</td>
-                        <td>{{ getStatusLabel(users.status) }}</td>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.lastlogindate }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ getStatusLabel(user.status) }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
-                                <p-button icon="pi pi-eye" text raised rounded />
-                                <p-button icon="pi pi-pen-to-square" severity="info" text raised rounded (onClick)="EditUser(users)" />
-                                <p-button icon="pi pi-trash" severity="danger" text raised rounded />
+                                <p-button icon="pi pi-eye" text raised rounded (click)="viewUser(user)"></p-button>
+                                <p-button icon="pi pi-pencil" severity="info" text raised rounded (click)="editUser(user)"></p-button>
+                                <p-button icon="pi pi-trash" severity="danger" text raised rounded (click)="deleteUser(user)"></p-button>
                             </div>
                         </td>
                     </tr>
                 </ng-template>
             </p-table>
         </div>
+
+        <!-- View User Dialog -->
+        <p-dialog header="User Details" [(visible)]="displayDetails" [modal]="true" [style]="{ width: '1100px' }" [closable]="true">
+            <p-divider></p-divider>
+            <div class="flex flex-col md:flex-row">
+                <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
+                    <div><strong>User ID:</strong></div>
+                    <div><strong>Username:</strong></div>
+                    <div><strong>Email:</strong></div>
+                    <div><strong>Description:</strong></div>
+                </div>
+
+                <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
+                    <div>{{ selectedUser?.id }}</div>
+                    <div>{{ selectedUser?.username }}</div>
+                    <div>{{ selectedUser?.email }}</div>
+                    <div>{{ selectedUser?.description }}</div>
+                </div>
+
+                <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
+                    <div><strong>Name:</strong></div>
+                    <div><strong>Password:</strong></div>
+                    <div><strong>Status:</strong></div>
+                </div>
+
+                <div class="w-full md:w-1/4 flex flex-col space-y-5 py-5">
+                    <div>{{ selectedUser?.name }}</div>
+                    <div class="flex items-center gap-1">
+                        <span *ngIf="showPassword">{{ selectedUser?.password }}</span>
+                        <span *ngIf="!showPassword">••••••••</span>
+                        <p-button
+                            icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}"
+                            styleClass="p-button-text p-button-sm"
+                            (click)="showPassword = !showPassword"
+                        ></p-button>
+                    </div>
+                    <div>{{ getStatusLabel(selectedUser?.status || '') }}</div>
+                </div>
+            </div>
+            <p-divider></p-divider>
+            <p-table [value]="roleList" [scrollable]="true" scrollHeight="400px" class="mt-4">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width:50px"></th>
+                        <th style="min-width:100px">Role Id</th>
+                        <th style="min-width:200px">Role Permission Name</th>
+                        <th style="min-width:150px">Status</th>
+                        <th style="min-width:200px">Description</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rolePermissions>
+                    <tr>
+                        <td>
+                            <div class="flex items-center">
+                                <p-checkbox
+                                    [binary]="true"
+                                    [(ngModel)]="rolePermissions.checked"
+                                    inputId="checkRolePermission{{ rolePermissions.id }}"
+                                ></p-checkbox>
+                            </div>
+                        </td>
+                        <td>{{ rolePermissions.id }}</td>
+                        <td>{{ rolePermissions.name }}</td>
+                        <td>{{ getStatusLabel(rolePermissions.status) }}</td>
+                        <td>{{ rolePermissions.description }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-dialog>
     `
 })
 export class Users {
-
     usersList: User[] = [];
-
-    loading = [false, false, false, false];
+    roleList: RolePermission[] = [];
+    loading = [false];
+    searchText = '';
+    displayDetails = false;
+    selectedUser: User | null = null;
+    showPassword = false;
 
     constructor(
-        private UserService: UserService,
-        private router: Router,
+        private userService: UserService,
+        private rolePermissionService: RolePermissionService,
+        private messageService: MessageService,
+        private router: Router
     ) {}
 
     ngOnInit() {
-        this.UserService.getUsersMedium().then((users) => (this.usersList = users));
+        this.userService.getAllUsers().subscribe({
+            next: (users) => (this.usersList = users),
+            error: (err) => {
+                this.messageService.show({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Failed to load users.'
+                });
+                console.error('Failed to load users', err);
+            }
+        });
+
+        this.rolePermissionService.getRolePermissionMedium().then((rolePermissions) => {
+            this.roleList = rolePermissions;
+        });
+    }
+
+    get filteredUsers(): User[] {
+        const search = this.searchText.toLowerCase();
+        return this.usersList.filter(
+            (user) =>
+                user.username?.toLowerCase().includes(search) ||
+                user.name?.toLowerCase().includes(search) ||
+                user.email?.toLowerCase().includes(search)
+        );
     }
 
     load(index: number) {
@@ -123,8 +211,49 @@ export class Users {
         this.router.navigate(['/adduser']);
     }
 
-    EditUser(user: User) {
+    editUser(user: User) {
         this.router.navigate(['/edituser'], { state: { user } });
+    }
+
+    // viewUser(user: User) {
+    //     this.selectedUser = user;
+    //     this.showPassword = false;
+    //     this.displayDetails = true;
+    // }
+
+    viewUser(user: User) {
+        this.selectedUser = user;
+        this.showPassword = false;
+        this.displayDetails = true;
+
+        this.rolePermissionService.getRolePermissionMedium().then((rolePermissions) => {
+            this.roleList = rolePermissions;
+        });
+    }
+
+
+    deleteUser(user: User) {
+        if (confirm(`Are you sure you want to delete user "${user.name}"?`)) {
+            this.userService.deleteUser(user.id!).subscribe({
+                next: () => {
+                    // Update UI immediately
+                    this.usersList = this.usersList.filter((u) => u.id !== user.id);
+
+                    this.messageService.show({
+                        severity: 'success',
+                        summary: 'Deleted',
+                        detail: `User "${user.name}" deleted successfully.`
+                    });
+                },
+                error: () => {
+                    this.messageService.show({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Failed to delete user.'
+                    });
+                }
+            });
+        }
     }
 
     getStatusLabel(code: string): string {

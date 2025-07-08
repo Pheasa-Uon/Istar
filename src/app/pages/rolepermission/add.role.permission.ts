@@ -1,21 +1,23 @@
+// app/pages/rolepermission/add.role.permission.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { Select } from 'primeng/select';
-import { Textarea } from 'primeng/textarea';
-import { Fluid } from 'primeng/fluid';
-import { ButtonGroup } from 'primeng/buttongroup';
-import { UserService, User } from '../service/user.service';
+import { DropdownModule } from 'primeng/dropdown';
+import { TextareaModule } from 'primeng/textarea';
+import { RolePermissionService, RolePermission } from '../service/role.permission.service';
 import { MessageService } from '../message/message.service';
 import { Message } from '../message/message';
+import { ButtonGroup } from 'primeng/buttongroup';
+import { Fluid } from 'primeng/fluid';
+import { Select } from 'primeng/select';
 
 @Component({
-    selector: 'app-add-user',
+    selector: 'app-add-role-permission',
     standalone: true,
-    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, Message],
+    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, DropdownModule, TextareaModule, Message, ButtonGroup, Fluid, Select],
     template: `
         <div class="fixed top-3/1 right-4 z-50 w-[500px]">
             <app-messages></app-messages>
@@ -23,7 +25,7 @@ import { Message } from '../message/message';
 
         <p-fluid>
             <div class="card flex flex-col gap-6 w-full">
-                <div class="font-semibold text-xl">Add New User Profile</div>
+                <div class="font-semibold text-xl">Add New Role Permission</div>
 
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
@@ -32,43 +34,28 @@ import { Message } from '../message/message';
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="name">Name</label>
-                        <input pInputText id="name" type="text" [(ngModel)]="user.name" />
+                        <input pInputText id="name" type="text" [(ngModel)]="rolepermission.name" />
                     </div>
                 </div>
 
-                <div class="flex flex-col md:flex-row gap-6">
-                    <div class="flex flex-wrap gap-2 w-full">
-                        <label for="username">Username</label>
-                        <input pInputText id="username" type="text" [(ngModel)]="user.username" />
-                    </div>
-                    <div class="flex flex-wrap gap-2 w-full">
-                        <label for="password">Password</label>
-                        <div class="flex w-full items-center gap-2">
-                            <input pInputText id="password" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="user.password" class="flex-1" />
-                            <button type="button" pButton icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}" (click)="showPassword = !showPassword" class="p-button-sm"></button>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="flex flex-col md:flex-row gap-6">
-                    <div class="flex flex-wrap gap-2 w-full">
-                        <label for="email">Email</label>
-                        <input pInputText id="email" type="text" [(ngModel)]="user.email" />
-                    </div>
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="status">Status</label>
-                        <p-select id="status" [(ngModel)]="user.status" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
+                        <p-select id="status" [(ngModel)]="rolepermission.status" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
+                    </div>
+                    <div class="flex flex-wrap gap-2 w-full">
                     </div>
                 </div>
 
                 <div class="flex flex-wrap gap-2 w-full">
                     <label for="description">Description</label>
-                    <textarea pTextarea id="description" rows="4" [(ngModel)]="user.description"></textarea>
+                    <textarea pTextarea id="description" rows="4" [(ngModel)]="rolepermission.description"></textarea>
                 </div>
 
                 <div class="card flex flex-wrap gap-0 w-full justify-end">
                     <p-buttongroup>
-                        <p-button label="Save" icon="pi pi-check" (click)="saveUser()" />
+                        <p-button label="Save" icon="pi pi-check" (click)="saveRolePermission()" />
                         <p-button label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
                     </p-buttongroup>
                 </div>
@@ -76,13 +63,10 @@ import { Message } from '../message/message';
         </p-fluid>
     `
 })
-export class AddUser {
-    user: User = {
+export class AddRolePermission {
+    rolepermission: RolePermission = {
         id: undefined,
         name: '',
-        username: '',
-        password: '',
-        email: '',
         status: '',
         description: ''
     };
@@ -93,25 +77,23 @@ export class AddUser {
         { name: 'Close', code: 'C' }
     ];
 
-    showPassword = false;
-
     constructor(
         private router: Router,
-        private userService: UserService,
+        private rolePermissionService: RolePermissionService,
         private messageService: MessageService
     ) {}
 
     goBack() {
-        this.router.navigate(['/user']);
+        this.router.navigate(['/rolepermission']);
     }
 
-    saveUser() {
-        this.userService.addUser(this.user).subscribe({
+    saveRolePermission() {
+        this.rolePermissionService.addRolePermission(this.rolepermission).subscribe({
             next: () => {
                 this.messageService.show({
                     severity: 'success',
                     summary: 'Success',
-                    detail: 'User created successfully!'
+                    detail: 'Role Permission created successfully!'
                 });
                 setTimeout(() => this.goBack(), 1000);
             },
@@ -119,7 +101,7 @@ export class AddUser {
                 this.messageService.show({
                     severity: 'error',
                     summary: 'Error',
-                    detail: 'User creation failed.'
+                    detail: 'Role Permission creation failed.'
                 });
             }
         });

@@ -8,12 +8,12 @@ import { Select } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
 import { Fluid } from 'primeng/fluid';
 import { ButtonGroup } from 'primeng/buttongroup';
-import { UserService, User } from '../service/user.service';
 import { MessageService } from '../message/message.service';
 import { Message } from '../message/message'; // adjust path if needed
+import { RolePermissionService, RolePermission } from '../service/role.permission.service';
 
 @Component({
-    selector: 'app-edit-user',
+    selector: 'app-edit-role-permission',
     standalone: true,
     imports: [
         CommonModule,
@@ -34,43 +34,25 @@ import { Message } from '../message/message'; // adjust path if needed
 
         <p-fluid>
             <div class="card flex flex-col gap-6 w-full">
-                <div class="font-semibold text-xl">Edit User Profile</div>
+                <div class="font-semibold text-xl">Edit Role Permission</div>
 
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
-                        <label for="userid">User Id</label>
-                        <input pInputText id="userid" type="text" [(ngModel)]="user.id" [disabled]="true" />
+                        <label for="roleid">Role Id</label>
+                        <input pInputText id="roleid" type="text" [(ngModel)]="role.id" [disabled]="true" />
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="name">Name</label>
-                        <input pInputText id="name" type="text" [(ngModel)]="user.name" />
+                        <input pInputText id="name" type="text" [(ngModel)]="role.name" />
                     </div>
                 </div>
 
                 <div class="flex flex-col md:flex-row gap-6">
-                    <div class="flex flex-wrap gap-2 w-full">
-                        <label for="username">Username</label>
-                        <input pInputText id="username" type="text" [(ngModel)]="user.username" />
-                    </div>
-                    <div class="flex flex-wrap gap-2 w-full">
-                        <label for="password">Password</label>
-                        <div class="flex w-full items-center gap-2">
-                            <input pInputText id="password" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="user.password" class="flex-1" />
-                            <button type="button" pButton icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}" (click)="showPassword = !showPassword" class="p-button-sm"></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex flex-col md:flex-row gap-6">
-                    <div class="flex flex-wrap gap-2 w-full">
-                        <label for="email">Email</label>
-                        <input pInputText id="email" type="text" [(ngModel)]="user.email" />
-                    </div>
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="status">Status</label>
                         <p-select
                             id="status"
-                            [(ngModel)]="user.status"
+                            [(ngModel)]="role.status"
                             [options]="dropdownItems"
                             optionLabel="name"
                             optionValue="code"
@@ -78,16 +60,18 @@ import { Message } from '../message/message'; // adjust path if needed
                             class="w-full"
                         ></p-select>
                     </div>
+                    <div class="flex flex-wrap gap-2 w-full">
+                    </div>
                 </div>
 
                 <div class="flex flex-wrap gap-2 w-full">
                     <label for="description">Description</label>
-                    <textarea pTextarea id="description" rows="4" [(ngModel)]="user.description"></textarea>
+                    <textarea pTextarea id="description" rows="4" [(ngModel)]="role.description"></textarea>
                 </div>
 
                 <div class="card flex flex-wrap gap-0 w-full justify-end">
                     <p-buttongroup>
-                        <p-button label="Save" icon="pi pi-check" (click)="saveUser()" />
+                        <p-button label="Save" icon="pi pi-check" (click)="saveRolePermission()" />
                         <p-button label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
                     </p-buttongroup>
                 </div>
@@ -95,13 +79,10 @@ import { Message } from '../message/message'; // adjust path if needed
         </p-fluid>
     `
 })
-export class EditUser {
-    user: User = {
+export class EditRolePermission {
+    role: RolePermission = {
         id: undefined,
-        username: '',
         name: '',
-        password: '',
-        email: '',
         status: '',
         description: ''
     };
@@ -112,30 +93,28 @@ export class EditUser {
         { name: 'Close', code: 'C' }
     ];
 
-    showPassword = false;
-
     constructor(
         private router: Router,
-        private userService: UserService,
-        private messageService: MessageService // ✅ Injected
+        private rolePermissionService: RolePermissionService,
+        private messageService: MessageService
     ) {
         const navigation = this.router.getCurrentNavigation();
-        if (navigation?.extras.state?.['user']) {
-            this.user = { ...navigation.extras.state['user'] };
+        if (navigation?.extras.state?.['rolePermissions']) {
+            this.role = { ...navigation.extras.state['rolePermissions'] };
         }
     }
 
     goBack() {
-        this.router.navigate(['/user']);
+        this.router.navigate(['/rolepermission']);
     }
 
-    saveUser() {
-        this.userService.updateUser(this.user).subscribe({
+    saveRolePermission() {
+        this.rolePermissionService.updateRolePermission(this.role).subscribe({
             next: () => {
                 this.messageService.show({
                     severity: 'success',
                     summary: 'Success',
-                    detail: 'User updated successfully!'
+                    detail: 'Role Permission updated successfully!'
                 });
                 setTimeout(() => this.goBack(), 1000);
             },
@@ -143,7 +122,7 @@ export class EditUser {
                 this.messageService.show({
                     severity: 'error',
                     summary: 'Error',
-                    detail: 'Update failed.'
+                    detail: 'Role Permission update failed.'
                 });
             }
         });
