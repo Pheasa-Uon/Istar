@@ -57,7 +57,7 @@ import { Message } from '../message/message';
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="status">Status</label>
-                        <p-select id="status" [(ngModel)]="user.status" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
+                        <p-select id="status" [(ngModel)]="user.userStatus" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
                     </div>
                 </div>
 
@@ -83,7 +83,7 @@ export class AddUser {
         username: '',
         password: '',
         email: '',
-        status: '',
+        userStatus: '',
         description: ''
     };
 

@@ -15,6 +15,7 @@ import { RolePermissionService, RolePermission } from '../service/role.permissio
 import { TreeTableModule } from 'primeng/treetable';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService } from '../message/message.service';
+import { UsersStatusService} from '../service/user.status.service';
 
 @Component({
     selector: 'app-users',
@@ -75,7 +76,7 @@ import { MessageService } from '../message/message.service';
                         <td>{{ user.name }}</td>
                         <td>{{ user.lastlogindate }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ getStatusLabel(user.status) }}</td>
+                        <td>{{ getStatusLabel(user.userStatus) }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button icon="pi pi-eye" text raised rounded (click)="viewUser(user)"></p-button>
@@ -123,7 +124,7 @@ import { MessageService } from '../message/message.service';
                             (click)="showPassword = !showPassword"
                         ></p-button>
                     </div>
-                    <div>{{ getStatusLabel(selectedUser?.status || '') }}</div>
+                    <div>{{ getStatusLabel(selectedUser?.userStatus || '') }}</div>
                 </div>
             </div>
             <p-divider></p-divider>
@@ -150,7 +151,7 @@ import { MessageService } from '../message/message.service';
                         </td>
                         <td>{{ rolePermissions.id }}</td>
                         <td>{{ rolePermissions.name }}</td>
-                        <td>{{ getStatusLabel(rolePermissions.status) }}</td>
+                        <td>{{ rolePermissions.status }}</td>
                         <td>{{ rolePermissions.description }}</td>
                     </tr>
                 </ng-template>
@@ -166,15 +167,29 @@ export class Users {
     displayDetails = false;
     selectedUser: User | null = null;
     showPassword = false;
+    statusMap: Record<string, string> = {};
 
     constructor(
         private userService: UserService,
         private rolePermissionService: RolePermissionService,
         private messageService: MessageService,
+        private statusService: UsersStatusService,
         private router: Router
     ) {}
 
     ngOnInit() {
+        this.statusService.getStatusLabels().subscribe({
+            next: (map) => (this.statusMap = map),
+            error: () => {
+                this.messageService.show({
+                    severity: 'warn',
+                    summary: 'Warning',
+                    detail: 'Failed to load status labels'
+                })
+            }
+        });
+
+
         this.userService.getAllUsers().subscribe({
             next: (users) => (this.usersList = users),
             error: (err) => {
@@ -183,7 +198,7 @@ export class Users {
                     summary: 'Error',
                     detail: 'Failed to load users.'
                 });
-                console.error('Failed to load users', err);
+                //console.error('Failed to load users', err);
             }
         });
 
@@ -257,11 +272,6 @@ export class Users {
     }
 
     getStatusLabel(code: string): string {
-        const map: Record<string, string> = {
-            A: 'Active',
-            B: 'Block',
-            C: 'Close'
-        };
-        return map[code] || code;
+        return this.statusMap[code] || code;
     }
 }

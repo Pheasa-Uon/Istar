@@ -10,7 +10,8 @@ export interface User {
     name?: string;
     email?: string;
     password?: string;
-    status?: string;
+    //status?: string;
+    userStatus: string; // ✅ add this line
     description?: string;
 }
 

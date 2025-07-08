@@ -70,7 +70,7 @@ import { Message } from '../message/message'; // adjust path if needed
                         <label for="status">Status</label>
                         <p-select
                             id="status"
-                            [(ngModel)]="user.status"
+                            [(ngModel)]="user.userStatus"
                             [options]="dropdownItems"
                             optionLabel="name"
                             optionValue="code"
@@ -102,7 +102,7 @@ export class EditUser {
         name: '',
         password: '',
         email: '',
-        status: '',
+        userStatus: '',
         description: ''
     };
 

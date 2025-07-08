@@ -5,6 +5,7 @@ export const environment = {
         auth: '/auth',
         users: '/users',
         roles: '/roles',
-        permissions: '/permissions'
+        permissions: '/permissions',
+        userstatuses: '/users/status',
     }
 };
