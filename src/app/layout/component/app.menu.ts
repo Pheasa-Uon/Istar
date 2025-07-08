@@ -1,28 +1,34 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
+import { environment } from '../../../environments/environment'; // Make sure this path is correct
 
 @Component({
     selector: 'app-menu',
     standalone: true,
-    imports: [CommonModule, AppMenuitem, RouterModule],
-    template: `<ul class="layout-menu">
-        <ng-container *ngFor="let item of model; let i = index">
-            <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
-            <li *ngIf="item.separator" class="menu-separator"></li>
-        </ng-container>
-    </ul> `
+    imports: [CommonModule, AppMenuitem],
+    template: `
+        <ul class="layout-menu">
+            <ng-container *ngFor="let item of model; let i = index">
+                <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
+                <li *ngIf="item.separator" class="menu-separator"></li>
+            </ng-container>
+        </ul>`
 })
 export class AppMenu {
     model: MenuItem[] = [];
+
+    constructor(private http: HttpClient, private router: Router) {}
 
     ngOnInit() {
         this.model = [
             {
                 label: 'Home',
                 items: [
+                    // ... your other menu items ...
                     { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
                     { label: 'Reports', icon: 'pi pi-fw pi-chart-bar',
                         items: [
@@ -64,7 +70,7 @@ export class AppMenu {
                     {
                         label: 'Quit',
                         icon: 'pi pi-fw pi-sign-out',
-                        routerLink: ['/auth/login']
+                        command: () => this.logout() // ✅ FIXED: use arrow function
                     }
                 ]
             },
@@ -197,5 +203,26 @@ export class AppMenu {
             //     ]
             // }
         ];
+    }
+
+    logout() {
+        const token = localStorage.getItem('authToken');
+        const url = environment.apiBase + environment.apiEndpoints.auth + '/logout';
+
+        if (token) {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+            this.http.post(url, {}, { headers, responseType: 'text' }).subscribe({
+                next: () => {
+                    localStorage.removeItem('authToken');
+                    this.router.navigate(['/auth/login']); // ✅ redirect to login
+                },
+                error: err => {
+                    console.error('Logout failed:', err);
+                    this.router.navigate(['/auth/login']); // fallback redirect
+                }
+            });
+        } else {
+            this.router.navigate(['/auth/login']);
+        }
     }
 }

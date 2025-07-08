@@ -42,8 +42,27 @@ export class AuthService {
         return localStorage.getItem('auth_token');
     }
 
+    // logout(): void {
+    //     localStorage.removeItem('authToken');
+    // }
+
     logout(): void {
-        localStorage.removeItem('authToken');
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            const url = environment.apiBase + environment.apiEndpoints.auth + '/logout';
+
+            this.http.post(url, {}, {
+                headers: { Authorization: `Bearer ${token}` },
+                responseType: 'text'
+            }).subscribe({
+                next: () => {
+                    localStorage.removeItem('authToken');
+                },
+                error: err => {
+                    console.error('Logout failed', err);
+                }
+            });
+        }
     }
 
     isLoggedIn(): boolean {
