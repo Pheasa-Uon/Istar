@@ -211,18 +211,21 @@ export class AppMenu {
 
         if (token) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
             this.http.post(url, {}, { headers, responseType: 'text' }).subscribe({
                 next: () => {
-                    localStorage.removeItem('authToken');
-                    this.router.navigate(['/auth/login']); // ✅ redirect to login
+                    localStorage.removeItem('authToken'); // Clear local
+                    this.router.navigate(['/auth/login']);
                 },
                 error: err => {
                     console.error('Logout failed:', err);
-                    this.router.navigate(['/auth/login']); // fallback redirect
+                    localStorage.removeItem('authToken'); // Still clear it
+                    this.router.navigate(['/auth/login']);
                 }
             });
         } else {
             this.router.navigate(['/auth/login']);
         }
     }
+
 }

@@ -10,7 +10,7 @@ import { Fluid } from 'primeng/fluid';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { UserService, User } from '../service/user.service';
 import { MessageService } from '../message/message.service';
-import { Message } from '../message/message'; // adjust path if needed
+import { Message } from '../message/message';
 
 @Component({
     selector: 'app-edit-user',
@@ -27,44 +27,57 @@ import { Message } from '../message/message'; // adjust path if needed
         Message
     ],
     template: `
-
         <div class="fixed top-3/1 right-4 z-50 w-[300px] md:w-1/3">
             <app-messages></app-messages>
         </div>
 
         <p-fluid>
-            <div class="card flex flex-col gap-6 w-full">
+            <form class="card flex flex-col gap-6 w-full" (ngSubmit)="saveUser()">
                 <div class="font-semibold text-xl">Edit User Profile</div>
 
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="userid">User Id</label>
-                        <input pInputText id="userid" type="text" [(ngModel)]="user.id" [disabled]="true" />
+                        <input pInputText id="userid" type="text" [(ngModel)]="user.userCode" [disabled]="true" name="userCode" />
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
-                        <label for="name">Name</label>
-                        <input pInputText id="name" type="text" [(ngModel)]="user.name" />
+                        <label for="name">Name <span class="text-red-500">*</span></label>
+                        <input pInputText id="name" type="text" [(ngModel)]="user.name" name="name" required />
                     </div>
                 </div>
 
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
-                        <label for="username">Username</label>
-                        <input pInputText id="username" type="text" [(ngModel)]="user.username" />
+                        <label for="username">Username <span class="text-red-500">*</span></label>
+                        <input pInputText id="username" type="text" [(ngModel)]="user.username" name="username" required />
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
-                        <label for="password">Password</label>
+                        <label for="password">Password <span class="text-red-500">*</span></label>
                         <div class="flex w-full items-center gap-2">
-                            <input pInputText id="password" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="user.password" class="flex-1" />
-                            <button type="button" pButton icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}" (click)="showPassword = !showPassword" class="p-button-sm"></button>
+                            <input
+                                pInputText
+                                id="password"
+                                [type]="showPassword ? 'text' : 'password'"
+                                [(ngModel)]="user.password"
+                                name="password"
+                                [disabled]="true"
+                                class="flex-1"
+                            />
+                            <button
+                                type="button"
+                                pButton
+                                icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}"
+                                (click)="showPassword = !showPassword"
+                                class="p-button-sm"
+                            ></button>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
-                        <label for="email">Email</label>
-                        <input pInputText id="email" type="text" [(ngModel)]="user.email" />
+                        <label for="email">Email <span class="text-red-500">*</span></label>
+                        <input pInputText id="email" type="email" [(ngModel)]="user.email" name="email" required />
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="status">Status</label>
@@ -75,6 +88,7 @@ import { Message } from '../message/message'; // adjust path if needed
                             optionLabel="name"
                             optionValue="code"
                             placeholder="Select One"
+                            name="userStatus"
                             class="w-full"
                         ></p-select>
                     </div>
@@ -82,22 +96,23 @@ import { Message } from '../message/message'; // adjust path if needed
 
                 <div class="flex flex-wrap gap-2 w-full">
                     <label for="description">Description</label>
-                    <textarea pTextarea id="description" rows="4" [(ngModel)]="user.description"></textarea>
+                    <textarea pTextarea id="description" rows="4" [(ngModel)]="user.description" name="description"></textarea>
                 </div>
 
                 <div class="card flex flex-wrap gap-0 w-full justify-end">
                     <p-buttongroup>
-                        <p-button label="Save" icon="pi pi-check" (click)="saveUser()" />
-                        <p-button label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
+                        <p-button label="Save" icon="pi pi-check" type="submit" />
+                        <p-button label="Cancel" icon="pi pi-times" (click)="goBack()" type="button" />
                     </p-buttongroup>
                 </div>
-            </div>
+            </form>
         </p-fluid>
     `
 })
 export class EditUser {
     user: User = {
         id: undefined,
+        userCode: '',
         username: '',
         name: '',
         password: '',
@@ -105,6 +120,8 @@ export class EditUser {
         userStatus: '',
         description: ''
     };
+
+    originalUser: User | null = null;
 
     dropdownItems = [
         { name: 'Active', code: 'A' },
@@ -117,11 +134,12 @@ export class EditUser {
     constructor(
         private router: Router,
         private userService: UserService,
-        private messageService: MessageService // ✅ Injected
+        private messageService: MessageService
     ) {
         const navigation = this.router.getCurrentNavigation();
         if (navigation?.extras.state?.['user']) {
             this.user = { ...navigation.extras.state['user'] };
+            this.originalUser = { ...this.user };
         }
     }
 
@@ -130,7 +148,38 @@ export class EditUser {
     }
 
     saveUser() {
-        this.userService.updateUser(this.user).subscribe({
+        if (!this.originalUser || this.user.id == null) {
+            this.messageService.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Invalid user: missing ID.'
+            });
+            return;
+        }
+
+        const updatedData: Partial<User> = {};
+        if (this.user.name !== this.originalUser.name) updatedData.name = this.user.name;
+        if (this.user.username !== this.originalUser.username) updatedData.username = this.user.username;
+        if (this.user.email !== this.originalUser.email) updatedData.email = this.user.email;
+        if (this.user.userStatus !== this.originalUser.userStatus) updatedData.userStatus = this.user.userStatus;
+        if (this.user.description !== this.originalUser.description) updatedData.description = this.user.description;
+
+        if (Object.keys(updatedData).length === 0) {
+            this.messageService.show({
+                severity: 'info',
+                summary: 'No Changes',
+                detail: 'No fields were changed to update.'
+            });
+            return;
+        }
+
+        const fullUser: Partial<User> & { id: number } = {
+            ...this.originalUser,
+            ...updatedData,
+            id: this.user.id! // non-null assertion here
+        };
+
+        this.userService.updateUser(fullUser).subscribe({
             next: () => {
                 this.messageService.show({
                     severity: 'success',

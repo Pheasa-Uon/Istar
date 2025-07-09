@@ -52,12 +52,12 @@ import { UsersStatusService} from '../service/user.status.service';
                 </div>
                 <div class="card flex flex-col gap-2">
                     <div class="flex flex-wrap gap-2 md:w-1/2 justify-end items-center">
-                        <p-button type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" (click)="load(0)" />
+                        <p-button type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" (click)="searchUsers()" />
                     </div>
                 </div>
             </p-fluid>
 
-            <p-table [value]="filteredUsers" [scrollable]="true" scrollHeight="400px" class="mt-4">
+            <p-table [value]="usersList" [scrollable]="true" scrollHeight="400px" class="mt-4">
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="min-width:100px">Id</th>
@@ -71,10 +71,10 @@ import { UsersStatusService} from '../service/user.status.service';
                 </ng-template>
                 <ng-template pTemplate="body" let-user>
                     <tr>
-                        <td>{{ user.id }}</td>
+                        <td>{{ user.userCode }}</td>
                         <td>{{ user.username }}</td>
                         <td>{{ user.name }}</td>
-                        <td>{{ user.lastlogindate }}</td>
+                        <td>{{ user.lastLoginAt | date:'dd-MM-yyyy HH:mm:ss' }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ getStatusLabel(user.userStatus) }}</td>
                         <td>
@@ -94,14 +94,14 @@ import { UsersStatusService} from '../service/user.status.service';
             <p-divider></p-divider>
             <div class="flex flex-col md:flex-row">
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div><strong>User ID:</strong></div>
+                    <div><strong>User Id:</strong></div>
                     <div><strong>Username:</strong></div>
                     <div><strong>Email:</strong></div>
                     <div><strong>Description:</strong></div>
                 </div>
 
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedUser?.id }}</div>
+                    <div>{{ selectedUser?.userCode }}</div>
                     <div>{{ selectedUser?.username }}</div>
                     <div>{{ selectedUser?.email }}</div>
                     <div>{{ selectedUser?.description }}</div>
@@ -113,16 +113,17 @@ import { UsersStatusService} from '../service/user.status.service';
                     <div><strong>Status:</strong></div>
                 </div>
 
-                <div class="w-full md:w-1/4 flex flex-col space-y-5 py-5">
+                <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
                     <div>{{ selectedUser?.name }}</div>
                     <div class="flex items-center gap-1">
+<!--                        <p-button icon="pi pi-refresh" severity="secondary" text raised rounded (click)="resetPassword(selectedUser!)"></p-button>-->
                         <span *ngIf="showPassword">{{ selectedUser?.password }}</span>
                         <span *ngIf="!showPassword">••••••••</span>
-                        <p-button
-                            icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}"
-                            styleClass="p-button-text p-button-sm"
-                            (click)="showPassword = !showPassword"
-                        ></p-button>
+<!--                        <p-button-->
+<!--                            icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}"-->
+<!--                            styleClass="p-button-text p-button-sm"-->
+<!--                            (click)="showPassword = !showPassword"-->
+<!--                        ></p-button>-->
                     </div>
                     <div>{{ getStatusLabel(selectedUser?.userStatus || '') }}</div>
                 </div>
@@ -168,6 +169,8 @@ export class Users {
     selectedUser: User | null = null;
     showPassword = false;
     statusMap: Record<string, string> = {};
+    keyword = '';
+    users: User[] = [];
 
     constructor(
         private userService: UserService,
@@ -178,6 +181,8 @@ export class Users {
     ) {}
 
     ngOnInit() {
+
+
         this.statusService.getStatusLabels().subscribe({
             next: (map) => (this.statusMap = map),
             error: () => {
@@ -207,15 +212,31 @@ export class Users {
         });
     }
 
-    get filteredUsers(): User[] {
-        const search = this.searchText.toLowerCase();
-        return this.usersList.filter(
-            (user) =>
-                user.username?.toLowerCase().includes(search) ||
-                user.name?.toLowerCase().includes(search) ||
-                user.email?.toLowerCase().includes(search)
-        );
+    // get filteredUsers(): User[] {
+    //     const search = this.searchText.toLowerCase();
+    //     return this.usersList.filter(
+    //         (user) =>
+    //             user.username?.toLowerCase().includes(search) ||
+    //             user.name?.toLowerCase().includes(search) ||
+    //             user.email?.toLowerCase().includes(search)
+    //     );
+    // }
+
+
+    searchUsers() {
+        this.loading[0] = true;
+        this.userService.searchUsers(this.searchText).subscribe({
+            next: (users) => {
+                this.usersList = users;
+                this.loading[0] = false;
+            },
+            error: () => {
+                this.loading[0] = false;
+                // show error message if needed
+            }
+        });
     }
+
 
     load(index: number) {
         this.loading[index] = true;
@@ -274,4 +295,26 @@ export class Users {
     getStatusLabel(code: string): string {
         return this.statusMap[code] || code;
     }
+
+    resetPassword(user: User) {
+        if (confirm(`Reset password for "${user.name}" to default?`)) {
+            this.userService.resetPassword(user.id!).subscribe({
+                next: () => {
+                    this.messageService.show({
+                        severity: 'success',
+                        summary: 'Password Reset',
+                        detail: `Password for "${user.name}" reset to default.`
+                    });
+                },
+                error: () => {
+                    this.messageService.show({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Failed to reset password.'
+                    });
+                }
+            });
+        }
+    }
+
 }
