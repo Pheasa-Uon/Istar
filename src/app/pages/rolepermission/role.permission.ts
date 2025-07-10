@@ -14,6 +14,8 @@ import { RolePermissionService, RolePermission} from '../service/role.permission
 import { TreeTableModule } from 'primeng/treetable';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService} from '../message/message.service';
+import { forkJoin } from 'rxjs';
+import { RolesStatusService } from '../service/roles.status.service';
 
 @Component({
     selector: 'app-users',
@@ -57,7 +59,7 @@ import { MessageService} from '../message/message.service';
                         <td>{{ rolePermissions.rolesCode }}</td>
                         <td>{{ rolePermissions.name }}</td>
                         <td>{{ rolePermissions.description }}</td>
-                        <td>{{ getStatusLabel(rolePermissions.rolesStatus || '' ) }}</td>
+                        <td>{{ getRolesStatus(rolePermissions.rolesStatus || '' ) }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button icon="pi pi-eye" text raised rounded (click)="viewRole(rolePermissions)" />
@@ -96,7 +98,7 @@ import { MessageService} from '../message/message.service';
                     <!-- Values Column 2 -->
                     <div class="w-full md:w-1/4 flex flex-col space-y-5 py-5">
                         <div>{{ selectedRole?.name }}</div>
-                        <div>{{ getStatusLabel(selectedRole?.rolesStatus || '' ) }}</div>
+                        <div>{{ getRolesStatus(selectedRole?.rolesStatus || '' ) }}</div>
                     </div>
                 </div>
             </p-dialog>
@@ -116,17 +118,36 @@ export class RolePermissions {
 
         private rolePermissionService: RolePermissionService,
         private messageService: MessageService,
+        private statusService: RolesStatusService,
         private router: Router
     ) {}
 
     ngOnInit() {
-        this.rolePermissionService.getAllRolePermission().subscribe({
-            next: roles => {
+        // this.rolePermissionService.getAllRolePermission().subscribe({
+        //     next: roles => {
+        //         this.roleList = roles;
+        //         console.log(this.roleList);
+        //     },
+        //     error: err => {
+        //         console.error('Failed to fetch roles:', err);
+        //     }
+        // });
+
+        forkJoin({
+            statusMap: this.statusService.getRolesStatus(),
+            roles: this.rolePermissionService.getAllRolePermission()
+        }).subscribe({
+            next: ({ statusMap, roles }) => {
+                this.statusMap = statusMap;
                 this.roleList = roles;
-                console.log(this.roleList);
             },
-            error: err => {
-                console.error('Failed to fetch roles:', err);
+            error: (err) => {
+                console.error('Initialization error:', err);
+                this.messageService.show({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Failed to load initial data.'
+                });
             }
         });
 
@@ -178,7 +199,7 @@ export class RolePermissions {
         }
     }
 
-    getStatusLabel(code: string): string {
+    getRolesStatus(code: string): string {
         return this.statusMap[code] || code;
     }
 }

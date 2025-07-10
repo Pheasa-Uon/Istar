@@ -24,7 +24,7 @@ export interface User {
 })
 export class UserService {
 
-    private apiUrl = environment.apiBase + environment.apiEndpoints.users;
+    private apiUrl = environment.apiBase + environment.apiEndpoints.users.usersprofile;
 
     constructor(private http: HttpClient) {}
 

@@ -16,7 +16,8 @@ import { RolePermissionService, RolePermission } from '../service/role.permissio
 import { TreeTableModule } from 'primeng/treetable';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService } from '../message/message.service';
-import { UsersStatusService} from '../service/user.status.service';
+import { UsersStatusService } from '../service/user.status.service';
+import { RolesStatusService } from '../service/roles.status.service';
 
 @Component({
     selector: 'app-users',
@@ -77,7 +78,7 @@ import { UsersStatusService} from '../service/user.status.service';
                         <td>{{ user.name }}</td>
                         <td>{{ user.lastLoginAt | date:'dd-MM-yyyy HH:mm:ss' }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ getStatusLabel(user.userStatus) }}</td>
+                        <td>{{ getUserStatus(user.userStatus) }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button icon="pi pi-eye" text raised rounded (click)="viewUser(user)"></p-button>
@@ -126,7 +127,7 @@ import { UsersStatusService} from '../service/user.status.service';
 <!--                            (click)="showPassword = !showPassword"-->
 <!--                        ></p-button>-->
                     </div>
-                    <div>{{ getStatusLabel(selectedUser?.userStatus || '') }}</div>
+                    <div>{{ getUserStatus(selectedUser?.userStatus || '') }}</div>
                 </div>
             </div>
             <p-divider></p-divider>
@@ -153,7 +154,7 @@ import { UsersStatusService} from '../service/user.status.service';
                         </td>
                         <td>{{ rolePermissions.id }}</td>
                         <td>{{ rolePermissions.name }}</td>
-                        <td>{{ getStatusLabel(rolePermissions.rolesStatus || '') }}</td>
+                        <td>{{ getRolesStatus(rolePermissions.rolesStatus || '') }}</td>
                         <td>{{ rolePermissions.description }}</td>
                     </tr>
                 </ng-template>
@@ -169,7 +170,8 @@ export class Users {
     displayDetails = false;
     selectedUser: User | null = null;
     showPassword = false;
-    statusMap: Record<string, string> = {};
+    userStatusMap: Record<string, string> = {};
+    roleStatusMap: Record<string, string> = {};
     keyword = '';
     users: User[] = [];
 
@@ -177,30 +179,53 @@ export class Users {
         private userService: UserService,
         private rolePermissionService: RolePermissionService,
         private messageService: MessageService,
-        private statusService: UsersStatusService,
+        private userStatusService: UsersStatusService,
+        private rolesStatusService: RolesStatusService,
         private router: Router
     ) {}
 
+    // ngOnInit() {
+    //
+    //     forkJoin({
+    //         userStatusMap: this.userStatusService.getUserStatus(),
+    //         users: this.userService.getAllUsers(),
+    //         roles: this.rolePermissionService.getAllRolePermission(),
+    //         statusMap: this.rolesStatusService.getRolesStatus(),
+    //     }).subscribe({
+    //         next: ({ statusMap, users, roles }) => {
+    //             this.statusMap = statusMap;
+    //             this.usersList = users;
+    //             this.roleList = roles;
+    //         },
+    //         error: (err) => {
+    //             console.error('Initialization error:', err);
+    //             this.messageService.show({
+    //                 severity: 'error',
+    //                 summary: 'Error',
+    //                 detail: 'Failed to load initial data.'
+    //             });
+    //         }
+    //     });
+    // }
+
     ngOnInit() {
         forkJoin({
-            statusMap: this.statusService.getStatusLabels(),
+            userStatusMap: this.userStatusService.getUserStatus(),
+            roleStatusMap: this.rolesStatusService.getRolesStatus(),
             users: this.userService.getAllUsers(),
             roles: this.rolePermissionService.getAllRolePermission()
         }).subscribe({
-            next: ({ statusMap, users, roles }) => {
-                this.statusMap = statusMap;
+            next: ({ userStatusMap, roleStatusMap, users, roles }) => {
+                this.userStatusMap = userStatusMap;
+                this.roleStatusMap = roleStatusMap;
                 this.usersList = users;
                 this.roleList = roles;
             },
             error: (err) => {
-                console.error('Initialization error:', err);
-                this.messageService.show({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Failed to load initial data.'
-                });
+                this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to load data' });
             }
         });
+
     }
 
 
@@ -282,8 +307,11 @@ export class Users {
         }
     }
 
-    getStatusLabel(code: string): string {
-        return this.statusMap[code] || code;
+    getUserStatus(code: string): string {
+        return this.userStatusMap[code] || code;
+    }
+    getRolesStatus(code: string): string {
+        return this.roleStatusMap[code] || code;
     }
 
     resetPassword(user: User) {

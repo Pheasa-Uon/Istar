@@ -3,9 +3,16 @@ export const environment = {
     apiBase: 'http://localhost:8080/api',
     apiEndpoints: {
         auth: '/auth',
-        users: '/users',
-        roles: '/roles',
+        users: {
+            usersprofile: '/users',
+            userstatuses: '/users/status',
+        },
+        roles: {
+            rolesprofile: '/roles',
+            rolesstatus: '/roles/status',
+        },
         permissions: '/permissions',
-        userstatuses: '/users/status',
+
+
     }
 };

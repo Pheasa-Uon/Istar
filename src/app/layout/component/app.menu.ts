@@ -29,7 +29,7 @@ export class AppMenu {
                 label: 'Home',
                 items: [
                     // ... your other menu items ...
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
+                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
                     { label: 'Reports', icon: 'pi pi-fw pi-chart-bar',
                         items: [
                             { label: 'Operation', icon: 'pi pi-fw pi-cog',
