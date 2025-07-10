@@ -119,8 +119,8 @@ export class RolePermissions {
     ) {}
 
     ngOnInit() {
-        this.rolePermissionService.getRolePermissionMedium().then((rolePermissions) => {
-            this.roleList = rolePermissions;
+        this.rolePermissionService.getRolePermissionMedium().then((RolePermission) => {
+            this.roleList = RolePermission;
         });
     }
 

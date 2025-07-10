@@ -207,7 +207,7 @@ export class Users {
             }
         });
 
-        this.rolePermissionService.getRolePermissionMedium().then((rolePermissions) => {
+        this.rolePermissionService.getAllRolePermission().then((rolePermissions) => {
             this.roleList = rolePermissions;
         });
     }
@@ -262,7 +262,7 @@ export class Users {
         this.showPassword = false;
         this.displayDetails = true;
 
-        this.rolePermissionService.getRolePermissionMedium().then((rolePermissions) => {
+        this.rolePermissionService.getAllRolePermission().then((rolePermissions) => {
             this.roleList = rolePermissions;
         });
     }
