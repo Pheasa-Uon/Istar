@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment'; // Make sure this path is correct
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 interface LoginResponse {
     token: string;
@@ -12,22 +12,25 @@ interface LoginResponse {
 export class AuthService {
     constructor(private http: HttpClient) {}
 
+    login(username: string, password: string): Observable<string> {
+        const url = environment.apiBase + environment.apiEndpoints.auth + '/login';
+
+        return this.http.post(url, { username, password }, { responseType: 'text' }).pipe(
+            tap((token: string) => {
+                localStorage.setItem('authToken', token); // ✅ store JWT token
+            })
+        );
+    }
+
+
     // login(username: string, password: string): Observable<string> {
+    //     const url = environment.apiBase + environment.apiEndpoints.auth + '/login';
     //     return this.http.post(
-    //         `${environment.apiEndpoints.auth}/login`,
+    //         url,
     //         { username, password },
     //         { responseType: 'text' }
     //     );
     // }
-
-    login(username: string, password: string): Observable<string> {
-        const url = environment.apiBase + environment.apiEndpoints.auth + '/login';
-        return this.http.post(
-            url,
-            { username, password },
-            { responseType: 'text' }
-        );
-    }
 
 
     saveToken(token: string): void {

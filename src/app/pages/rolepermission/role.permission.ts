@@ -54,10 +54,10 @@ import { MessageService} from '../message/message.service';
                 </ng-template>
                 <ng-template pTemplate="body" let-rolePermissions>
                     <tr>
-                        <td>{{ rolePermissions.id }}</td>
+                        <td>{{ rolePermissions.rolesCode }}</td>
                         <td>{{ rolePermissions.name }}</td>
                         <td>{{ rolePermissions.description }}</td>
-                        <td>{{ getStatusLabel(rolePermissions.status) }}</td>
+                        <td>{{ getStatusLabel(rolePermissions.rolesStatus || '' ) }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button icon="pi pi-eye" text raised rounded (click)="viewRole(rolePermissions)" />
@@ -77,13 +77,13 @@ import { MessageService} from '../message/message.service';
                 <div class="flex flex-col md:flex-row">
                     <!-- Labels Column 1 -->
                     <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                        <div><strong>Role ID:</strong></div>
+                        <div><strong>Role Id:</strong></div>
                         <div><strong>Description:</strong></div>
                     </div>
 
                     <!-- Values Column 1 -->
                     <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                        <div>{{ selectedRole?.id }}</div>
+                        <div>{{ selectedRole?.rolesCode }}</div>
                         <div>{{ selectedRole?.description }}</div>
                     </div>
 
@@ -96,7 +96,7 @@ import { MessageService} from '../message/message.service';
                     <!-- Values Column 2 -->
                     <div class="w-full md:w-1/4 flex flex-col space-y-5 py-5">
                         <div>{{ selectedRole?.name }}</div>
-                        <div>{{ getStatusLabel(selectedRole?.status || '') }}</div>
+                        <div>{{ getStatusLabel(selectedRole?.rolesStatus || '' ) }}</div>
                     </div>
                 </div>
             </p-dialog>
@@ -109,6 +109,7 @@ export class RolePermissions {
     searchText = '';
     displayDetails = false;
     selectedRole: RolePermission | null = null;
+    statusMap: Record<string, string> = {};
     //showPassword = false;
 
     constructor(
@@ -119,30 +120,22 @@ export class RolePermissions {
     ) {}
 
     ngOnInit() {
-        this.rolePermissionService.getRolePermissionMedium().then((RolePermission) => {
-            this.roleList = RolePermission;
+        this.rolePermissionService.getAllRolePermission().subscribe({
+            next: roles => {
+                this.roleList = roles;
+                console.log(this.roleList);
+            },
+            error: err => {
+                console.error('Failed to fetch roles:', err);
+            }
         });
+
     }
-
-
 
     load(index: number) {
         this.loading[index] = true;
         setTimeout(() => (this.loading[index] = false), 1000);
     }
-
-    // load(index: number) {
-    //     this.loading[index] = true;
-    //
-    //     setTimeout(() => {
-    //         this.loading[index] = false;
-    //         this.roleList = this.roleList.filter(role =>
-    //             role.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
-    //             role.description.toLowerCase().includes(this.searchText.toLowerCase())
-    //         );
-    //     }, 1000);
-    // }
-
 
     addRolePermission() {
         this.router.navigate(['/addrolepermission']);
@@ -156,16 +149,10 @@ export class RolePermissions {
         this.router.navigate(['/setrolepermission'], { state: { rolePermissions } });
     }
 
-
     viewRole(rolePermissions: RolePermission) {
         this.selectedRole = rolePermissions;
         this.displayDetails = true;
     }
-
-    // deleteUser(user: User) {
-    //     alert(`Confirm delete for user: ${user.name}`);
-    // }
-
 
     deleteRole(rolePermissions: RolePermission) {
         if (confirm(`Are you sure you want to delete role "${rolePermissions.name}"?`)) {
@@ -191,13 +178,7 @@ export class RolePermissions {
         }
     }
 
-
     getStatusLabel(code: string): string {
-        const map: Record<string, string> = {
-            A: 'Active',
-            B: 'Block',
-            C: 'Close'
-        };
-        return map[code] || code;
+        return this.statusMap[code] || code;
     }
 }

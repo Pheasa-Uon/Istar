@@ -7,8 +7,9 @@ import { User } from './user.service';
 
 export interface RolePermission {
     id?: number | undefined;
+    rolesCode?: string;
     name?: string;
-    status?: string;
+    rolesStatus?: string;
     description: string;
 }
 
@@ -19,8 +20,10 @@ export class RolePermissionService {
     constructor(private http: HttpClient) {}
 
     // ✅ Get all roles
-    getRolePermissionMedium(): Promise<RolePermission[]> {
-        return firstValueFrom(this.http.get<RolePermission[]>(this.apiUrl));
+    getAllRolePermission(): Observable<RolePermission[]> {
+        const token = localStorage.getItem('authToken'); // your login token
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.get<RolePermission[]>(this.apiUrl, { headers });
     }
 
     // ✅ Get a single role

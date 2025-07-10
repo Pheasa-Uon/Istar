@@ -39,7 +39,7 @@ import { RolePermissionService, RolePermission } from '../service/role.permissio
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="roleid">Role Id</label>
-                        <input pInputText id="roleid" type="text" [(ngModel)]="role.id" [disabled]="true" />
+                        <input pInputText id="roleid" type="text" [(ngModel)]="role.rolesCode" [readOnly]="true" />
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="name">Name</label>
@@ -52,7 +52,7 @@ import { RolePermissionService, RolePermission } from '../service/role.permissio
                         <label for="status">Status</label>
                         <p-select
                             id="status"
-                            [(ngModel)]="role.status"
+                            [(ngModel)]="role.rolesStatus"
                             [options]="dropdownItems"
                             optionLabel="name"
                             optionValue="code"
@@ -82,8 +82,9 @@ import { RolePermissionService, RolePermission } from '../service/role.permissio
 export class EditRolePermission {
     role: RolePermission = {
         id: undefined,
+        rolesCode: '',
         name: '',
-        status: '',
+        rolesStatus: '',
         description: ''
     };
 

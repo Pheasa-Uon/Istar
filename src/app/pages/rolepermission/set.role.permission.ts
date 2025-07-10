@@ -69,7 +69,7 @@ export class SetRolePermission implements OnInit {
     role: RolePermission = {
         id: undefined,
         name: '',
-        status: '',
+        rolesStatus: '',
         description: ''
     };
 

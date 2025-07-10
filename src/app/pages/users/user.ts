@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
@@ -152,7 +153,7 @@ import { UsersStatusService} from '../service/user.status.service';
                         </td>
                         <td>{{ rolePermissions.id }}</td>
                         <td>{{ rolePermissions.name }}</td>
-                        <td>{{ rolePermissions.status }}</td>
+                        <td>{{ getStatusLabel(rolePermissions.rolesStatus || '') }}</td>
                         <td>{{ rolePermissions.description }}</td>
                     </tr>
                 </ng-template>
@@ -181,46 +182,26 @@ export class Users {
     ) {}
 
     ngOnInit() {
-
-
-        this.statusService.getStatusLabels().subscribe({
-            next: (map) => (this.statusMap = map),
-            error: () => {
-                this.messageService.show({
-                    severity: 'warn',
-                    summary: 'Warning',
-                    detail: 'Failed to load status labels'
-                })
-            }
-        });
-
-
-        this.userService.getAllUsers().subscribe({
-            next: (users) => (this.usersList = users),
+        forkJoin({
+            statusMap: this.statusService.getStatusLabels(),
+            users: this.userService.getAllUsers(),
+            roles: this.rolePermissionService.getAllRolePermission()
+        }).subscribe({
+            next: ({ statusMap, users, roles }) => {
+                this.statusMap = statusMap;
+                this.usersList = users;
+                this.roleList = roles;
+            },
             error: (err) => {
+                console.error('Initialization error:', err);
                 this.messageService.show({
                     severity: 'error',
                     summary: 'Error',
-                    detail: 'Failed to load users.'
+                    detail: 'Failed to load initial data.'
                 });
-                //console.error('Failed to load users', err);
             }
         });
-
-        this.rolePermissionService.getAllRolePermission().then((rolePermissions) => {
-            this.roleList = rolePermissions;
-        });
     }
-
-    // get filteredUsers(): User[] {
-    //     const search = this.searchText.toLowerCase();
-    //     return this.usersList.filter(
-    //         (user) =>
-    //             user.username?.toLowerCase().includes(search) ||
-    //             user.name?.toLowerCase().includes(search) ||
-    //             user.email?.toLowerCase().includes(search)
-    //     );
-    // }
 
 
     searchUsers() {
@@ -262,9 +243,18 @@ export class Users {
         this.showPassword = false;
         this.displayDetails = true;
 
-        this.rolePermissionService.getAllRolePermission().then((rolePermissions) => {
-            this.roleList = rolePermissions;
+        // this.rolePermissionService.getAllRolePermission().then((RolePermissions) => {
+        //     this.roleList = RolePermissions;
+        // });
+        this.rolePermissionService.getAllRolePermission().subscribe({
+            next: (rolePermissions) => {
+                this.roleList = rolePermissions;
+            },
+            error: (err) => {
+                console.error('Error fetching roles:', err);
+            }
         });
+
     }
 
 

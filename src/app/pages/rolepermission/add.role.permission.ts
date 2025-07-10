@@ -30,7 +30,7 @@ import { Select } from 'primeng/select';
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="userid">User Id</label>
-                        <input pInputText id="userid" type="text" placeholder="Auto" [disabled]="true" />
+                        <input pInputText id="userid" type="text" placeholder="Auto" [readOnly]="true" />
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="name">Name</label>
@@ -42,7 +42,7 @@ import { Select } from 'primeng/select';
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="status">Status</label>
-                        <p-select id="status" [(ngModel)]="rolepermission.status" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
+                        <p-select id="status" [(ngModel)]="rolepermission.rolesStatus" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
                     </div>
@@ -66,8 +66,9 @@ import { Select } from 'primeng/select';
 export class AddRolePermission {
     rolepermission: RolePermission = {
         id: undefined,
+        rolesCode: '',
         name: '',
-        status: '',
+        rolesStatus: '',
         description: ''
     };
 
