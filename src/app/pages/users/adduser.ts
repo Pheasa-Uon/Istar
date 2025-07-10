@@ -31,7 +31,7 @@ import { Message } from '../message/message';
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="userid">User Id</label>
-                            <input pInputText id="userid" type="text" placeholder="Auto" [disabled]="true" [(ngModel)]="user.userCode"/>
+                            <input pInputText id="userid" type="text" placeholder="Auto" [readonly]="true" [(ngModel)]="user.userCode"/>
                         </div>
 
                         <div class="flex flex-wrap gap-2 w-full">

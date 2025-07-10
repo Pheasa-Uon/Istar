@@ -38,7 +38,7 @@ import { Message } from '../message/message';
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="userid">User Id</label>
-                        <input pInputText id="userid" type="text" [(ngModel)]="user.userCode" [disabled]="true" name="userCode" />
+                        <input pInputText id="userid" type="text" [(ngModel)]="user.userCode" [readonly]="true" name="userCode" />
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="name">Name <span class="text-red-500">*</span></label>
@@ -51,6 +51,26 @@ import { Message } from '../message/message';
                         <label for="username">Username <span class="text-red-500">*</span></label>
                         <input pInputText id="username" type="text" [(ngModel)]="user.username" name="username" required />
                     </div>
+<!--                    <div class="flex flex-wrap gap-2 w-full">-->
+<!--                        <label for="password">Password <span class="text-red-500">*</span></label>-->
+<!--                        <div class="flex w-full items-center gap-2">-->
+<!--                            <input-->
+<!--                                pInputText-->
+<!--                                id="password"-->
+<!--                                [type]="showPassword ? 'text' : 'password'"-->
+<!--                                [(ngModel)]="user.password"-->
+<!--                                name="password"-->
+<!--                                class="flex-1"-->
+<!--                            />-->
+<!--                            <button-->
+<!--                                type="button"-->
+<!--                                pButton-->
+<!--                                icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}"-->
+<!--                                (click)="showPassword = !showPassword"-->
+<!--                                class="p-button-sm"-->
+<!--                            ></button>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="password">Password <span class="text-red-500">*</span></label>
                         <div class="flex w-full items-center gap-2">
@@ -60,7 +80,6 @@ import { Message } from '../message/message';
                                 [type]="showPassword ? 'text' : 'password'"
                                 [(ngModel)]="user.password"
                                 name="password"
-                                [disabled]="true"
                                 class="flex-1"
                             />
                             <button
@@ -68,10 +87,12 @@ import { Message } from '../message/message';
                                 pButton
                                 icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}"
                                 (click)="showPassword = !showPassword"
+                                [disabled]="!user.password || user.password.trim().length === 0"
                                 class="p-button-sm"
                             ></button>
                         </div>
                     </div>
+
                 </div>
 
                 <div class="flex flex-col md:flex-row gap-6">
