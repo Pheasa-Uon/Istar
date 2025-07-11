@@ -31,7 +31,8 @@ import { Message } from '../message/message';
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="userid">User Id</label>
-                            <input pInputText id="userid" type="text" placeholder="Auto" [readonly]="true" [(ngModel)]="user.userCode"/>
+<!--                            <input pInputText id="userid" type="text" placeholder="Auto" [readonly]="true" [(ngModel)]="user.userCode"/>-->
+                            <input pInputText id="userid" name="userCode" type="text" placeholder="Auto" [readonly]="true" [(ngModel)]="user.userCode"/>
                         </div>
 
                         <div class="flex flex-wrap gap-2 w-full">
@@ -158,8 +159,8 @@ export class AddUser {
 
     dropdownItems = [
         { name: 'Active', code: 'A' },
-        { name: 'Block', code: 'B' },
-        { name: 'Close', code: 'C' }
+        { name: 'Blocked', code: 'B' },
+        { name: 'Closed', code: 'C' }
     ];
 
     showPassword = false;

@@ -39,7 +39,7 @@ import { RolesStatusService } from '../service/roles.status.service';
                 </div>
                 <div class="card flex flex-col gap-2">
                     <div class="flex flex-wrap gap-2 md:w-1/2 justify-end items-center">
-                        <p-button type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" (click)="load(0)" />
+                        <p-button type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" (click)="searchRoles()" />
                     </div>
                 </div>
             </p-fluid>
@@ -123,16 +123,6 @@ export class RolePermissions {
     ) {}
 
     ngOnInit() {
-        // this.rolePermissionService.getAllRolePermission().subscribe({
-        //     next: roles => {
-        //         this.roleList = roles;
-        //         console.log(this.roleList);
-        //     },
-        //     error: err => {
-        //         console.error('Failed to fetch roles:', err);
-        //     }
-        // });
-
         forkJoin({
             statusMap: this.statusService.getRolesStatus(),
             roles: this.rolePermissionService.getAllRolePermission()
@@ -151,6 +141,20 @@ export class RolePermissions {
             }
         });
 
+    }
+
+    searchRoles() {
+        this.loading[0] = true;
+        this.rolePermissionService.searchRoles(this.searchText).subscribe({
+            next: (RolePermission) => {
+                this.roleList = RolePermission;
+                this.loading[0] = false;
+            },
+            error: () => {
+                this.loading[0] = false;
+                // show error message if needed
+            }
+        });
     }
 
     load(index: number) {

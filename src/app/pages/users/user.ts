@@ -184,30 +184,6 @@ export class Users {
         private router: Router
     ) {}
 
-    // ngOnInit() {
-    //
-    //     forkJoin({
-    //         userStatusMap: this.userStatusService.getUserStatus(),
-    //         users: this.userService.getAllUsers(),
-    //         roles: this.rolePermissionService.getAllRolePermission(),
-    //         statusMap: this.rolesStatusService.getRolesStatus(),
-    //     }).subscribe({
-    //         next: ({ statusMap, users, roles }) => {
-    //             this.statusMap = statusMap;
-    //             this.usersList = users;
-    //             this.roleList = roles;
-    //         },
-    //         error: (err) => {
-    //             console.error('Initialization error:', err);
-    //             this.messageService.show({
-    //                 severity: 'error',
-    //                 summary: 'Error',
-    //                 detail: 'Failed to load initial data.'
-    //             });
-    //         }
-    //     });
-    // }
-
     ngOnInit() {
         forkJoin({
             userStatusMap: this.userStatusService.getUserStatus(),

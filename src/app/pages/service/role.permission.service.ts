@@ -50,4 +50,16 @@ export class RolePermissionService {
     saveRolePermissions(payload: any): Observable<any> {
         return this.http.post<any>(`${this.apiUrl}/permissions/save`, payload);
     }
+
+    searchRoles(keyword: string): Observable<RolePermission[]> {
+        const token = localStorage.getItem('authToken'); // or wherever you store your token
+
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token || ''}`
+        });
+
+        const url = `${this.apiUrl}/search?keyword=${encodeURIComponent(keyword)}`;
+
+        return this.http.get<RolePermission[]>(url, { headers });
+    }
 }

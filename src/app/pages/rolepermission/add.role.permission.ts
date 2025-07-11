@@ -19,6 +19,7 @@ import { Select } from 'primeng/select';
     standalone: true,
     imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, DropdownModule, TextareaModule, Message, ButtonGroup, Fluid, Select],
     template: `
+        <form #roleForm="ngForm" (ngSubmit)="saveRolePermission()" novalidate>
         <div class="fixed top-3/1 right-4 z-50 w-[500px]">
             <app-messages></app-messages>
         </div>
@@ -29,12 +30,22 @@ import { Select } from 'primeng/select';
 
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
-                        <label for="userid">User Id</label>
-                        <input pInputText id="userid" type="text" placeholder="Auto" [readOnly]="true" />
+                        <label for="roleid">Role Id</label>
+                        <input pInputText id="roleid" name="rolesCode" type="text" placeholder="Auto" [readOnly]="true" [(ngModel)]="rolepermission.rolesCode" />
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
-                        <label for="name">Name</label>
-                        <input pInputText id="name" type="text" [(ngModel)]="rolepermission.name" />
+                        <label for="name">Name <span class="text-red-500">*</span></label>
+                        <input
+                            pInputText
+                            id="name"
+                            name="name"
+                            type="text"
+                            [(ngModel)]="rolepermission.name"
+                            required
+                            class="w-full"
+                            [ngClass]="{ 'p-invalid': roleForm.submitted && !rolepermission.name }"
+                        />
+                        <small *ngIf="roleForm.submitted && !rolepermission.name" class="text-red-500">Name is required.</small>
                     </div>
                 </div>
 
@@ -42,7 +53,7 @@ import { Select } from 'primeng/select';
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="status">Status</label>
-                        <p-select id="status" [(ngModel)]="rolepermission.rolesStatus" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
+                        <p-select id="status" name="status" [(ngModel)]="rolepermission.rolesStatus" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
                     </div>
@@ -50,17 +61,19 @@ import { Select } from 'primeng/select';
 
                 <div class="flex flex-wrap gap-2 w-full">
                     <label for="description">Description</label>
-                    <textarea pTextarea id="description" rows="4" [(ngModel)]="rolepermission.description"></textarea>
+                    <textarea pTextarea id="description" name="description" rows="4" [(ngModel)]="rolepermission.description"></textarea>
                 </div>
 
                 <div class="card flex flex-wrap gap-0 w-full justify-end">
                     <p-buttongroup>
-                        <p-button label="Save" icon="pi pi-check" (click)="saveRolePermission()" />
+<!--                        <p-button label="Save" icon="pi pi-check" (click)="saveRolePermission()" />-->
+                        <p-button type="submit" label="Save" icon="pi pi-check" [disabled]="roleForm.invalid"/>
                         <p-button label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
                     </p-buttongroup>
                 </div>
             </div>
         </p-fluid>
+        </form>
     `
 })
 export class AddRolePermission {
@@ -68,14 +81,14 @@ export class AddRolePermission {
         id: undefined,
         rolesCode: '',
         name: '',
-        rolesStatus: '',
+        rolesStatus: 'A',
         description: ''
     };
 
     dropdownItems = [
         { name: 'Active', code: 'A' },
-        { name: 'Block', code: 'B' },
-        { name: 'Close', code: 'C' }
+        { name: 'Blocked', code: 'B' },
+        { name: 'Closed', code: 'C' }
     ];
 
     constructor(
