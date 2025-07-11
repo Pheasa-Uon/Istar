@@ -58,8 +58,8 @@ import { CommonModule } from '@angular/common';
                                 </div>
                                 <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot password?</span>
                             </div>
-                            <div *ngIf="error" class="text-red-500 text-center mb-4">
-                                {{ error }}
+                            <div *ngIf="errorMsg" class="text-red-500 text-center mb-4">
+                                {{ errorMsg }}
                             </div>
 <!--                            <p-button label="Login" styleClass="w-full" (onClick)="onLogin()"></p-button>-->
                             <!-- ✅ CORRECT -->
@@ -77,7 +77,7 @@ export class Login {
 
     username = '';
     password = '';
-    error = '';
+    errorMsg = '';
     loading = false;
 
     constructor(private authService: AuthService, private router: Router) {}
@@ -95,57 +95,15 @@ export class Login {
     // }
 
     // login.component.ts
-    // onLogin() {
-    //     this.error = ''; // Clear previous errors
-    //     this.loading = true; // Add loading state
-    //
-    //     this.authService.login(this.username, this.password).subscribe({
-    //         next: (token) => {
-    //             console.log('Received token:', token); // Debug log
-    //             if (token) {
-    //                 this.authService.saveToken(token);
-    //                 this.router.navigate(['/dashboard']);
-    //             } else {
-    //                 this.error = 'Authentication failed';
-    //             }
-    //             this.loading = false;
-    //         },
-    //         error: (err) => {
-    //             console.error('Login error:', err); // Detailed error logging
-    //             this.error = this.getErrorMessage(err);
-    //             this.loading = false;
-    //         }
-    //     });
-    // }
-
-    // login.component.ts
     onLogin() {
-        this.error = '';
-        this.loading = true;
-
         this.authService.login(this.username, this.password).subscribe({
-            next: (token) => {
-                this.authService.saveToken(token);
-
-                // Try navigation, then handle result
-                this.router.navigate(['/dashboard'])
-                    .then(success => {
-                        if (!success) {
-                            console.error('Navigation failed - check AuthGuard');
-                            this.error = 'Login successful but navigation failed';
-                        }
-                    })
-                    .catch(err => {
-                        console.error('Navigation error:', err);
-                        this.error = 'Login successful but navigation failed';
-                    })
-                    .finally(() => {
-                        this.loading = false;
-                    });
+            next: res => {
+                localStorage.setItem('authToken', res.token); // ✅ Store raw token
+                this.router.navigate(['/dashboard']);
             },
-            error: (err) => {
-                this.error = 'Invalid username or password';
-                this.loading = false;
+            error: err => {
+                this.errorMsg = 'Invalid credentials';
+                console.error(err);
             }
         });
     }

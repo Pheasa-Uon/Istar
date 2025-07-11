@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
-import { environment } from '../../../environments/environment'; // Make sure this path is correct
+import { environment } from '../../../environments/environment';
+import { AuthService } from '../../pages/auth/auth.service'; // Make sure this path is correct
 
 @Component({
     selector: 'app-menu',
@@ -21,7 +22,8 @@ import { environment } from '../../../environments/environment'; // Make sure th
 export class AppMenu {
     model: MenuItem[] = [];
 
-    constructor(private http: HttpClient, private router: Router) {}
+    //constructor(private http: HttpClient, private router: Router) {}
+    constructor(private authService: AuthService) {}
 
     ngOnInit() {
         this.model = [
@@ -206,26 +208,15 @@ export class AppMenu {
     }
 
     logout() {
-        const token = localStorage.getItem('authToken');
-        const url = environment.apiBase + environment.apiEndpoints.auth + '/logout';
-
-        if (token) {
-            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-            this.http.post(url, {}, { headers, responseType: 'text' }).subscribe({
-                next: () => {
-                    localStorage.removeItem('authToken'); // Clear local
-                    this.router.navigate(['/auth/login']);
-                },
-                error: err => {
-                    console.error('Logout failed:', err);
-                    localStorage.removeItem('authToken'); // Still clear it
-                    this.router.navigate(['/auth/login']);
-                }
-            });
-        } else {
-            this.router.navigate(['/auth/login']);
-        }
+        this.authService.logout().subscribe({
+            next: () => {
+                // Optional: show notification or do something on success
+            },
+            error: err => {
+                // Optional: handle errors if needed
+                console.error('Logout error:', err);
+            }
+        });
     }
 
 }

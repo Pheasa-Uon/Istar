@@ -1,8 +1,9 @@
 // src/app/pages/auth/auth.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment'; // Make sure this path is correct
 import { Observable, tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 interface LoginResponse {
     token: string;
@@ -10,16 +11,16 @@ interface LoginResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    constructor(private http: HttpClient) {}
 
-    login(username: string, password: string): Observable<string> {
-        const url = environment.apiBase + environment.apiEndpoints.auth + '/login';
+    private apiUrl = environment.apiBase + environment.apiEndpoints.auth;
 
-        return this.http.post(url, { username, password }, { responseType: 'text' }).pipe(
-            tap((token: string) => {
-                localStorage.setItem('authToken', token); // ✅ store JWT token
-            })
-        );
+    constructor(private http: HttpClient, private router: Router) {}
+
+    login(username: string, password: string) {
+        return this.http.post<{ token: string }>(`${this.apiUrl}/login`, {
+            username,
+            password
+        });
     }
 
 
@@ -49,23 +50,39 @@ export class AuthService {
     //     localStorage.removeItem('authToken');
     // }
 
-    logout(): void {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            const url = environment.apiBase + environment.apiEndpoints.auth + '/logout';
+    logout(): Observable<any> {
+        const rawToken = localStorage.getItem('authToken');
+        const token = rawToken?.replace(/"/g, '').trim(); // remove quotes if any
 
-            this.http.post(url, {}, {
-                headers: { Authorization: `Bearer ${token}` },
-                responseType: 'text'
-            }).subscribe({
-                next: () => {
-                    localStorage.removeItem('authToken');
-                },
-                error: err => {
-                    console.error('Logout failed', err);
-                }
+        if (!token) {
+            // If no token, just clear storage and navigate immediately
+            this.clearStorageAndRedirect();
+            return new Observable((observer) => {
+                observer.next(null);
+                observer.complete();
             });
         }
+
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+        return this.http.post(`${this.apiUrl}/logout`, {}, { headers, responseType: 'text' }).pipe(
+            tap({
+                next: () => this.clearStorageAndRedirect(),
+                error: () => this.clearStorageAndRedirect(),
+            })
+        );
+    }
+
+    private clearStorageAndRedirect() {
+        localStorage.removeItem('authToken');
+        sessionStorage.clear();
+        this.router.navigate(['/auth/login']);
+    }
+
+    private clearAndRedirect() {
+        localStorage.removeItem('authToken');
+        sessionStorage.clear();
+        this.router.navigate(['/auth/login']);
     }
 
     isLoggedIn(): boolean {
