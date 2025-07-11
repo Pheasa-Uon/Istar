@@ -4,9 +4,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment'; // Make sure this path is correct
 import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 interface LoginResponse {
     token: string;
+}
+
+interface DecodedToken {
+    roles?: string[];
+    sub?: string;
+    exp?: number;
+    [key: string]: any;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -16,22 +24,30 @@ export class AuthService {
 
     constructor(private http: HttpClient, private router: Router) {}
 
-    login(username: string, password: string) {
-        return this.http.post<{ token: string }>(`${this.apiUrl}/login`, {
-            username,
-            password
-        });
+    // login(username: string, password: string) {
+    //     return this.http.post<{ token: string }>(`${this.apiUrl}/login`, {
+    //         username,
+    //         password
+    //     });
+    // }
+
+
+    login(username: string, password: string): Observable<any> {
+        return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { username, password }).pipe(
+            tap(response => {
+                const token = response.token;
+                this.saveToken(token);
+
+                // Decode JWT to get roles
+                const decoded: DecodedToken = jwtDecode(token);
+                const roles = decoded.roles || [];
+
+                // Save roles to localStorage
+                localStorage.setItem('roles', JSON.stringify(roles));
+            })
+        );
     }
 
-
-    // login(username: string, password: string): Observable<string> {
-    //     const url = environment.apiBase + environment.apiEndpoints.auth + '/login';
-    //     return this.http.post(
-    //         url,
-    //         { username, password },
-    //         { responseType: 'text' }
-    //     );
-    // }
 
 
     saveToken(token: string): void {
@@ -45,6 +61,12 @@ export class AuthService {
     getToken(): string | null {
         return localStorage.getItem('auth_token');
     }
+
+    getUserRoles(): string[] {
+        const roles = localStorage.getItem('roles');
+        return roles ? JSON.parse(roles) : [];
+    }
+
 
     // logout(): void {
     //     localStorage.removeItem('authToken');
