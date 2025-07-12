@@ -18,7 +18,7 @@ import { forkJoin } from 'rxjs';
 import { RolesStatusService } from '../service/roles.status.service';
 
 @Component({
-    selector: 'app-users',
+    selector: 'app-role-permission',
     standalone: true,
     imports: [CommonModule, FormsModule, TableModule, InputTextModule, ButtonModule, IconFieldModule, InputIconModule, DialogModule, Fluid, DividerModule, TreeTableModule, CheckboxModule],
     template: `
@@ -171,7 +171,7 @@ export class RolePermissions {
     }
 
     setRolePermission(rolePermissions: RolePermission) {
-        this.router.navigate(['/setrolepermission'], { state: { rolePermissions } });
+        this.router.navigate(['/setrolepermission', rolePermissions.id]);
     }
 
     viewRole(rolePermissions: RolePermission) {

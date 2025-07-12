@@ -45,7 +45,7 @@ export const appRoutes: Routes = [
             { path: 'rolepermission', component: RolePermissions },
             { path: 'addrolepermission', component: AddRolePermission },
             { path: 'editrolepermission', component: EditRolePermission },
-            { path: 'setrolepermission', component: SetRolePermission },
+            { path: 'setrolepermission/:id', component: SetRolePermission },
 
             // Lazy loaded modules - make sure these modules exist and export NgModule classes
             { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },

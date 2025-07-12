@@ -1,93 +1,112 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
-import { TreeModule } from 'primeng/tree';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TreeTableModule } from 'primeng/treetable';
-import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
-import { SetRolePermissionService } from '../service/set.role.permission.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'app-set-role-permission',
     standalone: true,
-    imports: [
-        CommonModule,
-        FormsModule,
-        TreeModule,
-        TreeTableModule,
-        ButtonModule
-    ],
+    imports: [CommonModule, FormsModule, TreeTableModule, ButtonModule],
     template: `
         <div class="card">
-            <div class="font-semibold text-xl mb-4 ">Set Role Permission</div>
-            <div class="mb-4 text-lg font-medium text-primary">{{ role.name }}</div>
+            <div class="font-semibold text-xl mb-4">Set Role Permission</div>
+            <div class="mb-4 text-lg font-medium text-primary">{{ role?.name || 'Loading...' }}</div>
+
             <p-treetable
                 [value]="treeTableValue"
                 [columns]="cols"
-                selectionMode="checkbox"
-                [(selectionKeys)]="selectedTreeTableValue"
-                dataKey="key"
                 [scrollable]="true"
-                [tableStyle]="{ 'min-width': '50rem' }"
+                scrollHeight="475px"
+                [tableStyle]="{ 'min-width': '1000px' }"
             >
-                <ng-template pTemplate="header">
+                <ng-template pTemplate="header" let-columns>
                     <tr>
-                        <th *ngFor="let col of cols">
+                        <th
+                            *ngFor="let col of columns"
+                            [style.minWidth.px]="col.minWidth"
+                            style="padding: 8px 25px; text-align: center; white-space: nowrap;"
+                        >
                             {{ col.header }}
                         </th>
                     </tr>
                 </ng-template>
 
-                <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-                    <tr [ttRow]="rowNode" [ttSelectableRow]="rowNode">
-                        <td *ngFor="let col of cols; let i = index">
-                            <p-treeTableToggler [rowNode]="rowNode" *ngIf="i === 0" />
-                            <p-treeTableCheckbox [value]="rowNode" *ngIf="i === 0" />
-                            {{ rowData[col.field] }}
+                <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+                    <tr [ttRow]="rowNode">
+                        <td
+                            *ngFor="let col of columns; let i = index"
+                            [style.minWidth.px]="col.minWidth"
+                            style="padding: 8px 25px; white-space: nowrap;"
+                        >
+                            <ng-container *ngIf="i === 0">
+                                <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                                {{ rowData[col.field] }}
+                            </ng-container>
+
+                            <ng-container *ngIf="i === 1">
+                                {{ rowData[col.field] }}
+                            </ng-container>
+
+                            <ng-container *ngIf="i > 1">
+                                <input type="checkbox" [(ngModel)]="rowData[col.field]" />
+                            </ng-container>
                         </td>
                     </tr>
                 </ng-template>
             </p-treetable>
 
             <div class="flex justify-end gap-2 mt-6">
-                <p-button label="Save" icon="pi pi-save" (click)="saveRolePermission()" />
-                <p-button label="Cancel" icon="pi pi-times" class="p-button-secondary" (click)="goBack()" />
+                <button pButton label="Save" icon="pi pi-save" (click)="saveRolePermission()"></button>
+                <button pButton label="Cancel" icon="pi pi-times" class="p-button-secondary" (click)="goBack()"></button>
             </div>
         </div>
-    `,
-    providers: [SetRolePermissionService]
+    `
 })
 export class SetRolePermission implements OnInit {
-    // treeTableValue: TreeNode[] = [];
-    // selectedTreeTableValue: { [key: string]: any } = {};
-    // cols: any[] = [];
-
     role: any = {};
-    roleId: number = 0;
+    roleId = 0;
     treeTableValue: TreeNode[] = [];
-    selectedTreeTableValue: { [key: string]: boolean } = {};
-    cols: any[] = [];
+    cols = [
+        { field: 'name', header: 'Feature', minWidth: 200 },
+        { field: '', header: '', minWidth: 200 },
+        { field: 'isSearch', header: 'Search', minWidth: 25 },
+        { field: 'isAdd', header: 'Add', minWidth: 25 },
+        { field: 'isViewed', header: 'View', minWidth: 25 },
+        { field: 'isEdit', header: 'Edit', minWidth: 25 },
+        { field: 'isApprove', header: 'Approve', minWidth: 25 },
+        { field: 'isReject', header: 'Reject', minWidth: 25 },
+        { field: 'isDeleted', header: 'Delete', minWidth: 25 },
+        { field: 'isSave', header: 'Save', minWidth: 25 },
+        { field: 'isClear', header: 'Clear', minWidth: 25 },
+        { field: 'isCancel', header: 'Cancel', minWidth: 25 },
+        { field: 'isProcess', header: 'Process', minWidth: 25 },
+        { field: 'isImport', header: 'Import', minWidth: 25 },
+        { field: 'isExport', header: 'Export', minWidth: 25 }
+    ];
 
     constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {}
 
     ngOnInit(): void {
-        this.roleId = Number(this.route.snapshot.paramMap.get('id'));
+        this.roleId = Number(this.route.snapshot.paramMap.get('id')) || 0;
         this.loadRole();
         this.loadTreeTable();
-        this.cols = [
-            { field: 'name', header: 'Feature' },
-            { field: 'description', header: 'Description' },
-        ];
     }
 
     loadRole() {
-        this.http.get(`${environment.apiBase}/roles/${this.roleId}`).subscribe(res => {
-            this.role = res;
-        });
+        if (this.roleId > 0) {
+            this.http.get(`${environment.apiBase}/roles/${this.roleId}`).subscribe({
+                next: (res) => (this.role = res),
+                error: () => (this.role = { name: 'Unknown Role' })
+            });
+        } else {
+            this.role = { name: 'Unknown Role' };
+        }
     }
 
     loadTreeTable() {
@@ -95,122 +114,92 @@ export class SetRolePermission implements OnInit {
             features: this.http.get<TreeNode[]>(`${environment.apiBase}/features/treetable`),
             selectedPermissions: this.http.get<any[]>(`${environment.apiBase}/permissions/role/${this.roleId}`)
         }).subscribe(({ features, selectedPermissions }) => {
-            this.treeTableValue = features;
-            this.selectedTreeTableValue = {};
-            selectedPermissions.forEach(p => {
-                this.selectedTreeTableValue[p.feature.id] = true;
-            });
+            this.treeTableValue = this.mapPermissions(features, selectedPermissions);
         });
     }
 
+    mapPermissions(features: TreeNode[], selectedPermissions: any[]): TreeNode[] {
+        const permissionMap = new Map<number, any>();
+        selectedPermissions.forEach((p) => {
+            permissionMap.set(p.feature.id, p);
+        });
 
-saveRolePermission() {
-        const selectedIds = Object.keys(this.selectedTreeTableValue)
-            .filter(k => this.selectedTreeTableValue[k])
-            .map(k => parseInt(k, 10));
+        const mapNode = (nodes: TreeNode[]): TreeNode[] => {
+            return nodes.map((node) => {
+                const perm = permissionMap.get(node.data.id);
+                const dataWithPermissions = {
+                    ...node.data,
+                    isSearch: perm?.isSearch ?? false,
+                    isAdd: perm?.isAdd ?? false,
+                    isViewed: perm?.isViewed ?? false,
+                    isEdit: perm?.isEdit ?? false,
+                    isApprove: perm?.isApprove ?? false,
+                    isReject: perm?.isReject ?? false,
+                    isDeleted: perm?.isDeleted ?? false,
+                    isSave: perm?.isSave ?? false,
+                    isClear: perm?.isClear ?? false,
+                    isCancel: perm?.isCancel ?? false,
+                    isProcess: perm?.isProcess ?? false,
+                    isImport: perm?.isImport ?? false,
+                    isExport: perm?.isExport ?? false
+                };
+                return {
+                    ...node,
+                    data: dataWithPermissions,
+                    children: node.children ? mapNode(node.children) : []
+                };
+            });
+        };
 
-        const payload = selectedIds.map(featureId => ({
-            roleId: this.roleId,
-            featureId: featureId,
-            isSearch: true,
-            isAdd: true,
-            isViewed: true,
-            isEdit: true,
-            isApprove: true,
-            isReject: true,
-            isDeleted: true,
-            isSave: true,
-            isClear: true,
-            isCancel: true,
-            isProcess: true,
-            isImport: true,
-            isExport: true
-        }));
+        return mapNode(features);
+    }
 
-        this.http.post(`${environment.apiBase}/permissions/bulk`, payload).subscribe(() => {
-            alert('Permissions saved successfully!');
-            this.router.navigate(['/role']);
+    saveRolePermission() {
+        const payload: any[] = [];
+
+        const traverse = (nodes: TreeNode[]) => {
+            for (const node of nodes) {
+                if (node.data && node.data.id) {
+                    const d = node.data;
+                    payload.push({
+                        roleId: this.roleId,
+                        featureId: d.id,
+                        isSearch: !!d.isSearch,
+                        isAdd: !!d.isAdd,
+                        isViewed: !!d.isViewed,
+                        isEdit: !!d.isEdit,
+                        isApprove: !!d.isApprove,
+                        isReject: !!d.isReject,
+                        isDeleted: !!d.isDeleted,
+                        isSave: !!d.isSave,
+                        isClear: !!d.isClear,
+                        isCancel: !!d.isCancel,
+                        isProcess: !!d.isProcess,
+                        isImport: !!d.isImport,
+                        isExport: !!d.isExport
+                    });
+                }
+                if (node.children) {
+                    traverse(node.children);
+                }
+            }
+        };
+
+        traverse(this.treeTableValue);
+
+        this.http.post(`${environment.apiBase}/permissions/bulk`, payload).subscribe({
+            next: () => {
+                alert('Permissions saved successfully!');
+                this.router.navigate(['/rolepermission']);
+            },
+            error: (err) => {
+                alert('Failed to save permissions. Please try again.');
+                console.error(err);
+            }
         });
     }
 
     goBack() {
-        this.router.navigate(['/role']);
+        this.router.navigate(['/rolepermission']);
     }
-
-    // role: RolePermission = {
-    //     id: undefined,
-    //     name: '',
-    //     rolesStatus: '',
-    //     description: ''
-    // };
-    //
-    // private SetRolePermissionService = inject(SetRolePermissionService);
-    //
-    // constructor(
-    //     private router: Router,
-    //     private rolePermissionService: RolePermissionService,
-    //     private messageService: MessageService
-    // ) {
-    //     const navigation = this.router.getCurrentNavigation();
-    //     if (navigation?.extras.state?.['rolePermissions']) {
-    //         this.role = { ...navigation.extras.state['rolePermissions'] };
-    //     }
-    // }
-    //
-    // ngOnInit() {
-    //     this.SetRolePermissionService.getTreeTableNodes().then((nodes: any) => {
-    //         this.treeTableValue = nodes;
-    //     });
-    //
-    //     this.cols = [
-    //         { field: 'name', header: 'Name' },
-    //         { field: 'description', header: 'Description' },
-    //         { field: 'type', header: 'Type' }
-    //     ];
-    // }
-    //
-    // saveRolePermission() {
-    //     const selectedKeys = Object.keys(this.selectedTreeTableValue);
-    //
-    //     const payload = {
-    //         roleId: this.role.id,
-    //         permissionKeys: selectedKeys
-    //     };
-    //
-    //     // Replace with real API call
-    //     // this.rolePermissionService.saveRolePermissions(payload).subscribe({
-    //     //     next: () => {
-    //     //         this.messageService.show({
-    //     //             severity: 'success',
-    //     //             summary: 'Success',
-    //     //             detail: 'Permissions saved successfully.'
-    //     //         });
-    //     //         setTimeout(() => this.goBack(), 1000);
-    //     //     },
-    //     //     error: () => {
-    //     //         this.messageService.show({
-    //     //             severity: 'error',
-    //     //             summary: 'Error',
-    //     //             detail: 'Failed to save permissions.'
-    //     //         });
-    //     //     }
-    //     // });
-    //
-    //     // No API Call
-    //     this.rolePermissionService.saveRolePermissions(payload).subscribe({
-    //         next: () => {
-    //             this.messageService.show({
-    //                 severity: 'success',
-    //                 summary: 'Saved',
-    //                 detail: `Permissions saved locally for role "${this.role.name}".`
-    //             });
-    //             setTimeout(() => this.goBack(), 1000);
-    //         }
-    //     });
-    //
-    // }
-    //
-    // goBack() {
-    //     this.router.navigate(['/rolepermission']);
-    // }
 }
