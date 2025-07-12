@@ -4,12 +4,12 @@ import { TreeModule } from 'primeng/tree';
 import { FormsModule } from '@angular/forms';
 import { TreeTableModule } from 'primeng/treetable';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { NodeService } from '../service/node.service';
-import { RolePermission, RolePermissionService } from '../service/role.permission.service';
-import { MessageService } from '../message/message.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { SetRolePermissionService } from '../service/set.role.permission.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'app-set-role-permission',
@@ -62,84 +62,155 @@ import { SetRolePermissionService } from '../service/set.role.permission.service
     providers: [SetRolePermissionService]
 })
 export class SetRolePermission implements OnInit {
+    // treeTableValue: TreeNode[] = [];
+    // selectedTreeTableValue: { [key: string]: any } = {};
+    // cols: any[] = [];
+
+    role: any = {};
+    roleId: number = 0;
     treeTableValue: TreeNode[] = [];
-    selectedTreeTableValue: { [key: string]: any } = {};
+    selectedTreeTableValue: { [key: string]: boolean } = {};
     cols: any[] = [];
 
-    role: RolePermission = {
-        id: undefined,
-        name: '',
-        rolesStatus: '',
-        description: ''
-    };
+    constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {}
 
-    private SetRolePermissionService = inject(SetRolePermissionService);
-
-    constructor(
-        private router: Router,
-        private rolePermissionService: RolePermissionService,
-        private messageService: MessageService
-    ) {
-        const navigation = this.router.getCurrentNavigation();
-        if (navigation?.extras.state?.['rolePermissions']) {
-            this.role = { ...navigation.extras.state['rolePermissions'] };
-        }
-    }
-
-    ngOnInit() {
-        this.SetRolePermissionService.getTreeTableNodes().then((nodes: any) => {
-            this.treeTableValue = nodes;
-        });
-
+    ngOnInit(): void {
+        this.roleId = Number(this.route.snapshot.paramMap.get('id'));
+        this.loadRole();
+        this.loadTreeTable();
         this.cols = [
-            { field: 'name', header: 'Name' },
+            { field: 'name', header: 'Feature' },
             { field: 'description', header: 'Description' },
-            { field: 'type', header: 'Type' }
         ];
     }
 
-    saveRolePermission() {
-        const selectedKeys = Object.keys(this.selectedTreeTableValue);
-
-        const payload = {
-            roleId: this.role.id,
-            permissionKeys: selectedKeys
-        };
-
-        // Replace with real API call
-        // this.rolePermissionService.saveRolePermissions(payload).subscribe({
-        //     next: () => {
-        //         this.messageService.show({
-        //             severity: 'success',
-        //             summary: 'Success',
-        //             detail: 'Permissions saved successfully.'
-        //         });
-        //         setTimeout(() => this.goBack(), 1000);
-        //     },
-        //     error: () => {
-        //         this.messageService.show({
-        //             severity: 'error',
-        //             summary: 'Error',
-        //             detail: 'Failed to save permissions.'
-        //         });
-        //     }
-        // });
-
-        // No API Call
-        this.rolePermissionService.saveRolePermissions(payload).subscribe({
-            next: () => {
-                this.messageService.show({
-                    severity: 'success',
-                    summary: 'Saved',
-                    detail: `Permissions saved locally for role "${this.role.name}".`
-                });
-                setTimeout(() => this.goBack(), 1000);
-            }
+    loadRole() {
+        this.http.get(`${environment.apiBase}/roles/${this.roleId}`).subscribe(res => {
+            this.role = res;
         });
+    }
 
+    loadTreeTable() {
+        forkJoin({
+            features: this.http.get<TreeNode[]>(`${environment.apiBase}/features/treetable`),
+            selectedPermissions: this.http.get<any[]>(`${environment.apiBase}/permissions/role/${this.roleId}`)
+        }).subscribe(({ features, selectedPermissions }) => {
+            this.treeTableValue = features;
+            this.selectedTreeTableValue = {};
+            selectedPermissions.forEach(p => {
+                this.selectedTreeTableValue[p.feature.id] = true;
+            });
+        });
+    }
+
+
+saveRolePermission() {
+        const selectedIds = Object.keys(this.selectedTreeTableValue)
+            .filter(k => this.selectedTreeTableValue[k])
+            .map(k => parseInt(k, 10));
+
+        const payload = selectedIds.map(featureId => ({
+            roleId: this.roleId,
+            featureId: featureId,
+            isSearch: true,
+            isAdd: true,
+            isViewed: true,
+            isEdit: true,
+            isApprove: true,
+            isReject: true,
+            isDeleted: true,
+            isSave: true,
+            isClear: true,
+            isCancel: true,
+            isProcess: true,
+            isImport: true,
+            isExport: true
+        }));
+
+        this.http.post(`${environment.apiBase}/permissions/bulk`, payload).subscribe(() => {
+            alert('Permissions saved successfully!');
+            this.router.navigate(['/role']);
+        });
     }
 
     goBack() {
-        this.router.navigate(['/rolepermission']);
+        this.router.navigate(['/role']);
     }
+
+    // role: RolePermission = {
+    //     id: undefined,
+    //     name: '',
+    //     rolesStatus: '',
+    //     description: ''
+    // };
+    //
+    // private SetRolePermissionService = inject(SetRolePermissionService);
+    //
+    // constructor(
+    //     private router: Router,
+    //     private rolePermissionService: RolePermissionService,
+    //     private messageService: MessageService
+    // ) {
+    //     const navigation = this.router.getCurrentNavigation();
+    //     if (navigation?.extras.state?.['rolePermissions']) {
+    //         this.role = { ...navigation.extras.state['rolePermissions'] };
+    //     }
+    // }
+    //
+    // ngOnInit() {
+    //     this.SetRolePermissionService.getTreeTableNodes().then((nodes: any) => {
+    //         this.treeTableValue = nodes;
+    //     });
+    //
+    //     this.cols = [
+    //         { field: 'name', header: 'Name' },
+    //         { field: 'description', header: 'Description' },
+    //         { field: 'type', header: 'Type' }
+    //     ];
+    // }
+    //
+    // saveRolePermission() {
+    //     const selectedKeys = Object.keys(this.selectedTreeTableValue);
+    //
+    //     const payload = {
+    //         roleId: this.role.id,
+    //         permissionKeys: selectedKeys
+    //     };
+    //
+    //     // Replace with real API call
+    //     // this.rolePermissionService.saveRolePermissions(payload).subscribe({
+    //     //     next: () => {
+    //     //         this.messageService.show({
+    //     //             severity: 'success',
+    //     //             summary: 'Success',
+    //     //             detail: 'Permissions saved successfully.'
+    //     //         });
+    //     //         setTimeout(() => this.goBack(), 1000);
+    //     //     },
+    //     //     error: () => {
+    //     //         this.messageService.show({
+    //     //             severity: 'error',
+    //     //             summary: 'Error',
+    //     //             detail: 'Failed to save permissions.'
+    //     //         });
+    //     //     }
+    //     // });
+    //
+    //     // No API Call
+    //     this.rolePermissionService.saveRolePermissions(payload).subscribe({
+    //         next: () => {
+    //             this.messageService.show({
+    //                 severity: 'success',
+    //                 summary: 'Saved',
+    //                 detail: `Permissions saved locally for role "${this.role.name}".`
+    //             });
+    //             setTimeout(() => this.goBack(), 1000);
+    //         }
+    //     });
+    //
+    // }
+    //
+    // goBack() {
+    //     this.router.navigate(['/rolepermission']);
+    // }
 }
