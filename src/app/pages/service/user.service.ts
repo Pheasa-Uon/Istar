@@ -94,14 +94,14 @@ export class UserService {
     }
 
     getUserRoles(userId: number) {
-        return this.http.get<RolePermission[]>(`${environment.apiBase}/user-roles/${userId}`);
+        return this.http.get<RolePermission[]>(`${environment.apiBase}/userroles/${userId}`);
     }
     assignRole(data: { userId: number; roleId: number }) {
-        return this.http.post('/api/user-roles/assign', data);
+        return this.http.post('/api/userroles/assign', data);
     }
 
     removeRole(data: { userId: number; roleId: number }) {
-        return this.http.request('delete', '/api/user-roles/remove', { body: data });
+        return this.http.request('delete', '/api/userroles/remove', { body: data });
     }
 
 }
