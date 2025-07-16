@@ -50,7 +50,9 @@ import { environment } from '../../../environments/environment';
                             </ng-container>
 
                             <ng-container *ngIf="i > 1">
-                                <input type="checkbox" [(ngModel)]="rowData[col.field]" />
+                                <input type="checkbox"
+                                       [(ngModel)]="rowData[col.field]"
+                                       [disabled]="rowData[col.field + 'Disabled']" />
                             </ng-container>
                         </td>
                     </tr>
@@ -163,7 +165,22 @@ export class SetRolePermission implements OnInit {
                         isCancel: perm?.isCancel ?? false,
                         isProcess: perm?.isProcess ?? false,
                         isImport: perm?.isImport ?? false,
-                        isExport: perm?.isExport ?? false
+                        isExport: perm?.isExport ?? false,
+
+                        // disable flags
+                        isSearchDisabled: perm?.isSearchDisabled ?? false,
+                        isAddDisabled: perm?.isAddDisabled ?? false,
+                        isViewedDisabled: perm?.isViewedDisabled ?? false,
+                        isEditDisabled: perm?.isEditDisabled ?? false,
+                        isApproveDisabled: perm?.isApproveDisabled ?? false,
+                        isRejectDisabled: perm?.isRejectDisabled ?? false,
+                        isDeletedDisabled: perm?.isDeletedDisabled ?? false,
+                        isSaveDisabled: perm?.isSaveDisabled ?? false,
+                        isClearDisabled: perm?.isClearDisabled ?? false,
+                        isCancelDisabled: perm?.isCancelDisabled ?? false,
+                        isProcessDisabled: perm?.isProcessDisabled ?? false,
+                        isImportDisabled: perm?.isImportDisabled ?? false,
+                        isExportDisabled: perm?.isExportDisabled ?? false
                     },
                     children: node.children ? mapNode(node.children) : []
                 };
