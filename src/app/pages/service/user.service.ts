@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment'; // ✅ adjust based on path
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { RolePermission } from '../model/RolePermission';
 // import { User } from '../../models/user.model'; // or wherever your User model is
 
 export interface User {
@@ -90,6 +91,17 @@ export class UserService {
         const url = `${this.apiUrl}/search?keyword=${encodeURIComponent(keyword)}`;
 
         return this.http.get<User[]>(url, { headers });
+    }
+
+    getUserRoles(userId: number) {
+        return this.http.get<RolePermission[]>(`${environment.apiBase}/user-roles/${userId}`);
+    }
+    assignRole(data: { userId: number; roleId: number }) {
+        return this.http.post('/api/user-roles/assign', data);
+    }
+
+    removeRole(data: { userId: number; roleId: number }) {
+        return this.http.request('delete', '/api/user-roles/remove', { body: data });
     }
 
 }

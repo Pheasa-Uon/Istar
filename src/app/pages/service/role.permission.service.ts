@@ -11,6 +11,7 @@ export interface RolePermission {
     name?: string;
     rolesStatus?: string;
     description: string;
+    checked?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })

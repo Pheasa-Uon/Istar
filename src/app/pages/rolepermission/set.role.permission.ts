@@ -27,11 +27,9 @@ import { environment } from '../../../environments/environment';
             >
                 <ng-template pTemplate="header" let-columns>
                     <tr>
-                        <th
-                            *ngFor="let col of columns"
+                        <th *ngFor="let col of columns"
                             [style.minWidth.px]="col.minWidth"
-                            style="padding: 8px 25px; text-align: center; white-space: nowrap;"
-                        >
+                            style="padding: 8px 25px; text-align: center; white-space: nowrap;">
                             {{ col.header }}
                         </th>
                     </tr>
@@ -39,11 +37,9 @@ import { environment } from '../../../environments/environment';
 
                 <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
                     <tr [ttRow]="rowNode">
-                        <td
-                            *ngFor="let col of columns; let i = index"
+                        <td *ngFor="let col of columns; let i = index"
                             [style.minWidth.px]="col.minWidth"
-                            style="padding: 8px 25px; white-space: nowrap;"
-                        >
+                            style="padding: 8px 25px; white-space: nowrap;">
                             <ng-container *ngIf="i === 0">
                                 <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
                                 {{ rowData[col.field] }}
@@ -72,6 +68,7 @@ export class SetRolePermission implements OnInit {
     role: any = {};
     roleId = 0;
     treeTableValue: TreeNode[] = [];
+
     cols = [
         { field: 'name', header: 'Feature', minWidth: 200 },
         { field: '', header: '', minWidth: 200 },
@@ -90,7 +87,11 @@ export class SetRolePermission implements OnInit {
         { field: 'isExport', header: 'Export', minWidth: 25 }
     ];
 
-    constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {}
+    constructor(
+        private http: HttpClient,
+        private route: ActivatedRoute,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
         this.roleId = Number(this.route.snapshot.paramMap.get('id')) || 0;
@@ -111,11 +112,30 @@ export class SetRolePermission implements OnInit {
 
     loadTreeTable() {
         forkJoin({
-            features: this.http.get<TreeNode[]>(`${environment.apiBase}/features/treetable`),
+            features: this.http.get<any[]>(`${environment.apiBase}/features/treetable`),
             selectedPermissions: this.http.get<any[]>(`${environment.apiBase}/permissions/role/${this.roleId}`)
         }).subscribe(({ features, selectedPermissions }) => {
-            this.treeTableValue = this.mapPermissions(features, selectedPermissions);
+            const featureTree = this.convertToTreeNodes(features);
+            this.treeTableValue = this.mapPermissions(featureTree, selectedPermissions);
         });
+    }
+
+    private convertToTreeNodes(features: any[]): TreeNode[] {
+        return features.map((feature) => ({
+            key: feature.id?.toString(),
+            data: {
+                id: feature.id,
+                name: feature.name,
+                code: feature.code,
+                type: feature.type,
+                routePath: feature.routePath,
+                icon: feature.icon,
+                order: feature.order,
+                bStatus: feature.bStatus
+            },
+            children: feature.children ? this.convertToTreeNodes(feature.children) : [],
+            expanded: true
+        }));
     }
 
     mapPermissions(features: TreeNode[], selectedPermissions: any[]): TreeNode[] {
@@ -124,32 +144,30 @@ export class SetRolePermission implements OnInit {
             permissionMap.set(p.feature.id, p);
         });
 
-        const mapNode = (nodes: TreeNode[]): TreeNode[] => {
-            return nodes.map((node) => {
+        const mapNode = (nodes: TreeNode[]): TreeNode[] =>
+            nodes.map((node) => {
                 const perm = permissionMap.get(node.data.id);
-                const dataWithPermissions = {
-                    ...node.data,
-                    isSearch: perm?.isSearch ?? false,
-                    isAdd: perm?.isAdd ?? false,
-                    isViewed: perm?.isViewed ?? false,
-                    isEdit: perm?.isEdit ?? false,
-                    isApprove: perm?.isApprove ?? false,
-                    isReject: perm?.isReject ?? false,
-                    isDeleted: perm?.isDeleted ?? false,
-                    isSave: perm?.isSave ?? false,
-                    isClear: perm?.isClear ?? false,
-                    isCancel: perm?.isCancel ?? false,
-                    isProcess: perm?.isProcess ?? false,
-                    isImport: perm?.isImport ?? false,
-                    isExport: perm?.isExport ?? false
-                };
                 return {
                     ...node,
-                    data: dataWithPermissions,
+                    data: {
+                        ...node.data,
+                        isSearch: perm?.isSearch ?? false,
+                        isAdd: perm?.isAdd ?? false,
+                        isViewed: perm?.isViewed ?? false,
+                        isEdit: perm?.isEdit ?? false,
+                        isApprove: perm?.isApprove ?? false,
+                        isReject: perm?.isReject ?? false,
+                        isDeleted: perm?.isDeleted ?? false,
+                        isSave: perm?.isSave ?? false,
+                        isClear: perm?.isClear ?? false,
+                        isCancel: perm?.isCancel ?? false,
+                        isProcess: perm?.isProcess ?? false,
+                        isImport: perm?.isImport ?? false,
+                        isExport: perm?.isExport ?? false
+                    },
                     children: node.children ? mapNode(node.children) : []
                 };
             });
-        };
 
         return mapNode(features);
     }
@@ -159,8 +177,8 @@ export class SetRolePermission implements OnInit {
 
         const traverse = (nodes: TreeNode[]) => {
             for (const node of nodes) {
-                if (node.data && node.data.id) {
-                    const d = node.data;
+                const d = node.data;
+                if (d && d.id) {
                     payload.push({
                         roleId: this.roleId,
                         featureId: d.id,
