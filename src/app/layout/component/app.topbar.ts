@@ -35,7 +35,7 @@ import { LayoutService } from '../service/layout.service';
                     </g>
                 </svg>
                 -->
-                <span>Reports System</span>
+                <span>Istar Business Intelligence</span>
             </a>
         </div>
 

@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
     selector: 'app-footer',
     template: `<div class="layout-footer">
         © Copyright 2019-2025. All Rights Reserved. Power by
-        <a href="https://primeng.org" target="_blank" rel="noopener noreferrer" class="text-primary font-bold hover:underline">CIDI Core Banking</a>
+        <a href="https://primeng.org" target="_blank" rel="noopener noreferrer" class="text-primary font-bold hover:underline">Istar Business Intelligence Cambodia</a>
     </div>`
 })
 export class AppFooter {}
