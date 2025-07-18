@@ -70,6 +70,9 @@
                 },
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "proxyConfig": "proxy.conf.json"
+                    },
                     "configurations": {
                         "production": {
                             "buildTarget": "sakai-ng:build:production"
@@ -80,6 +83,7 @@
                     },
                     "defaultConfiguration": "development"
                 },
+
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
