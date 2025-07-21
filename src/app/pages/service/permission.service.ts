@@ -29,9 +29,9 @@ export class PermissionService {
         return this.permissions;
     }
 
-    hasPermission(featureKey: string, action: 'isAdd' | 'isEdit' | 'isDelete' | 'isSearch'): boolean {
+    hasPermission(featureKey: string, action: 'isAdd' |'isView' | 'isEdit' | 'isDelete' | 'isSearch'): boolean {
         const feature = this.permissions.find(f => f.featureKey === featureKey);
-        return feature ? !!feature[action] : false;
+        return feature ? !!feature[action] : true;
     }
 
     clearPermissions(): void {

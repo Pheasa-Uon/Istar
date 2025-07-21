@@ -107,15 +107,27 @@ export class SetRolePermission implements OnInit {
         }
     }
 
+    // loadTreeTable() {
+    //     forkJoin({
+    //         features: this.http.get<any[]>(`${environment.apiBase}/features/treetable`),
+    //         selectedPermissions: this.http.get<any[]>(`${environment.apiBase}/permissions/role/${this.roleId}`)
+    //     }).subscribe(({ features, selectedPermissions }) => {
+    //         const featureTree = this.convertToTreeNodes(features);
+    //         this.treeTableValue = this.mapPermissions(featureTree, selectedPermissions);
+    //     });
+    // }
+
     loadTreeTable() {
         forkJoin({
             features: this.http.get<any[]>(`${environment.apiBase}/features/treetable`),
             selectedPermissions: this.http.get<any[]>(`${environment.apiBase}/permissions/role/${this.roleId}`)
         }).subscribe(({ features, selectedPermissions }) => {
+            console.log('✅ Selected Permissions:', selectedPermissions);
             const featureTree = this.convertToTreeNodes(features);
             this.treeTableValue = this.mapPermissions(featureTree, selectedPermissions);
         });
     }
+
 
     private convertToTreeNodes(features: any[]): TreeNode[] {
         return features.map((feature) => {
@@ -138,9 +150,55 @@ export class SetRolePermission implements OnInit {
         });
     }
 
+    // mapPermissions(features: TreeNode[], selectedPermissions: any[]): TreeNode[] {
+    //     const permissionMap = new Map<number, any>();
+    //     selectedPermissions.forEach((p) => permissionMap.set(p.feature.id, p));
+    //
+    //     const mapNode = (nodes: TreeNode[]): TreeNode[] =>
+    //         nodes.map((node) => {
+    //             const perm = permissionMap.get(node.data.id);
+    //             const isLeaf = !node.children || node.children.length === 0;
+    //
+    //             const permissions = {
+    //                 isSearch: perm?.isSearch ?? false,
+    //                 isAdd: perm?.isAdd ?? false,
+    //                 isViewed: perm?.isViewed ?? false,
+    //                 isEdit: perm?.isEdit ?? false,
+    //                 isDeleted: perm?.isDeleted ?? false,
+    //                 isSave: perm?.isSave ?? false,
+    //                 isClear: perm?.isClear ?? false,
+    //                 isCancel: perm?.isCancel ?? false,
+    //
+    //                 isSearchDisabled: perm?.isSearchDisabled ?? !isLeaf,
+    //                 isAddDisabled: perm?.isAddDisabled ?? !isLeaf,
+    //                 isViewedDisabled: perm?.isViewedDisabled ?? !isLeaf,
+    //                 isEditDisabled: perm?.isEditDisabled ?? !isLeaf,
+    //                 isDeletedDisabled: perm?.isDeletedDisabled ?? !isLeaf,
+    //                 isSaveDisabled: perm?.isSaveDisabled ?? !isLeaf,
+    //                 isClearDisabled: perm?.isClearDisabled ?? !isLeaf,
+    //                 isCancelDisabled: perm?.isCancelDisabled ?? !isLeaf
+    //             };
+    //
+    //             return {
+    //                 ...node,
+    //                 data: {
+    //                     ...node.data,
+    //                     ...permissions
+    //                 },
+    //                 children: node.children ? mapNode(node.children) : []
+    //             };
+    //         });
+    //
+    //     return mapNode(features);
+    // }
+
     mapPermissions(features: TreeNode[], selectedPermissions: any[]): TreeNode[] {
         const permissionMap = new Map<number, any>();
-        selectedPermissions.forEach((p) => permissionMap.set(p.feature.id, p));
+        selectedPermissions.forEach((p) => {
+            if (p?.feature?.id) {
+                permissionMap.set(p.feature.id, p);
+            }
+        });
 
         const mapNode = (nodes: TreeNode[]): TreeNode[] =>
             nodes.map((node) => {
@@ -179,6 +237,7 @@ export class SetRolePermission implements OnInit {
 
         return mapNode(features);
     }
+
 
     saveRolePermission() {
         const payload: any[] = [];
