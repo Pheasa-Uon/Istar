@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { AppConfigurator } from './app.configurator';
 import { LayoutService } from '../service/layout.service';
+import { AuthService } from '../../pages/auth/auth.service';
 
 @Component({
     selector: 'app-topbar',
@@ -78,17 +79,32 @@ import { LayoutService } from '../service/layout.service';
                         <i class="pi pi-user"></i>
                         <span>Profile</span>
                     </button>
+
+                    <!-- Show name if visible -->
+                    <span *ngIf="showProfileName" class="profile-name">
+                      {{ profileName }}
+                    </span>
                 </div>
             </div>
+
         </div>
     </div>`
 })
 export class AppTopbar {
     items!: MenuItem[];
+    showProfileName = false;
+    profileName = '';
 
-    constructor(public layoutService: LayoutService) {}
+    constructor(
+        public layoutService: LayoutService,
+        private authService: AuthService
+    ) {}
 
     toggleDarkMode() {
         this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
+    }
+
+    toggleProfileName() {
+        this.showProfileName = !this.showProfileName;
     }
 }
