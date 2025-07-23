@@ -215,15 +215,22 @@ export class Users {
         this.showPassword = false;
         this.displayDetails = true;
 
-        this.userService.getUserRoles(user.id!).subscribe({
-            next: (userRoles) => {
-                this.roleList = this.roleList.map((role) => ({
-                    ...role,
-                    checked: userRoles.some((r) => r.id === role.id)
-                }));
+        this.rolePermissionService.getAllRolePermission().subscribe({
+            next: (allRoles) => {
+                this.userService.getUserRoles(user.id!).subscribe({
+                    next: (userRoles) => {
+                        this.roleList = allRoles.map((role) => ({
+                            ...role,
+                            checked: userRoles.some((r) => r.id === role.id)
+                        }));
+                    },
+                    error: () => {
+                        this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to load user roles' });
+                    }
+                });
             },
             error: () => {
-                this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to load user roles' });
+                this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to load all roles' });
             }
         });
     }
@@ -242,7 +249,7 @@ export class Users {
                     });
                 },
                 error: () => {
-                    role.checked = false;
+                    role.checked = true;
                     this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to assign role' });
                 }
             });
@@ -256,7 +263,7 @@ export class Users {
                     });
                 },
                 error: () => {
-                    role.checked = true;
+                    role.checked = false;
                     this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to remove role' });
                 }
             });
