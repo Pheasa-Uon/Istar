@@ -18,7 +18,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService } from '../message/message.service';
 import { UsersStatusService } from '../service/user.status.service';
 import { RolesStatusService } from '../service/roles.status.service';
-import { PermissionService } from '../service/permission.service';
 
 @Component({
     selector: 'app-users',
@@ -43,7 +42,7 @@ import { PermissionService } from '../service/permission.service';
 
             <p-fluid class="flex flex-col md:flex-row gap-2 justify-end items-center">
                 <div class="flex flex-wrap gap-2 md:w-1/2">
-                    <p-button label="Add New" icon="pi pi-user-plus" *ngIf="permissionService.hasPermission('userManagement', 'isAdd')"  (click)="addNewUser()"></p-button>
+                    <p-button label="Add New" icon="pi pi-user-plus" (click)="addNewUser()"></p-button>
                 </div>
                 <div class="md:w-1/2">
                     <div class="card flex flex-col gap-2">
@@ -55,7 +54,7 @@ import { PermissionService } from '../service/permission.service';
                 </div>
                 <div class="card flex flex-col gap-2">
                     <div class="flex flex-wrap gap-2 md:w-1/2 justify-end items-center">
-                        <p-button type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" *ngIf="permissionService.hasPermission('userManagement', 'isSearch')"  (click)="searchUsers()" />
+                        <p-button type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" (click)="searchUsers()" />
                     </div>
                 </div>
             </p-fluid>
@@ -82,9 +81,9 @@ import { PermissionService } from '../service/permission.service';
                         <td>{{ getUserStatus(user.userStatus) }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
-                                <p-button icon="pi pi-eye" text raised rounded *ngIf="permissionService.hasPermission('userManagement', 'isView')" (click)="viewUser(user)"></p-button>
-                                <p-button icon="pi pi-pencil" severity="info" text raised rounded *ngIf="permissionService.hasPermission('userManagement', 'isEdit')"  (click)="editUser(user)"></p-button>
-                                <p-button icon="pi pi-trash" severity="danger" text raised rounded *ngIf="permissionService.hasPermission('userManagement', 'isDelete')"  (click)="deleteUser(user)"></p-button>
+                                <p-button icon="pi pi-eye" text raised rounded (click)="viewUser(user)"></p-button>
+                                <p-button icon="pi pi-pencil" severity="info" text raised rounded (click)="editUser(user)"></p-button>
+                                <p-button icon="pi pi-trash" severity="danger" text raised rounded (click)="deleteUser(user)"></p-button>
                             </div>
                         </td>
                     </tr>
@@ -170,6 +169,157 @@ import { PermissionService } from '../service/permission.service';
         </p-dialog>
     `
 })
+// export class Users {
+//     usersList: User[] = [];
+//     roleList: RolePermission[] = [];
+//     loading = [false];
+//     searchText = '';
+//     displayDetails = false;
+//     selectedUser: User | null = null;
+//     showPassword = false;
+//     userStatusMap: Record<string, string> = {};
+//     roleStatusMap: Record<string, string> = {};
+//     keyword = '';
+//     users: User[] = [];
+//
+//     constructor(
+//         private userService: UserService,
+//         private rolePermissionService: RolePermissionService,
+//         private messageService: MessageService,
+//         private userStatusService: UsersStatusService,
+//         private rolesStatusService: RolesStatusService,
+//         private router: Router
+//     ) {}
+//
+//     ngOnInit() {
+//         forkJoin({
+//             userStatusMap: this.userStatusService.getUserStatus(),
+//             roleStatusMap: this.rolesStatusService.getRolesStatus(),
+//             users: this.userService.getAllUsers(),
+//             roles: this.rolePermissionService.getAllRolePermission()
+//         }).subscribe({
+//             next: ({ userStatusMap, roleStatusMap, users, roles }) => {
+//                 this.userStatusMap = userStatusMap;
+//                 this.roleStatusMap = roleStatusMap;
+//                 this.usersList = users;
+//                 this.roleList = roles;
+//             },
+//             error: (err) => {
+//                 this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to load data' });
+//             }
+//         });
+//
+//     }
+//
+//
+//     searchUsers() {
+//         this.loading[0] = true;
+//         this.userService.searchUsers(this.searchText).subscribe({
+//             next: (users) => {
+//                 this.usersList = users;
+//                 this.loading[0] = false;
+//             },
+//             error: () => {
+//                 this.loading[0] = false;
+//                 // show error message if needed
+//             }
+//         });
+//     }
+//
+//
+//     load(index: number) {
+//         this.loading[index] = true;
+//         setTimeout(() => (this.loading[index] = false), 1000);
+//     }
+//
+//     addNewUser() {
+//         this.router.navigate(['/adduser']);
+//     }
+//
+//     editUser(user: User) {
+//         this.router.navigate(['/edituser'], { state: { user } });
+//     }
+//
+//     // viewUser(user: User) {
+//     //     this.selectedUser = user;
+//     //     this.showPassword = false;
+//     //     this.displayDetails = true;
+//     // }
+//
+//     viewUser(user: User) {
+//         this.selectedUser = user;
+//         this.showPassword = false;
+//         this.displayDetails = true;
+//
+//         // this.rolePermissionService.getAllRolePermission().then((RolePermissions) => {
+//         //     this.roleList = RolePermissions;
+//         // });
+//         this.rolePermissionService.getAllRolePermission().subscribe({
+//             next: (rolePermissions) => {
+//                 this.roleList = rolePermissions;
+//             },
+//             error: (err) => {
+//                 console.error('Error fetching roles:', err);
+//             }
+//         });
+//
+//     }
+//
+//
+//     deleteUser(user: User) {
+//         if (confirm(`Are you sure you want to delete user "${user.name}"?`)) {
+//             this.userService.deleteUser(user.id!).subscribe({
+//                 next: () => {
+//                     // Update UI immediately
+//                     this.usersList = this.usersList.filter((u) => u.id !== user.id);
+//
+//                     this.messageService.show({
+//                         severity: 'success',
+//                         summary: 'Deleted',
+//                         detail: `User "${user.name}" deleted successfully.`
+//                     });
+//                 },
+//                 error: () => {
+//                     this.messageService.show({
+//                         severity: 'error',
+//                         summary: 'Error',
+//                         detail: 'Failed to delete user.'
+//                     });
+//                 }
+//             });
+//         }
+//     }
+//
+//     getUserStatus(code: string): string {
+//         return this.userStatusMap[code] || code;
+//     }
+//     getRolesStatus(code: string): string {
+//         return this.roleStatusMap[code] || code;
+//     }
+//
+//     resetPassword(user: User) {
+//         if (confirm(`Reset password for "${user.name}" to default?`)) {
+//             this.userService.resetPassword(user.id!).subscribe({
+//                 next: () => {
+//                     this.messageService.show({
+//                         severity: 'success',
+//                         summary: 'Password Reset',
+//                         detail: `Password for "${user.name}" reset to default.`
+//                     });
+//                 },
+//                 error: () => {
+//                     this.messageService.show({
+//                         severity: 'error',
+//                         summary: 'Error',
+//                         detail: 'Failed to reset password.'
+//                     });
+//                 }
+//             });
+//         }
+//     }
+//
+// }
+
 export class Users {
     usersList: User[] = [];
     roleList: RolePermission[] = [];
@@ -187,7 +337,6 @@ export class Users {
         private messageService: MessageService,
         private userStatusService: UsersStatusService,
         private rolesStatusService: RolesStatusService,
-        public permissionService: PermissionService,
         private router: Router
     ) {}
 
@@ -215,60 +364,59 @@ export class Users {
         this.showPassword = false;
         this.displayDetails = true;
 
-        this.userService.getUserRoles(user.id!).subscribe({
-            next: (userRoles) => {
-                this.roleList = this.roleList.map((role) => ({
-                    ...role,
-                    checked: userRoles.some((r) => r.id === role.id)
-                }));
+        this.rolePermissionService.getAllRolePermission().subscribe({
+            next: (allRoles) => {
+                this.userService.getUserRoles(user.id!).subscribe({
+                    next: (userRoles) => {
+                        this.roleList = allRoles.map((role) => ({
+                            ...role,
+                            checked: userRoles.some((r) => r.id === role.id)
+                        }));
+                    },
+                    error: () => {
+                        this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to load user roles' });
+                    }
+                });
             },
             error: () => {
-                this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to load user roles' });
+                this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to load all roles' });
             }
         });
     }
 
-    onRoleCheckboxChange(role: RolePermission) {
-        if (!this.selectedUser?.id || !role.id) return;
-        const payload = { userId: this.selectedUser.id, roleId: role.id };
+    toggleUserRole(userId: number, role: RolePermission) {
+        if (role.id == null) return;
+        const payload = { userId, roleId: role.id };
 
         if (role.checked) {
             this.userService.assignRole(payload).subscribe({
                 next: () => {
-                    this.messageService.show({
-                        severity: 'success',
-                        summary: 'Role Assigned',
-                        detail: `${role.name} assigned to ${this.selectedUser?.name}`
-                    });
+                    this.messageService.show({ severity: 'success', summary: 'Assigned', detail: `Role "${role.name}" assigned.` });
                 },
                 error: () => {
                     role.checked = false;
-                    this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to assign role' });
+                    this.messageService.show({ severity: 'error', summary: 'Error', detail: `Failed to assign role "${role.name}".` });
                 }
             });
         } else {
             this.userService.removeRole(payload).subscribe({
                 next: () => {
-                    this.messageService.show({
-                        severity: 'success',
-                        summary: 'Role Removed',
-                        detail: `${role.name} removed from ${this.selectedUser?.name}`
-                    });
+                    this.messageService.show({ severity: 'success', summary: 'Removed', detail: `Role "${role.name}" removed.` });
                 },
                 error: () => {
                     role.checked = true;
-                    this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to remove role' });
+                    this.messageService.show({ severity: 'error', summary: 'Error', detail: `Failed to remove role "${role.name}".` });
                 }
             });
         }
     }
 
     getUserStatus(code: string): string {
-        return this.userStatusMap?.[code] ?? 'Unknown';
+        return this.userStatusMap[code] || code;
     }
 
     getRolesStatus(code: string): string {
-        return this.roleStatusMap?.[code] ?? 'Unknown';
+        return this.roleStatusMap[code] || code;
     }
 
     addNewUser() {
@@ -305,4 +453,49 @@ export class Users {
             }
         });
     }
+
+    onRoleCheckboxChange(role: RolePermission) {
+        if (!this.selectedUser || !this.selectedUser.id || !role.id) return;
+
+        const request = { userId: this.selectedUser.id, roleId: role.id };
+
+        if (role.checked) {
+            this.userService.assignRole(request).subscribe({
+                next: () => {
+                    this.messageService.show({
+                        severity: 'success',
+                        summary: 'Role Assigned',
+                        detail: `${role.name} assigned to ${this.selectedUser?.name}`
+                    });
+                },
+                error: () => {
+                    role.checked = false;
+                    this.messageService.show({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: `Failed to assign role`
+                    });
+                }
+            });
+        } else {
+            this.userService.removeRole(request).subscribe({
+                next: () => {
+                    this.messageService.show({
+                        severity: 'success',
+                        summary: 'Role Removed',
+                        detail: `${role.name} removed from ${this.selectedUser?.name}`
+                    });
+                },
+                error: () => {
+                    role.checked = true;
+                    this.messageService.show({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: `Failed to remove role`
+                    });
+                }
+            });
+        }
+    }
+
 }
