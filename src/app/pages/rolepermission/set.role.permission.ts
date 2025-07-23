@@ -78,10 +78,15 @@ export class SetRolePermission implements OnInit {
         { field: 'isAdd', header: 'Add', minWidth: 25 },
         { field: 'isViewed', header: 'View', minWidth: 25 },
         { field: 'isEdit', header: 'Edit', minWidth: 25 },
+        //{ field: 'isApprove', header: 'Approve', minWidth: 25 },
+        //{ field: 'isReject', header: 'Reject', minWidth: 25 },
         { field: 'isDeleted', header: 'Delete', minWidth: 25 },
         { field: 'isSave', header: 'Save', minWidth: 25 },
         { field: 'isClear', header: 'Clear', minWidth: 25 },
         { field: 'isCancel', header: 'Cancel', minWidth: 25 },
+        //{ field: 'isProcess', header: 'Process', minWidth: 25 },
+        //{ field: 'isImport', header: 'Import', minWidth: 25 },
+        //{ field: 'isExport', header: 'Export', minWidth: 25 }
     ];
 
     constructor(
@@ -118,60 +123,64 @@ export class SetRolePermission implements OnInit {
     }
 
     private convertToTreeNodes(features: any[]): TreeNode[] {
-        return features.map((feature) => {
-            const children = feature.children ? this.convertToTreeNodes(feature.children) : [];
-            return {
-                key: feature.id?.toString(),
-                data: {
-                    id: feature.id,
-                    name: feature.name,
-                    code: feature.code,
-                    type: feature.type,
-                    routePath: feature.routePath,
-                    icon: feature.icon,
-                    order: feature.order,
-                    bStatus: feature.bStatus
-                },
-                children,
-                expanded: true
-            };
-        });
+        return features.map((feature) => ({
+            key: feature.id?.toString(),
+            data: {
+                id: feature.id,
+                name: feature.name,
+                code: feature.code,
+                type: feature.type,
+                routePath: feature.routePath,
+                icon: feature.icon,
+                order: feature.order,
+                bStatus: feature.bStatus
+            },
+            children: feature.children ? this.convertToTreeNodes(feature.children) : [],
+            expanded: true
+        }));
     }
 
     mapPermissions(features: TreeNode[], selectedPermissions: any[]): TreeNode[] {
         const permissionMap = new Map<number, any>();
-        selectedPermissions.forEach((p) => permissionMap.set(p.feature.id, p));
+        selectedPermissions.forEach((p) => {
+            permissionMap.set(p.feature.id, p);
+        });
 
         const mapNode = (nodes: TreeNode[]): TreeNode[] =>
             nodes.map((node) => {
                 const perm = permissionMap.get(node.data.id);
-                const isLeaf = !node.children || node.children.length === 0;
-
-                const permissions = {
-                    isSearch: perm?.isSearch ?? false,
-                    isAdd: perm?.isAdd ?? false,
-                    isViewed: perm?.isViewed ?? false,
-                    isEdit: perm?.isEdit ?? false,
-                    isDeleted: perm?.isDeleted ?? false,
-                    isSave: perm?.isSave ?? false,
-                    isClear: perm?.isClear ?? false,
-                    isCancel: perm?.isCancel ?? false,
-
-                    isSearchDisabled: perm?.isSearchDisabled ?? !isLeaf,
-                    isAddDisabled: perm?.isAddDisabled ?? !isLeaf,
-                    isViewedDisabled: perm?.isViewedDisabled ?? !isLeaf,
-                    isEditDisabled: perm?.isEditDisabled ?? !isLeaf,
-                    isDeletedDisabled: perm?.isDeletedDisabled ?? !isLeaf,
-                    isSaveDisabled: perm?.isSaveDisabled ?? !isLeaf,
-                    isClearDisabled: perm?.isClearDisabled ?? !isLeaf,
-                    isCancelDisabled: perm?.isCancelDisabled ?? !isLeaf
-                };
-
                 return {
                     ...node,
                     data: {
                         ...node.data,
-                        ...permissions
+                        isSearch: perm?.isSearch ?? false,
+                        isAdd: perm?.isAdd ?? false,
+                        isViewed: perm?.isViewed ?? false,
+                        isEdit: perm?.isEdit ?? false,
+                        isApprove: perm?.isApprove ?? false,
+                        isReject: perm?.isReject ?? false,
+                        isDeleted: perm?.isDeleted ?? false,
+                        isSave: perm?.isSave ?? false,
+                        isClear: perm?.isClear ?? false,
+                        isCancel: perm?.isCancel ?? false,
+                        isProcess: perm?.isProcess ?? false,
+                        isImport: perm?.isImport ?? false,
+                        isExport: perm?.isExport ?? false,
+
+                        // disable flags
+                        isSearchDisabled: perm?.isSearchDisabled ?? false,
+                        isAddDisabled: perm?.isAddDisabled ?? false,
+                        isViewedDisabled: perm?.isViewedDisabled ?? false,
+                        isEditDisabled: perm?.isEditDisabled ?? false,
+                        isApproveDisabled: perm?.isApproveDisabled ?? false,
+                        isRejectDisabled: perm?.isRejectDisabled ?? false,
+                        isDeletedDisabled: perm?.isDeletedDisabled ?? false,
+                        isSaveDisabled: perm?.isSaveDisabled ?? false,
+                        isClearDisabled: perm?.isClearDisabled ?? false,
+                        isCancelDisabled: perm?.isCancelDisabled ?? false,
+                        isProcessDisabled: perm?.isProcessDisabled ?? false,
+                        isImportDisabled: perm?.isImportDisabled ?? false,
+                        isExportDisabled: perm?.isExportDisabled ?? false
                     },
                     children: node.children ? mapNode(node.children) : []
                 };
@@ -194,13 +203,20 @@ export class SetRolePermission implements OnInit {
                         isAdd: !!d.isAdd,
                         isViewed: !!d.isViewed,
                         isEdit: !!d.isEdit,
+                        isApprove: !!d.isApprove,
+                        isReject: !!d.isReject,
                         isDeleted: !!d.isDeleted,
                         isSave: !!d.isSave,
                         isClear: !!d.isClear,
-                        isCancel: !!d.isCancel
+                        isCancel: !!d.isCancel,
+                        isProcess: !!d.isProcess,
+                        isImport: !!d.isImport,
+                        isExport: !!d.isExport
                     });
                 }
-                if (node.children) traverse(node.children);
+                if (node.children) {
+                    traverse(node.children);
+                }
             }
         };
 

@@ -159,7 +159,7 @@ import { RolesStatusService } from '../service/roles.status.service';
 
                             </div>
                         </td>
-                        <td>{{ rolePermissions.rolesCode }}</td>
+                        <td>{{ rolePermissions.id }}</td>
                         <td>{{ rolePermissions.name }}</td>
                         <td>{{ getRolesStatus(rolePermissions.rolesStatus || '') }}</td>
                         <td>{{ rolePermissions.description }}</td>
