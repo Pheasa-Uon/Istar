@@ -242,7 +242,7 @@ export class Users {
                     });
                 },
                 error: () => {
-                    role.checked = false;
+                    role.checked = true;
                     this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to assign role' });
                 }
             });
@@ -256,7 +256,7 @@ export class Users {
                     });
                 },
                 error: () => {
-                    role.checked = true;
+                    role.checked = false;
                     this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to remove role' });
                 }
             });
