@@ -78,15 +78,15 @@ export class SetRolePermission implements OnInit {
         { field: 'isAdd', header: 'Add', minWidth: 25 },
         { field: 'isViewed', header: 'View', minWidth: 25 },
         { field: 'isEdit', header: 'Edit', minWidth: 25 },
-        //{ field: 'isApprove', header: 'Approve', minWidth: 25 },
-        //{ field: 'isReject', header: 'Reject', minWidth: 25 },
+        { field: 'isApprove', header: 'Approve', minWidth: 25 },
+        { field: 'isReject', header: 'Reject', minWidth: 25 },
         { field: 'isDeleted', header: 'Delete', minWidth: 25 },
         { field: 'isSave', header: 'Save', minWidth: 25 },
         { field: 'isClear', header: 'Clear', minWidth: 25 },
         { field: 'isCancel', header: 'Cancel', minWidth: 25 },
-        //{ field: 'isProcess', header: 'Process', minWidth: 25 },
-        //{ field: 'isImport', header: 'Import', minWidth: 25 },
-        //{ field: 'isExport', header: 'Export', minWidth: 25 }
+        { field: 'isProcess', header: 'Process', minWidth: 25 },
+        { field: 'isImport', header: 'Import', minWidth: 25 },
+        { field: 'isExport', header: 'Export', minWidth: 25 }
     ];
 
     constructor(
