@@ -455,47 +455,34 @@ export class Users {
     }
 
     onRoleCheckboxChange(role: RolePermission) {
-        if (!this.selectedUser || !this.selectedUser.id || !role.id) return;
+        if (!this.selectedUser?.id || !role.id) return;
 
         const request = { userId: this.selectedUser.id, roleId: role.id };
 
         if (role.checked) {
             this.userService.assignRole(request).subscribe({
-                next: () => {
-                    this.messageService.show({
-                        severity: 'success',
-                        summary: 'Role Assigned',
-                        detail: `${role.name} assigned to ${this.selectedUser?.name}`
-                    });
-                },
+                next: () => this.messageService.show({
+                    severity: 'success',
+                    summary: 'Role Assigned',
+                    detail: `${role.name} assigned to ${this.selectedUser?.name || this.selectedUser?.username || 'user'}`
+                }),
                 error: () => {
                     role.checked = false;
-                    this.messageService.show({
-                        severity: 'error',
-                        summary: 'Error',
-                        detail: `Failed to assign role`
-                    });
+                    this.messageService.show({ severity: 'error', summary: 'Error', detail: `Failed to assign role` });
                 }
             });
         } else {
             this.userService.removeRole(request).subscribe({
-                next: () => {
-                    this.messageService.show({
-                        severity: 'success',
-                        summary: 'Role Removed',
-                        detail: `${role.name} removed from ${this.selectedUser?.name}`
-                    });
-                },
+                next: () => this.messageService.show({
+                    severity: 'success',
+                    summary: 'Role Removed',
+                    detail: `${role.name} removed from ${this.selectedUser?.name || this.selectedUser?.username || 'user'}`
+                }),
                 error: () => {
                     role.checked = true;
-                    this.messageService.show({
-                        severity: 'error',
-                        summary: 'Error',
-                        detail: `Failed to remove role`
-                    });
+                    this.messageService.show({ severity: 'error', summary: 'Error', detail: `Failed to remove role` });
                 }
             });
         }
     }
-
 }

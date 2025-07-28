@@ -25,7 +25,8 @@ export interface User {
 })
 export class UserService {
 
-    private apiUrl = environment.apiBase + environment.apiEndpoints.users.usersprofile;
+    private apiUrl = environment.apiBase + environment.apiEndpoints;
+    // private apiUrlRole = environment.apiBase + environment.apiEndpoints;
 
     constructor(private http: HttpClient) {}
 
@@ -49,11 +50,11 @@ export class UserService {
     }
 
     updateUser(user: Partial<User> & { id: number }): Observable<User> {
-        return this.http.put<User>(`${this.apiUrl}/edit/${user.id}`, user);
+        return this.http.put<User>(`${this.apiUrl}/users/edit/${user.id}`, user);
     }
 
     deleteUser(userId: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/${userId}`);
+        return this.http.delete<void>(`${this.apiUrl}/users/${userId}`);
     }
 
     // getUserById(userId: number): Observable<User> {
@@ -61,7 +62,7 @@ export class UserService {
     // }
 
     getUserById(userId: number): Observable<User> {
-        return this.http.get<User>(`${this.apiUrl}/${userId}`).pipe(
+        return this.http.get<User>(`${this.apiUrl}/users/${userId}`).pipe(
             map(user => ({
                 ...user,
                 lastLoginAt: user.lastLoginAt ? new Date(user.lastLoginAt) : undefined
@@ -70,7 +71,7 @@ export class UserService {
     }
 
     resetPassword(userId: number): Observable<User> {
-        return this.http.put<User>(`${this.apiUrl}/${userId}/reset-password`, {});
+        return this.http.put<User>(`${this.apiUrl}/users/${userId}/reset-password`, {});
     }
 
     // searchUsers(keyword?: string): Observable<User[]> {
@@ -93,15 +94,28 @@ export class UserService {
         return this.http.get<User[]>(url, { headers });
     }
 
-    getUserRoles(userId: number) {
-        return this.http.get<RolePermission[]>(`${environment.apiBase}/userroles/${userId}`);
-    }
+    // getUserRoles(userId: number) {
+    //     return this.http.get<RolePermission[]>(`${environment.apiBase}/userroles/${userId}`);
+    // }
+    // assignRole(data: { userId: number; roleId: number }) {
+    //     return this.http.post('/api/userroles/assign', data);
+    // }
+    //
+    // removeRole(data: { userId: number; roleId: number }) {
+    //     return this.http.request('delete', '/api/userroles/remove', { body: data });
+    // }
+
     assignRole(data: { userId: number; roleId: number }) {
-        return this.http.post('/api/userroles/assign', data);
+        return this.http.post(`${this.apiUrl}/userroles/assign`, data);
     }
 
     removeRole(data: { userId: number; roleId: number }) {
-        return this.http.request('delete', '/api/userroles/remove', { body: data });
+        return this.http.post(`${this.apiUrl}/userroles/remove`, data);
     }
+
+    getUserRoles(userId: number): Observable<RolePermission[]> {
+        return this.http.get<RolePermission[]>(`${this.apiUrl}/userroles/${userId}`);
+    }
+
 
 }
