@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-//import { DropdownModule } from 'primeng/dropdown';
+import { DropdownModule } from 'primeng/dropdown';
 import { TextareaModule } from 'primeng/textarea';
 import { RolePermissionService, RolePermission } from '../service/role.permission.service';
 import { MessageService } from '../message/message.service';
@@ -17,7 +17,7 @@ import { Select } from 'primeng/select';
 @Component({
     selector: 'app-add-role-permission',
     standalone: true,
-    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, TextareaModule, Message, ButtonGroup, Fluid, Select],
+    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, DropdownModule, TextareaModule, Message, ButtonGroup, Fluid, Select],
     template: `
         <form #roleForm="ngForm" (ngSubmit)="saveRolePermission()" novalidate>
         <div class="fixed top-3/1 right-4 z-50 w-[500px]">
