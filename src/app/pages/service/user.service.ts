@@ -19,23 +19,16 @@ export interface User {
 
 }
 
-
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class UserService {
-
-    private apiUrl = environment.apiBase + environment.apiEndpoints;
-    // private apiUrlRole = environment.apiBase + environment.apiEndpoints;
+    private usersUrl = environment.apiBase + environment.apiEndpoints.users.usersprofile;
+    private userStatusesUrl = environment.apiBase + environment.apiEndpoints.users.userstatuses;
+    private roleUrl = environment.apiBase + environment.apiEndpoints.userroles;
 
     constructor(private http: HttpClient) {}
 
-    // getAllUsers(): Observable<User[]> {
-    //     return this.http.get<User[]>(this.apiUrl);
-    // }
-
     getAllUsers(): Observable<User[]> {
-        return this.http.get<User[]>(this.apiUrl).pipe(
+        return this.http.get<User[]>(this.usersUrl).pipe(
             map(users =>
                 users.map(user => ({
                     ...user,
@@ -45,24 +38,8 @@ export class UserService {
         );
     }
 
-    addUser(user: User): Observable<User> {
-        return this.http.post<User>(this.apiUrl, user);
-    }
-
-    updateUser(user: Partial<User> & { id: number }): Observable<User> {
-        return this.http.put<User>(`${this.apiUrl}/users/edit/${user.id}`, user);
-    }
-
-    deleteUser(userId: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/users/${userId}`);
-    }
-
-    // getUserById(userId: number): Observable<User> {
-    //     return this.http.get<User>(`${this.apiUrl}/${userId}`);
-    // }
-
     getUserById(userId: number): Observable<User> {
-        return this.http.get<User>(`${this.apiUrl}/users/${userId}`).pipe(
+        return this.http.get<User>(`${this.usersUrl}/${userId}`).pipe(
             map(user => ({
                 ...user,
                 lastLoginAt: user.lastLoginAt ? new Date(user.lastLoginAt) : undefined
@@ -70,52 +47,43 @@ export class UserService {
         );
     }
 
-    resetPassword(userId: number): Observable<User> {
-        return this.http.put<User>(`${this.apiUrl}/users/${userId}/reset-password`, {});
+    addUser(user: User): Observable<User> {
+        return this.http.post<User>(this.usersUrl, user);
     }
 
-    // searchUsers(keyword?: string): Observable<User[]> {
-    //     let params = new HttpParams();
-    //     if (keyword) {
-    //         params = params.set('keyword', keyword);
-    //     }
-    //     return this.http.get<User[]>(`${this.apiUrl}/search`, { params });
-    // }
+    updateUser(user: Partial<User> & { id: number }): Observable<User> {
+        return this.http.put<User>(`${this.usersUrl}/edit/${user.id}`, user);
+    }
+
+    deleteUser(userId: number): Observable<void> {
+        return this.http.delete<void>(`${this.usersUrl}/${userId}`);
+    }
+
+    resetPassword(userId: number): Observable<User> {
+        return this.http.put<User>(`${this.usersUrl}/${userId}/reset-password`, {});
+    }
 
     searchUsers(keyword: string): Observable<User[]> {
-        const token = localStorage.getItem('authToken'); // or wherever you store your token
+        const token = localStorage.getItem('authToken');
 
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${token || ''}`
         });
 
-        const url = `${this.apiUrl}/search?keyword=${encodeURIComponent(keyword)}`;
+        const url = `${this.usersUrl}/search?keyword=${encodeURIComponent(keyword)}`;
 
         return this.http.get<User[]>(url, { headers });
     }
 
-    // getUserRoles(userId: number) {
-    //     return this.http.get<RolePermission[]>(`${environment.apiBase}/userroles/${userId}`);
-    // }
-    // assignRole(data: { userId: number; roleId: number }) {
-    //     return this.http.post('/api/userroles/assign', data);
-    // }
-    //
-    // removeRole(data: { userId: number; roleId: number }) {
-    //     return this.http.request('delete', '/api/userroles/remove', { body: data });
-    // }
-
     assignRole(data: { userId: number; roleId: number }) {
-        return this.http.post(`${this.apiUrl}/userroles/assign`, data);
+        return this.http.post(`${this.roleUrl}/assign`, data);
     }
 
     removeRole(data: { userId: number; roleId: number }) {
-        return this.http.post(`${this.apiUrl}/userroles/remove`, data);
+        return this.http.post(`${this.roleUrl}/remove`, data);
     }
 
     getUserRoles(userId: number): Observable<RolePermission[]> {
-        return this.http.get<RolePermission[]>(`${this.apiUrl}/userroles/${userId}`);
+        return this.http.get<RolePermission[]>(`${this.roleUrl}/${userId}`);
     }
-
-
 }

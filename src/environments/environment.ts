@@ -12,6 +12,8 @@ export const environment = {
             rolesstatus: '/roles/status',
         },
         permissions: '/permissions',
+        userroles: '/userroles',
+
 
 
     }

@@ -131,7 +131,7 @@ import { RolesStatusService } from '../service/roles.status.service';
                 </div>
             </div>
             <p-divider></p-divider>
-            <p-table [value]="roleList" [scrollable]="true" scrollHeight="400px" class="mt-4">
+            <p-table [value]="roleList" [scrollable]="true" scrollHeight="500px" class="mt-4">
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="min-width:50px"></th>
@@ -467,7 +467,7 @@ export class Users {
                     detail: `${role.name} assigned to ${this.selectedUser?.name || this.selectedUser?.username || 'user'}`
                 }),
                 error: () => {
-                    role.checked = false;
+                    role.checked = true;
                     this.messageService.show({ severity: 'error', summary: 'Error', detail: `Failed to assign role` });
                 }
             });
@@ -479,7 +479,7 @@ export class Users {
                     detail: `${role.name} removed from ${this.selectedUser?.name || this.selectedUser?.username || 'user'}`
                 }),
                 error: () => {
-                    role.checked = true;
+                    role.checked = false;
                     this.messageService.show({ severity: 'error', summary: 'Error', detail: `Failed to remove role` });
                 }
             });
