@@ -20,6 +20,7 @@ interface DecodedToken {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
+
     private apiUrl = environment.apiBase + environment.apiEndpoints.auth;
 
     constructor(private http: HttpClient, private router: Router) {}
