@@ -142,62 +142,67 @@ export class SetRolePermission implements OnInit {
 
     mapPermissions(features: TreeNode[], selectedPermissions: any[]): TreeNode[] {
         const permissionMap = new Map<number, any>();
-        // Add null check when creating the permission map
+
+        // Correct mapping using `featureId`
         selectedPermissions.forEach((p) => {
-            if (p && p.feature && p.feature.id) {
-                permissionMap.set(p.feature.id, p);
+            if (p && p.featureId) {
+                permissionMap.set(p.featureId, p);
             }
         });
 
         const mapNode = (nodes: TreeNode[]): TreeNode[] =>
             nodes.map((node) => {
-            // Add null check when accessing node data
-            if (!node || !node.data || !node.data.id) {
-                return node;
-            }
+                if (!node || !node.data || !node.data.id) {
+                    return node;
+                }
 
-            const perm = permissionMap.get(node.data.id);
-            return {
-                ...node,
-                data: {
-                    ...node.data,
-                    isSearch: perm?.isSearch ?? false,
-                    isAdd: perm?.isAdd ?? false,
-                    isViewed: perm?.isViewed ?? false,
-                    isEdit: perm?.isEdit ?? false,
-                    isApprove: perm?.isApprove ?? false,
-                    isReject: perm?.isReject ?? false,
-                    isDeleted: perm?.isDeleted ?? false,
-                    isSave: perm?.isSave ?? false,
-                    isClear: perm?.isClear ?? false,
-                    isCancel: perm?.isCancel ?? false,
-                    isProcess: perm?.isProcess ?? false,
-                    isImport: perm?.isImport ?? false,
-                    isExport: perm?.isExport ?? false,
+                const perm = permissionMap.get(node.data.id);
 
-                    // disable flags
-                    isSearchDisabled: perm?.isSearchDisabled ?? false,
-                    isAddDisabled: perm?.isAddDisabled ?? false,
-                    isViewedDisabled: perm?.isViewedDisabled ?? false,
-                    isEditDisabled: perm?.isEditDisabled ?? false,
-                    isApproveDisabled: perm?.isApproveDisabled ?? false,
-                    isRejectDisabled: perm?.isRejectDisabled ?? false,
-                    isDeletedDisabled: perm?.isDeletedDisabled ?? false,
-                    isSaveDisabled: perm?.isSaveDisabled ?? false,
-                    isClearDisabled: perm?.isClearDisabled ?? false,
-                    isCancelDisabled: perm?.isCancelDisabled ?? false,
-                    isProcessDisabled: perm?.isProcessDisabled ?? false,
-                    isImportDisabled: perm?.isImportDisabled ?? false,
-                    isExportDisabled: perm?.isExportDisabled ?? false
-                },
-                children: node.children ? mapNode(node.children) : []
-            };
-        });
+                return {
+                    ...node,
+                    data: {
+                        ...node.data,
+                        isSearch: perm?.isSearch ?? false,
+                        isAdd: perm?.isAdd ?? false,
+                        isViewed: perm?.isViewed ?? false,
+                        isEdit: perm?.isEdit ?? false,
+                        isApprove: perm?.isApprove ?? false,
+                        isReject: perm?.isReject ?? false,
+                        isDeleted: perm?.isDeleted ?? false,
+                        isSave: perm?.isSave ?? false,
+                        isClear: perm?.isClear ?? false,
+                        isCancel: perm?.isCancel ?? false,
+                        isProcess: perm?.isProcess ?? false,
+                        isImport: perm?.isImport ?? false,
+                        isExport: perm?.isExport ?? false,
 
-    return mapNode(features);
-}
+                        // Disable flags
+                        isSearchDisabled: perm?.isSearchDisabled ?? false,
+                        isAddDisabled: perm?.isAddDisabled ?? false,
+                        isViewedDisabled: perm?.isViewedDisabled ?? false,
+                        isEditDisabled: perm?.isEditDisabled ?? false,
+                        isApproveDisabled: perm?.isApproveDisabled ?? false,
+                        isRejectDisabled: perm?.isRejectDisabled ?? false,
+                        isDeletedDisabled: perm?.isDeletedDisabled ?? false,
+                        isSaveDisabled: perm?.isSaveDisabled ?? false,
+                        isClearDisabled: perm?.isClearDisabled ?? false,
+                        isCancelDisabled: perm?.isCancelDisabled ?? false,
+                        isProcessDisabled: perm?.isProcessDisabled ?? false,
+                        isImportDisabled: perm?.isImportDisabled ?? false,
+                        isExportDisabled: perm?.isExportDisabled ?? false,
 
-saveRolePermission() {
+                        // Optional: show feature code from permissions if needed
+                        code: perm?.featureCode ?? node.data.code
+                    },
+                    children: node.children ? mapNode(node.children) : []
+                };
+            });
+
+        return mapNode(features);
+    }
+
+
+    saveRolePermission() {
     const payload: any[] = [];
 
     console.log('Starting saveRolePermission...');
