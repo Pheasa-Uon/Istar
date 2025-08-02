@@ -3,6 +3,7 @@ export interface RoleFeaturePermission {
     id?: number;
     roleId: number;
     featureId: number;
+    featureCode: string;
     isSearch?: boolean;
     isAdd?: boolean;
     isViewed?: boolean;

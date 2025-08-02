@@ -1,24 +1,31 @@
-// permission.service.ts
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { RoleFeaturePermission } from '../model/permission.model';
+import { Observable } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+export interface UserFeaturePermission {
+    code: string;
+    isSearch: boolean;
+    isAdd: boolean;
+    isViewed: boolean;
+    isEdit: boolean;
+    isApprove: boolean;
+    isReject: boolean;
+    isDeleted: boolean;
+    isSave: boolean;
+    isClear: boolean;
+    isCancel: boolean;
+    isProcess: boolean;
+    isImport: boolean;
+    isExport: boolean;
+}
+
+@Injectable({
+    providedIn: 'root',
+})
 export class PermissionService {
-    private api = environment.apiBase + '/permissions';
-
     constructor(private http: HttpClient) {}
 
-    getPermissionsByUser(token: string | null): Observable<RoleFeaturePermission[]> {
-        if (!token) {
-            return of([]); // Return empty array if no token
-        }
-        return this.http.get<RoleFeaturePermission[]>(`${this.api}/user/permissions`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+    getPermissionsByUser(userId: number): Observable<UserFeaturePermission[]> {
+        return this.http.get<UserFeaturePermission[]>(`/api/user-permissions/me/${userId}`);
     }
 }
