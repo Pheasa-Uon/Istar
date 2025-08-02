@@ -142,97 +142,124 @@ export class SetRolePermission implements OnInit {
 
     mapPermissions(features: TreeNode[], selectedPermissions: any[]): TreeNode[] {
         const permissionMap = new Map<number, any>();
+        // Add null check when creating the permission map
         selectedPermissions.forEach((p) => {
-            permissionMap.set(p.feature.id, p);
+            if (p && p.feature && p.feature.id) {
+                permissionMap.set(p.feature.id, p);
+            }
         });
 
         const mapNode = (nodes: TreeNode[]): TreeNode[] =>
             nodes.map((node) => {
-                const perm = permissionMap.get(node.data.id);
-                return {
-                    ...node,
-                    data: {
-                        ...node.data,
-                        isSearch: perm?.isSearch ?? false,
-                        isAdd: perm?.isAdd ?? false,
-                        isViewed: perm?.isViewed ?? false,
-                        isEdit: perm?.isEdit ?? false,
-                        isApprove: perm?.isApprove ?? false,
-                        isReject: perm?.isReject ?? false,
-                        isDeleted: perm?.isDeleted ?? false,
-                        isSave: perm?.isSave ?? false,
-                        isClear: perm?.isClear ?? false,
-                        isCancel: perm?.isCancel ?? false,
-                        isProcess: perm?.isProcess ?? false,
-                        isImport: perm?.isImport ?? false,
-                        isExport: perm?.isExport ?? false,
-
-                        // disable flags
-                        isSearchDisabled: perm?.isSearchDisabled ?? false,
-                        isAddDisabled: perm?.isAddDisabled ?? false,
-                        isViewedDisabled: perm?.isViewedDisabled ?? false,
-                        isEditDisabled: perm?.isEditDisabled ?? false,
-                        isApproveDisabled: perm?.isApproveDisabled ?? false,
-                        isRejectDisabled: perm?.isRejectDisabled ?? false,
-                        isDeletedDisabled: perm?.isDeletedDisabled ?? false,
-                        isSaveDisabled: perm?.isSaveDisabled ?? false,
-                        isClearDisabled: perm?.isClearDisabled ?? false,
-                        isCancelDisabled: perm?.isCancelDisabled ?? false,
-                        isProcessDisabled: perm?.isProcessDisabled ?? false,
-                        isImportDisabled: perm?.isImportDisabled ?? false,
-                        isExportDisabled: perm?.isExportDisabled ?? false
-                    },
-                    children: node.children ? mapNode(node.children) : []
-                };
-            });
-
-        return mapNode(features);
-    }
-
-    saveRolePermission() {
-        const payload: any[] = [];
-
-        const traverse = (nodes: TreeNode[]) => {
-            for (const node of nodes) {
-                const d = node.data;
-                if (d && d.id) {
-                    payload.push({
-                        roleId: this.roleId,
-                        featureId: d.id,
-                        isSearch: !!d.isSearch,
-                        isAdd: !!d.isAdd,
-                        isViewed: !!d.isViewed,
-                        isEdit: !!d.isEdit,
-                        isApprove: !!d.isApprove,
-                        isReject: !!d.isReject,
-                        isDeleted: !!d.isDeleted,
-                        isSave: !!d.isSave,
-                        isClear: !!d.isClear,
-                        isCancel: !!d.isCancel,
-                        isProcess: !!d.isProcess,
-                        isImport: !!d.isImport,
-                        isExport: !!d.isExport
-                    });
-                }
-                if (node.children) {
-                    traverse(node.children);
-                }
+            // Add null check when accessing node data
+            if (!node || !node.data || !node.data.id) {
+                return node;
             }
-        };
 
-        traverse(this.treeTableValue);
+            const perm = permissionMap.get(node.data.id);
+            return {
+                ...node,
+                data: {
+                    ...node.data,
+                    isSearch: perm?.isSearch ?? false,
+                    isAdd: perm?.isAdd ?? false,
+                    isViewed: perm?.isViewed ?? false,
+                    isEdit: perm?.isEdit ?? false,
+                    isApprove: perm?.isApprove ?? false,
+                    isReject: perm?.isReject ?? false,
+                    isDeleted: perm?.isDeleted ?? false,
+                    isSave: perm?.isSave ?? false,
+                    isClear: perm?.isClear ?? false,
+                    isCancel: perm?.isCancel ?? false,
+                    isProcess: perm?.isProcess ?? false,
+                    isImport: perm?.isImport ?? false,
+                    isExport: perm?.isExport ?? false,
 
-        this.http.post(`${environment.apiBase}/permissions/bulk`, payload).subscribe({
-            next: () => {
-                alert('Permissions saved successfully!');
-                this.router.navigate(['/rolepermission']);
-            },
-            error: (err) => {
-                alert('Failed to save permissions. Please try again.');
-                console.error(err);
-            }
+                    // disable flags
+                    isSearchDisabled: perm?.isSearchDisabled ?? false,
+                    isAddDisabled: perm?.isAddDisabled ?? false,
+                    isViewedDisabled: perm?.isViewedDisabled ?? false,
+                    isEditDisabled: perm?.isEditDisabled ?? false,
+                    isApproveDisabled: perm?.isApproveDisabled ?? false,
+                    isRejectDisabled: perm?.isRejectDisabled ?? false,
+                    isDeletedDisabled: perm?.isDeletedDisabled ?? false,
+                    isSaveDisabled: perm?.isSaveDisabled ?? false,
+                    isClearDisabled: perm?.isClearDisabled ?? false,
+                    isCancelDisabled: perm?.isCancelDisabled ?? false,
+                    isProcessDisabled: perm?.isProcessDisabled ?? false,
+                    isImportDisabled: perm?.isImportDisabled ?? false,
+                    isExportDisabled: perm?.isExportDisabled ?? false
+                },
+                children: node.children ? mapNode(node.children) : []
+            };
         });
-    }
+
+    return mapNode(features);
+}
+
+saveRolePermission() {
+    const payload: any[] = [];
+
+    console.log('Starting saveRolePermission...');
+    console.log('Current roleId:', this.roleId);
+
+    const traverse = (nodes: TreeNode[]) => {
+        for (const node of nodes) {
+            const d = node.data;
+            if (d && d.id) {
+                const permissionEntry = {
+                    roleId: this.roleId,
+                    featureId: d.id,
+                    isSearch: !!d.isSearch,
+                    isAdd: !!d.isAdd,
+                    isViewed: !!d.isViewed,
+                    isEdit: !!d.isEdit,
+                    isApprove: !!d.isApprove,
+                    isReject: !!d.isReject,
+                    isDeleted: !!d.isDeleted,
+                    isSave: !!d.isSave,
+                    isClear: !!d.isClear,
+                    isCancel: !!d.isCancel,
+                    isProcess: !!d.isProcess,
+                    isImport: !!d.isImport,
+                    isExport: !!d.isExport
+                };
+
+                console.log(`Adding permission for feature ${d.id} (${d.name || 'unnamed'}):`);
+                console.log(permissionEntry);
+
+                payload.push(permissionEntry);
+            } else {
+                console.warn('Skipping node due to missing data or id:', node);
+            }
+            if (node.children) {
+                traverse(node.children);
+            }
+        }
+    };
+
+    traverse(this.treeTableValue);
+
+    console.log('Final payload:', payload);
+    console.log(`Sending ${payload.length} permission entries to server...`);
+
+    this.http.post(`${environment.apiBase}/permissions/bulk`, payload).subscribe({
+        next: () => {
+            console.log('Permissions saved successfully!');
+            alert('Permissions saved successfully!');
+            this.router.navigate(['/rolepermission']);
+        },
+        error: (err) => {
+            console.error('Failed to save permissions:', err);
+            console.error('Error details:', {
+                status: err.status,
+                message: err.message,
+                error: err.error
+            });
+            alert('Failed to save permissions. Please try again.');
+        }
+    });
+}
 
     goBack() {
         this.router.navigate(['/rolepermission']);
