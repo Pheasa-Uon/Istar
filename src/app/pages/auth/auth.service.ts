@@ -33,18 +33,46 @@ export class AuthService {
     // }
 
 
+    // login(username: string, password: string): Observable<any> {
+    //     return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { username, password }).pipe(
+    //         tap(response => {
+    //             const token = response.token;
+    //             this.saveToken(token);
+    //
+    //             // Decode JWT to get roles
+    //             const decoded: DecodedToken = jwtDecode(token);
+    //             const roles = decoded.roles || [];
+    //
+    //             // Save roles to localStorage
+    //             localStorage.setItem('roles', JSON.stringify(roles));
+    //         })
+    //     );
+    // }
+
     login(username: string, password: string): Observable<any> {
         return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { username, password }).pipe(
             tap(response => {
                 const token = response.token;
-                this.saveToken(token);
 
-                // Decode JWT to get roles
-                const decoded: DecodedToken = jwtDecode(token);
-                const roles = decoded.roles || [];
+                if (typeof token === 'string' && token.trim() !== '') {
+                    this.saveToken(token);
 
-                // Save roles to localStorage
-                localStorage.setItem('roles', JSON.stringify(roles));
+                    // Decode JWT to get roles
+                    let decoded: DecodedToken;
+                    try {
+                        decoded = jwtDecode(token);
+                        const roles = decoded.roles || [];
+
+                        // Save roles to localStorage
+                        localStorage.setItem('roles', JSON.stringify(roles));
+                    } catch (err) {
+                        console.error('JWT decoding failed:', err);
+                        // Optionally handle error or logout
+                    }
+                } else {
+                    console.error('Invalid or missing token in login response:', response);
+                    // Optionally throw an error or show notification
+                }
             })
         );
     }
