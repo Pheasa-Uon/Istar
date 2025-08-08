@@ -49,7 +49,7 @@ import { CommonModule } from '@angular/common';
                             <input pInputText id="username1" type="text" placeholder="Username" class="w-full md:w-[30rem] mb-8" [(ngModel)]="username" />
 
                             <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Password</label>
-                            <p-password id="password1" [(ngModel)]="password" placeholder="Password" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false"></p-password>
+                            <p-password id="password1" [(ngModel)]="password" placeholder="Password" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false" (keyup.enter)="onEnter()"></p-password>
 
                             <div class="flex items-center justify-between mt-2 mb-8 gap-8">
 <!--                                <div class="flex items-center">-->
@@ -63,7 +63,7 @@ import { CommonModule } from '@angular/common';
                             </div>
 <!--                            <p-button label="Login" styleClass="w-full" (onClick)="onLogin()"></p-button>-->
                             <!-- ✅ CORRECT -->
-                            <p-button label="Login" styleClass="w-full" (onClick)="onLogin()" type="button"></p-button>
+                            <p-button label="Login" styleClass="w-full" (onClick)="triggerEnter()" type="button"></p-button>
 
                         </div>
                     </div>
@@ -93,6 +93,14 @@ export class Login {
     //         }
     //     });
     // }
+
+    onEnter() {
+        this.onLogin();
+    }
+
+    triggerEnter() {
+        this.onEnter(); // simulate enter press
+    }
 
     // login.component.ts
     onLogin() {
