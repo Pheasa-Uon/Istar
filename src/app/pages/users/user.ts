@@ -59,7 +59,7 @@ import { RolesStatusService } from '../service/roles.status.service';
                 </div>
             </p-fluid>
 
-            <p-table [value]="usersList" [scrollable]="true" scrollHeight="400px" class="mt-4">
+            <p-table [value]="usersList" *ngIf="usersList" [scrollable]="true" scrollHeight="400px" class="mt-4">
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="min-width:100px">Id</th>
@@ -346,6 +346,7 @@ export class Users {
             roleStatusMap: this.rolesStatusService.getRolesStatus(),
             users: this.userService.getAllUsers(),
             roles: this.rolePermissionService.getAllRolePermission()
+
         }).subscribe({
             next: ({ userStatusMap, roleStatusMap, users, roles }) => {
                 this.userStatusMap = userStatusMap;
@@ -357,6 +358,7 @@ export class Users {
                 this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to load data' });
             }
         });
+
     }
 
     viewUser(user: User) {

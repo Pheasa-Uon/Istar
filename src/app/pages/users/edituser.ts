@@ -72,7 +72,7 @@ import { Message } from '../message/message';
 <!--                        </div>-->
 <!--                    </div>-->
                     <div class="flex flex-wrap gap-2 w-full">
-                        <label for="password">Password <span class="text-red-500">*</span></label>
+                        <label for="password" >Password <span class="text-red-500">*</span></label>
                         <div class="flex w-full items-center gap-2">
                             <input
                                 pInputText
@@ -81,6 +81,7 @@ import { Message } from '../message/message';
                                 [(ngModel)]="user.password"
                                 name="password"
                                 class="flex-1"
+                                [readonly]="true"
                             />
                             <button
                                 type="button"
