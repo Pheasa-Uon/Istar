@@ -16,18 +16,20 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService} from '../message/message.service';
 import { forkJoin } from 'rxjs';
 import { RolesStatusService } from '../service/roles.status.service';
+import { PermissionService } from '../service/permission.service';
+import { HasPermissionDirective } from '../directives/has-permission.directive';
 
 @Component({
     selector: 'app-role-permission',
     standalone: true,
-    imports: [CommonModule, FormsModule, TableModule, InputTextModule, ButtonModule, IconFieldModule, InputIconModule, DialogModule, Fluid, DividerModule, TreeTableModule, CheckboxModule],
+    imports: [CommonModule, FormsModule, TableModule, InputTextModule, ButtonModule, IconFieldModule, InputIconModule, DialogModule, Fluid, DividerModule, TreeTableModule, CheckboxModule, HasPermissionDirective],
     template: `
         <div class="card">
             <div class="font-semibold text-xl mb-4">Role Permission</div>
 
             <p-fluid class="flex flex-col md:flex-row gap-2 justify-end items-center">
                 <div class="flex flex-wrap gap-2 md:w-1/2">
-                    <p-button label="Add New" icon="pi pi-user-plus" (click)="addRolePermission()"></p-button>
+                    <p-button *hasPermission="['RLP','add']" label="Add New" icon="pi pi-user-plus" (click)="addRolePermission()"></p-button>
                 </div>
                 <div class="md:w-1/2">
                     <div class="card flex flex-col gap-2">
@@ -39,7 +41,7 @@ import { RolesStatusService } from '../service/roles.status.service';
                 </div>
                 <div class="card flex flex-col gap-2">
                     <div class="flex flex-wrap gap-2 md:w-1/2 justify-end items-center">
-                        <p-button type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" (click)="searchRoles()" />
+                        <p-button *hasPermission="['RLP','search']"  type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" (click)="searchRoles()" />
                     </div>
                 </div>
             </p-fluid>
@@ -59,13 +61,13 @@ import { RolesStatusService } from '../service/roles.status.service';
                         <td>{{ rolePermissions.rolesCode }}</td>
                         <td>{{ rolePermissions.name }}</td>
                         <td>{{ rolePermissions.description }}</td>
-                        <td>{{ getRolesStatus(rolePermissions.rolesStatus || '' ) }}</td>
+                        <td>{{ getRolesStatus(rolePermissions.rolesStatus || '') }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
-                                <p-button icon="pi pi-eye" text raised rounded (click)="viewRole(rolePermissions)" />
-                                <p-button icon="pi pi-share-alt" severity="info" text raised rounded (click)="setRolePermission(rolePermissions)" />
-                                <p-button icon="pi pi-pencil" severity="info" text raised rounded (click)="editRolePermission(rolePermissions)" />
-                                <p-button icon="pi pi-trash" severity="danger" text raised rounded (click)="deleteRole(rolePermissions)" />
+                                <p-button *hasPermission="['RLP','view']"  icon="pi pi-eye" text raised rounded (click)="viewRole(rolePermissions)" />
+                                <p-button *hasPermission="['RLP','add']"  icon="pi pi-share-alt" severity="info" text raised rounded (click)="setRolePermission(rolePermissions)" />
+                                <p-button *hasPermission="['RLP','edit']"  icon="pi pi-pencil" severity="info" text raised rounded (click)="editRolePermission(rolePermissions)" />
+                                <p-button *hasPermission="['RLP','deleted']"  icon="pi pi-trash" severity="danger" text raised rounded (click)="deleteRole(rolePermissions)" />
                             </div>
                         </td>
                     </tr>
@@ -74,38 +76,37 @@ import { RolesStatusService } from '../service/roles.status.service';
         </div>
 
         <!-- View User Dialog -->
-            <p-dialog header="Role Permission Details" [(visible)]="displayDetails" [modal]="true" [style]="{ width: '1100px' }" [closable]="true">
-                <p-divider></p-divider>
-                <div class="flex flex-col md:flex-row">
-                    <!-- Labels Column 1 -->
-                    <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                        <div><strong>Role Id:</strong></div>
-                        <div><strong>Description:</strong></div>
-                    </div>
-
-                    <!-- Values Column 1 -->
-                    <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                        <div>{{ selectedRole?.rolesCode }}</div>
-                        <div>{{ selectedRole?.description }}</div>
-                    </div>
-
-                    <!-- Labels Column 2 -->
-                    <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                        <div><strong>Name:</strong></div>
-                        <div><strong>Status:</strong></div>
-                    </div>
-
-                    <!-- Values Column 2 -->
-                    <div class="w-full md:w-1/4 flex flex-col space-y-5 py-5">
-                        <div>{{ selectedRole?.name }}</div>
-                        <div>{{ getRolesStatus(selectedRole?.rolesStatus || '' ) }}</div>
-                    </div>
+        <p-dialog header="Role Permission Details" [(visible)]="displayDetails" [modal]="true" [style]="{ width: '1100px' }" [closable]="true">
+            <p-divider></p-divider>
+            <div class="flex flex-col md:flex-row">
+                <!-- Labels Column 1 -->
+                <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
+                    <div><strong>Role Id:</strong></div>
+                    <div><strong>Description:</strong></div>
                 </div>
-            </p-dialog>
+
+                <!-- Values Column 1 -->
+                <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
+                    <div>{{ selectedRole?.rolesCode }}</div>
+                    <div>{{ selectedRole?.description }}</div>
+                </div>
+
+                <!-- Labels Column 2 -->
+                <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
+                    <div><strong>Name:</strong></div>
+                    <div><strong>Status:</strong></div>
+                </div>
+
+                <!-- Values Column 2 -->
+                <div class="w-full md:w-1/4 flex flex-col space-y-5 py-5">
+                    <div>{{ selectedRole?.name }}</div>
+                    <div>{{ getRolesStatus(selectedRole?.rolesStatus || '') }}</div>
+                </div>
+            </div>
+        </p-dialog>
     `
 })
 export class RolePermissions {
-
     roleList: RolePermission[] = [];
     loading = [false];
     searchText = '';
@@ -115,12 +116,15 @@ export class RolePermissions {
     //showPassword = false;
 
     constructor(
-
         private rolePermissionService: RolePermissionService,
         private messageService: MessageService,
         private statusService: RolesStatusService,
-        private router: Router
-    ) {}
+        private router: Router,
+        private permissionService: PermissionService
+    ) {
+        this.permissionService.loadPerminsions();
+        this.permissionService.loadFromCache();
+    }
 
     ngOnInit() {
         forkJoin({
@@ -140,7 +144,6 @@ export class RolePermissions {
                 });
             }
         });
-
     }
 
     searchRoles() {

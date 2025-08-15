@@ -11,23 +11,14 @@ import { ButtonGroup } from 'primeng/buttongroup';
 import { MessageService } from '../message/message.service';
 import { Message } from '../message/message'; // adjust path if needed
 import { RolePermissionService, RolePermission } from '../service/role.permission.service';
+import { HasPermissionDirective } from '../directives/has-permission.directive';
+import { PermissionService } from '../service/permission.service';
 
 @Component({
     selector: 'app-edit-role-permission',
     standalone: true,
-    imports: [
-        CommonModule,
-        FormsModule,
-        InputTextModule,
-        ButtonModule,
-        Select,
-        Textarea,
-        Fluid,
-        ButtonGroup,
-        Message
-    ],
+    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, Message, HasPermissionDirective],
     template: `
-
         <div class="fixed top-3/1 right-4 z-50 w-[300px] md:w-1/3">
             <app-messages></app-messages>
         </div>
@@ -50,18 +41,9 @@ import { RolePermissionService, RolePermission } from '../service/role.permissio
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="status">Status</label>
-                        <p-select
-                            id="status"
-                            [(ngModel)]="role.rolesStatus"
-                            [options]="dropdownItems"
-                            optionLabel="name"
-                            optionValue="code"
-                            placeholder="Select One"
-                            class="w-full"
-                        ></p-select>
+                        <p-select id="status" [(ngModel)]="role.rolesStatus" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
                     </div>
-                    <div class="flex flex-wrap gap-2 w-full">
-                    </div>
+                    <div class="flex flex-wrap gap-2 w-full"></div>
                 </div>
 
                 <div class="flex flex-wrap gap-2 w-full">
@@ -71,8 +53,8 @@ import { RolePermissionService, RolePermission } from '../service/role.permissio
 
                 <div class="card flex flex-wrap gap-0 w-full justify-end">
                     <p-buttongroup>
-                        <p-button label="Save" icon="pi pi-check" (click)="saveRolePermission()" />
-                        <p-button label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
+                        <p-button *hasPermission="['RLP', 'save']" label="Save" icon="pi pi-check" (click)="saveRolePermission()" />
+                        <p-button *hasPermission="['RLP', 'cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
                     </p-buttongroup>
                 </div>
             </div>
@@ -97,12 +79,15 @@ export class EditRolePermission {
     constructor(
         private router: Router,
         private rolePermissionService: RolePermissionService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private permissionService: PermissionService
     ) {
         const navigation = this.router.getCurrentNavigation();
         if (navigation?.extras.state?.['rolePermissions']) {
             this.role = { ...navigation.extras.state['rolePermissions'] };
-        }
+        };
+        this.permissionService.loadPerminsions();
+        this.permissionService.loadFromCache();
     }
 
     goBack() {
