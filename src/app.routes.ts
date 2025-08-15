@@ -39,6 +39,7 @@ export const appRoutes: Routes = [
             // User routes
             { path: 'user', component: Users },
             { path: 'adduser', component: AddUser },
+            // { path: 'edituser', canActivate: [PermissionGuard('USR','EDIT')], loadComponent: () => EditUser },
             { path: 'edituser', component: EditUser },
 
             // Role permissions routes

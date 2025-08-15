@@ -25,7 +25,8 @@ export const appConfig: ApplicationConfig = {
         ),
         provideHttpClient(
             withFetch(),
-            withInterceptors([authInterceptor]) // ✅ Register functional interceptor
+            // withInterceptors([(req, next) => new AuthInterceptor().intercept(req, next)]) // ✅ Register functional interceptor
+            withInterceptors([authInterceptor])
         ),
         provideAnimationsAsync(),
         providePrimeNG({

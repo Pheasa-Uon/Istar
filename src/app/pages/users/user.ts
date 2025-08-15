@@ -18,31 +18,20 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService } from '../message/message.service';
 import { UsersStatusService } from '../service/user.status.service';
 import { RolesStatusService } from '../service/roles.status.service';
+import { HasPermissionDirective } from '../directives/has-permission.directive';
+import { PermissionService } from '../service/permission.service';
 
 @Component({
     selector: 'app-users',
     standalone: true,
-    imports: [
-        CommonModule,
-        FormsModule,
-        TableModule,
-        InputTextModule,
-        ButtonModule,
-        IconFieldModule,
-        InputIconModule,
-        DialogModule,
-        Fluid,
-        DividerModule,
-        TreeTableModule,
-        CheckboxModule
-    ],
+    imports: [CommonModule, FormsModule, TableModule, InputTextModule, ButtonModule, IconFieldModule, InputIconModule, DialogModule, Fluid, DividerModule, TreeTableModule, CheckboxModule, HasPermissionDirective],
     template: `
         <div class="card">
             <div class="font-semibold text-xl mb-4">Users Profile</div>
 
             <p-fluid class="flex flex-col md:flex-row gap-2 justify-end items-center">
                 <div class="flex flex-wrap gap-2 md:w-1/2">
-                    <p-button label="Add New" icon="pi pi-user-plus" (click)="addNewUser()"></p-button>
+                    <p-button *hasPermission="['USR','add']" label="Add New" icon="pi pi-user-plus" (click)="addNewUser()"></p-button>
                 </div>
                 <div class="md:w-1/2">
                     <div class="card flex flex-col gap-2">
@@ -54,7 +43,7 @@ import { RolesStatusService } from '../service/roles.status.service';
                 </div>
                 <div class="card flex flex-col gap-2">
                     <div class="flex flex-wrap gap-2 md:w-1/2 justify-end items-center">
-                        <p-button type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" (click)="searchUsers()" />
+                        <p-button *hasPermission="['USR','search']" type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" (click)="searchUsers()" />
                     </div>
                 </div>
             </p-fluid>
@@ -76,14 +65,14 @@ import { RolesStatusService } from '../service/roles.status.service';
                         <td>{{ user.userCode }}</td>
                         <td>{{ user.username }}</td>
                         <td>{{ user.name }}</td>
-                        <td>{{ user.lastLoginAt | date:'dd-MM-yyyy HH:mm:ss' }}</td>
+                        <td>{{ user.lastLoginAt | date: 'dd-MM-yyyy HH:mm:ss' }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ getUserStatus(user.userStatus) }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
-                                <p-button icon="pi pi-eye" text raised rounded (click)="viewUser(user)"></p-button>
-                                <p-button icon="pi pi-pencil" severity="info" text raised rounded (click)="editUser(user)"></p-button>
-                                <p-button icon="pi pi-trash" severity="danger" text raised rounded (click)="deleteUser(user)"></p-button>
+                                <p-button *hasPermission="['USR','view']" icon="pi pi-eye" text raised rounded (click)="viewUser(user)"></p-button>
+                                <p-button *hasPermission="['USR','edit']" icon="pi pi-pencil" severity="info" text raised rounded (click)="editUser(user)"></p-button>
+                                <p-button *hasPermission="['USR','deleted']" icon="pi pi-trash" severity="danger" text raised rounded (click)="deleteUser(user)"></p-button>
                             </div>
                         </td>
                     </tr>
@@ -118,14 +107,14 @@ import { RolesStatusService } from '../service/roles.status.service';
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
                     <div>{{ selectedUser?.name }}</div>
                     <div class="flex items-center gap-1">
-<!--                        <p-button icon="pi pi-refresh" severity="secondary" text raised rounded (click)="resetPassword(selectedUser!)"></p-button>-->
+                        <!--                        <p-button icon="pi pi-refresh" severity="secondary" text raised rounded (click)="resetPassword(selectedUser!)"></p-button>-->
                         <span *ngIf="showPassword">{{ selectedUser?.password }}</span>
                         <span *ngIf="!showPassword">••••••••</span>
-<!--                        <p-button-->
-<!--                            icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}"-->
-<!--                            styleClass="p-button-text p-button-sm"-->
-<!--                            (click)="showPassword = !showPassword"-->
-<!--                        ></p-button>-->
+                        <!--                        <p-button-->
+                        <!--                            icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}"-->
+                        <!--                            styleClass="p-button-text p-button-sm"-->
+                        <!--                            (click)="showPassword = !showPassword"-->
+                        <!--                        ></p-button>-->
                     </div>
                     <div>{{ getUserStatus(selectedUser?.userStatus || '') }}</div>
                 </div>
@@ -145,18 +134,12 @@ import { RolesStatusService } from '../service/roles.status.service';
                     <tr>
                         <td>
                             <div class="flex items-center">
-<!--                                <p-checkbox-->
-<!--                                    [binary]="true"-->
-<!--                                    [(ngModel)]="rolePermissions.checked"-->
-<!--                                    inputId="checkRolePermission{{ rolePermissions.id }}"-->
-<!--                                ></p-checkbox>-->
-                                <p-checkbox
-                                    [binary]="true"
-                                    [(ngModel)]="rolePermissions.checked"
-                                    inputId="checkRolePermission{{ rolePermissions.id }}"
-                                    (ngModelChange)="onRoleCheckboxChange(rolePermissions)"
-                                ></p-checkbox>
-
+                                <!--                                <p-checkbox-->
+                                <!--                                    [binary]="true"-->
+                                <!--                                    [(ngModel)]="rolePermissions.checked"-->
+                                <!--                                    inputId="checkRolePermission{{ rolePermissions.id }}"-->
+                                <!--                                ></p-checkbox>-->
+                                <p-checkbox [binary]="true" [(ngModel)]="rolePermissions.checked" inputId="checkRolePermission{{ rolePermissions.id }}" (ngModelChange)="onRoleCheckboxChange(rolePermissions)"></p-checkbox>
                             </div>
                         </td>
                         <td>{{ rolePermissions.rolesCode }}</td>
@@ -319,7 +302,6 @@ import { RolesStatusService } from '../service/roles.status.service';
 //     }
 //
 // }
-
 export class Users {
     usersList: User[] = [];
     roleList: RolePermission[] = [];
@@ -337,8 +319,12 @@ export class Users {
         private messageService: MessageService,
         private userStatusService: UsersStatusService,
         private rolesStatusService: RolesStatusService,
-        private router: Router
-    ) {}
+        private router: Router,
+        private permissionService: PermissionService
+    ) {
+        this.permissionService.loadPerminsions();
+        this.permissionService.loadFromCache();
+    }
 
     ngOnInit() {
         forkJoin({
@@ -346,7 +332,6 @@ export class Users {
             roleStatusMap: this.rolesStatusService.getRolesStatus(),
             users: this.userService.getAllUsers(),
             roles: this.rolePermissionService.getAllRolePermission()
-
         }).subscribe({
             next: ({ userStatusMap, roleStatusMap, users, roles }) => {
                 this.userStatusMap = userStatusMap;
@@ -358,7 +343,6 @@ export class Users {
                 this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to load data' });
             }
         });
-
     }
 
     viewUser(user: User) {
@@ -463,11 +447,12 @@ export class Users {
 
         if (role.checked) {
             this.userService.assignRole(request).subscribe({
-                next: () => this.messageService.show({
-                    severity: 'success',
-                    summary: 'Role Assigned',
-                    detail: `${role.name} assigned to ${this.selectedUser?.name || this.selectedUser?.username || 'user'}`
-                }),
+                next: () =>
+                    this.messageService.show({
+                        severity: 'success',
+                        summary: 'Role Assigned',
+                        detail: `${role.name} assigned to ${this.selectedUser?.name || this.selectedUser?.username || 'user'}`
+                    }),
                 error: () => {
                     role.checked = true;
                     this.messageService.show({ severity: 'error', summary: 'Error', detail: `Failed to assign role` });
@@ -475,11 +460,12 @@ export class Users {
             });
         } else {
             this.userService.removeRole(request).subscribe({
-                next: () => this.messageService.show({
-                    severity: 'success',
-                    summary: 'Role Removed',
-                    detail: `${role.name} removed from ${this.selectedUser?.name || this.selectedUser?.username || 'user'}`
-                }),
+                next: () =>
+                    this.messageService.show({
+                        severity: 'success',
+                        summary: 'Role Removed',
+                        detail: `${role.name} removed from ${this.selectedUser?.name || this.selectedUser?.username || 'user'}`
+                    }),
                 error: () => {
                     role.checked = false;
                     this.messageService.show({ severity: 'error', summary: 'Error', detail: `Failed to remove role` });

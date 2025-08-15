@@ -11,21 +11,13 @@ import { ButtonGroup } from 'primeng/buttongroup';
 import { UserService, User } from '../service/user.service';
 import { MessageService } from '../message/message.service';
 import { Message } from '../message/message';
+import { PermissionService } from '../service/permission.service';
+import { HasPermissionDirective } from '../directives/has-permission.directive';
 
 @Component({
     selector: 'app-edit-user',
     standalone: true,
-    imports: [
-        CommonModule,
-        FormsModule,
-        InputTextModule,
-        ButtonModule,
-        Select,
-        Textarea,
-        Fluid,
-        ButtonGroup,
-        Message
-    ],
+    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, Message, HasPermissionDirective],
     template: `
         <div class="fixed top-3/1 right-4 z-50 w-[300px] md:w-1/3">
             <app-messages></app-messages>
@@ -51,38 +43,30 @@ import { Message } from '../message/message';
                         <label for="username">Username <span class="text-red-500">*</span></label>
                         <input pInputText id="username" type="text" [(ngModel)]="user.username" name="username" required />
                     </div>
-<!--                    <div class="flex flex-wrap gap-2 w-full">-->
-<!--                        <label for="password">Password <span class="text-red-500">*</span></label>-->
-<!--                        <div class="flex w-full items-center gap-2">-->
-<!--                            <input-->
-<!--                                pInputText-->
-<!--                                id="password"-->
-<!--                                [type]="showPassword ? 'text' : 'password'"-->
-<!--                                [(ngModel)]="user.password"-->
-<!--                                name="password"-->
-<!--                                class="flex-1"-->
-<!--                            />-->
-<!--                            <button-->
-<!--                                type="button"-->
-<!--                                pButton-->
-<!--                                icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}"-->
-<!--                                (click)="showPassword = !showPassword"-->
-<!--                                class="p-button-sm"-->
-<!--                            ></button>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <!--                    <div class="flex flex-wrap gap-2 w-full">-->
+                    <!--                        <label for="password">Password <span class="text-red-500">*</span></label>-->
+                    <!--                        <div class="flex w-full items-center gap-2">-->
+                    <!--                            <input-->
+                    <!--                                pInputText-->
+                    <!--                                id="password"-->
+                    <!--                                [type]="showPassword ? 'text' : 'password'"-->
+                    <!--                                [(ngModel)]="user.password"-->
+                    <!--                                name="password"-->
+                    <!--                                class="flex-1"-->
+                    <!--                            />-->
+                    <!--                            <button-->
+                    <!--                                type="button"-->
+                    <!--                                pButton-->
+                    <!--                                icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}"-->
+                    <!--                                (click)="showPassword = !showPassword"-->
+                    <!--                                class="p-button-sm"-->
+                    <!--                            ></button>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
                     <div class="flex flex-wrap gap-2 w-full">
-                        <label for="password" >Password <span class="text-red-500">*</span></label>
+                        <label for="password">Password <span class="text-red-500">*</span></label>
                         <div class="flex w-full items-center gap-2">
-                            <input
-                                pInputText
-                                id="password"
-                                [type]="showPassword ? 'text' : 'password'"
-                                [(ngModel)]="user.password"
-                                name="password"
-                                class="flex-1"
-                                [readonly]="true"
-                            />
+                            <input pInputText id="password" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="user.password" name="password" class="flex-1" [readonly]="true" />
                             <button
                                 type="button"
                                 pButton
@@ -93,7 +77,6 @@ import { Message } from '../message/message';
                             ></button>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="flex flex-col md:flex-row gap-6">
@@ -103,16 +86,7 @@ import { Message } from '../message/message';
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="status">Status</label>
-                        <p-select
-                            id="status"
-                            [(ngModel)]="user.userStatus"
-                            [options]="dropdownItems"
-                            optionLabel="name"
-                            optionValue="code"
-                            placeholder="Select One"
-                            name="userStatus"
-                            class="w-full"
-                        ></p-select>
+                        <p-select id="status" [(ngModel)]="user.userStatus" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" name="userStatus" class="w-full"></p-select>
                     </div>
                 </div>
 
@@ -123,8 +97,8 @@ import { Message } from '../message/message';
 
                 <div class="card flex flex-wrap gap-0 w-full justify-end">
                     <p-buttongroup>
-                        <p-button label="Save" icon="pi pi-check" type="submit" />
-                        <p-button label="Cancel" icon="pi pi-times" (click)="goBack()" type="button" />
+                        <p-button *hasPermission="['USR','save']" label="Save" icon="pi pi-check" type="submit" />
+                        <p-button *hasPermission="['USR','cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()" type="button" />
                     </p-buttongroup>
                 </div>
             </form>
@@ -156,13 +130,16 @@ export class EditUser {
     constructor(
         private router: Router,
         private userService: UserService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private permissionService: PermissionService
     ) {
         const navigation = this.router.getCurrentNavigation();
         if (navigation?.extras.state?.['user']) {
             this.user = { ...navigation.extras.state['user'] };
             this.originalUser = { ...this.user };
         }
+        this.permissionService.loadPerminsions();
+        this.permissionService.loadFromCache();
     }
 
     goBack() {
