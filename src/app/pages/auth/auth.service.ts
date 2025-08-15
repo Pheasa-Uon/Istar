@@ -107,6 +107,7 @@ export class AuthService {
 
         if (!token) {
             // If no token, just clear storage and navigate immediately
+            console.log('No token found, clearing storage and redirecting...');
             this.clearStorageAndRedirect();
             return new Observable((observer) => {
                 observer.next(null);
@@ -127,6 +128,8 @@ export class AuthService {
     private clearStorageAndRedirect() {
         localStorage.removeItem('authToken');
         sessionStorage.clear();
+        localStorage.removeItem('roles');
+        localStorage.clear();
         this.router.navigate(['/auth/login']);
     }
 
