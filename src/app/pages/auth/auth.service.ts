@@ -127,9 +127,9 @@ export class AuthService {
 
     private clearStorageAndRedirect() {
         localStorage.removeItem('authToken');
-        sessionStorage.clear();
         localStorage.removeItem('roles');
-        localStorage.clear();
+        sessionStorage.clear();
+        //localStorage.clear();
         this.router.navigate(['/auth/login']);
     }
 
