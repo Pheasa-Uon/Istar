@@ -60,35 +60,7 @@ interface CustomTreeNode extends TreeNode {
 
                 <p-tabView [(activeIndex)]="activeTab">
                     <!-- Menu Tab -->
-                    <p-tabPanel header="Menu">
-<!--                        <p-treetable-->
-<!--                            [value]="treeTableValueMenu"-->
-<!--                            [columns]="colsMenu"-->
-<!--                            selectionMode="checkbox"-->
-<!--                            dataKey="key"-->
-<!--                            [scrollable]="true"-->
-<!--                            [tableStyle]="{ 'min-width': '50rem' }">-->
-<!--                            <ng-template pTemplate="header" let-columns>-->
-<!--                                <tr>-->
-<!--                                    <th *ngFor="let col of columns">{{ col.header }}</th>-->
-<!--                                </tr>-->
-<!--                            </ng-template>-->
-<!--                            <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">-->
-<!--                                <tr [ttRow]="rowNode">-->
-<!--                                    <td *ngFor="let col of columns; let i = index" style="white-space: nowrap; padding: 5px 10px;">-->
-<!--                                        <ng-container *ngIf="i === 0">-->
-<!--                                            <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>-->
-<!--                                            <input type="checkbox" [(ngModel)]="rowNode.selected" style="margin-right: 10px;"/>-->
-<!--                                            <span *ngIf="rowData.icon" class="pi" [ngClass]="rowData.icon" style="margin-right: 5px;"></span>-->
-<!--                                            {{ rowData.name }}-->
-<!--                                        </ng-container>-->
-<!--                                        <ng-container *ngIf="i === 1">-->
-<!--                                            {{ rowData.description }}-->
-<!--                                        </ng-container>-->
-<!--                                    </td>-->
-<!--                                </tr>-->
-<!--                            </ng-template>-->
-<!--                        </p-treetable>-->
+                    <p-tabPanel header="Menu Application">
                         <p-treetable
                             [value]="treeTableValueMenu"
                             [columns]="colsMenu"
@@ -124,7 +96,7 @@ interface CustomTreeNode extends TreeNode {
                     </p-tabPanel>
 
                     <!-- Application Tab -->
-                    <p-tabPanel header="Application">
+                    <p-tabPanel header="Feature Application">
                         <p-treetable
                             [value]="treeTableValueFeature"
                             [columns]="colsFeature"
