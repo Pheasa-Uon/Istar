@@ -10,48 +10,131 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { PermissionService } from '../service/permission.service';
 import { HasPermissionDirective } from '../directives/has-permission.directive';
+import { TabViewModule } from 'primeng/tabview';
+
+// ---- Interfaces ----
+interface FeaturePermission {
+    roleId: number;
+    featureId: number;
+    featureCode: string;
+    isSearch: boolean;
+    isAdd: boolean;
+    isViewed: boolean;
+    isEdit: boolean;
+    isApprove: boolean;
+    isReject: boolean;
+    isDeleted: boolean;
+    isSave: boolean;
+    isClear: boolean;
+    isCancel: boolean;
+    isProcess: boolean;
+    isImport: boolean;
+    isExport: boolean;
+    bstatus: boolean;
+}
+
+interface MainMenuPermission {
+    roleId: number;
+    mainMenuId: number;
+    isVisible: boolean;
+}
+
+interface PermissionResponse {
+    featurePermissions: FeaturePermission[];
+    mainMenuPermissions: MainMenuPermission[];
+}
+
+interface CustomTreeNode extends TreeNode {
+    selected?: boolean;
+}
 
 @Component({
     selector: 'app-set-role-permission',
     standalone: true,
-    imports: [CommonModule, FormsModule, TreeTableModule, ButtonModule, HasPermissionDirective],
+    imports: [CommonModule, FormsModule, TreeTableModule, ButtonModule, HasPermissionDirective, TabViewModule],
     template: `
         <div class="card">
             <div class="font-semibold text-xl mb-4">Set Role Permission</div>
-            <div class="mb-4 text-lg font-medium text-primary">{{ role?.name || 'Loading...' }}</div>
+            <div class="card">
+                <div class="mb-4 text-lg font-medium text-primary">{{ role?.name || 'Loading...' }}</div>
 
-            <p-treetable [value]="treeTableValue" [columns]="cols" [scrollable]="true" scrollHeight="475px" [tableStyle]="{ 'min-width': '1000px' }">
-                <ng-template pTemplate="header" let-columns>
-                    <tr>
-                        <th *ngFor="let col of columns" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; text-align: center; white-space: nowrap;">
-                            {{ col.header }}
-                        </th>
-                    </tr>
-                </ng-template>
+                <p-tabView [(activeIndex)]="activeTab">
+                    <!-- Menu Tab -->
+                    <p-tabPanel header="Menu">
+                        <p-treetable
+                            [value]="treeTableValueMenu"
+                            [columns]="colsMenu"
+                            selectionMode="checkbox"
+                            dataKey="key"
+                            [scrollable]="true"
+                            [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th *ngFor="let col of columns">{{ col.header }}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+                                <tr [ttRow]="rowNode">
+                                    <td *ngFor="let col of columns; let i = index" style="white-space: nowrap; padding: 5px 10px;">
+                                        <ng-container *ngIf="i === 0">
+                                            <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                                            <input type="checkbox" [(ngModel)]="rowNode.selected" />
+                                            <span *ngIf="rowData.icon" class="pi" [ngClass]="rowData.icon" style="margin-right: 5px;"></span>
+                                            {{ rowData.name }}
+                                        </ng-container>
+                                        <ng-container *ngIf="i === 1">
+                                            {{ rowData.description }}
+                                        </ng-container>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-treetable>
+                    </p-tabPanel>
 
-                <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-                    <tr [ttRow]="rowNode">
-                        <td *ngFor="let col of columns; let i = index" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; white-space: nowrap;">
-                            <ng-container *ngIf="i === 0">
-                                <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-                                {{ rowData[col.field] }}
-                            </ng-container>
+                    <!-- Application Tab -->
+                    <p-tabPanel header="Application">
+                        <p-treetable
+                            [value]="treeTableValueFeature"
+                            [columns]="colsFeature"
+                            [scrollable]="true"
+                            scrollHeight="475px"
+                            [tableStyle]="{ 'min-width': '1000px' }">
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th *ngFor="let col of columns" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; text-align: center; white-space: nowrap;">
+                                        {{ col.header }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+                                <tr [ttRow]="rowNode">
+                                    <td *ngFor="let col of columns; let i = index" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; white-space: nowrap; text-align: center;">
+                                        <ng-container *ngIf="i === 0">
+                                            <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                                            {{ rowData[col.field] }}
+                                        </ng-container>
+                                        <ng-container *ngIf="i === 1">
+                                            {{ rowData[col.field] }}
+                                        </ng-container>
+                                        <ng-container *ngIf="i > 1">
+                                            <input type="checkbox" [(ngModel)]="rowData[col.field]" [disabled]="rowData[col.field + 'Disabled']" />
+                                        </ng-container>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-treetable>
+                    </p-tabPanel>
 
-                            <ng-container *ngIf="i === 1">
-                                {{ rowData[col.field] }}
-                            </ng-container>
-
-                            <ng-container *ngIf="i > 1">
-                                <input type="checkbox" [(ngModel)]="rowData[col.field]" [disabled]="rowData[col.field + 'Disabled']" />
-                            </ng-container>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-treetable>
+                    <!-- Reporting Tab -->
+                    <p-tabPanel header="Reporting">
+                        <p class="m-0">Reporting content goes here...</p>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
 
             <div class="flex justify-end gap-2 mt-6">
-                <button *hasPermission="['RLP','save']" pButton label="Save" icon="pi pi-save" (click)="saveRolePermission()"></button>
-                <button *hasPermission="['RLP','cancel']" pButton label="Cancel" icon="pi pi-times" class="p-button-secondary" (click)="goBack()"></button>
+                <button *hasPermission="['RLP', 'save']" pButton label="Save" icon="pi pi-save" (click)="saveRolePermission()"></button>
+                <button *hasPermission="['RLP', 'cancel']" pButton label="Cancel" icon="pi pi-times" class="p-button-secondary" (click)="goBack()"></button>
             </div>
         </div>
     `
@@ -59,24 +142,25 @@ import { HasPermissionDirective } from '../directives/has-permission.directive';
 export class SetRolePermission implements OnInit {
     role: any = {};
     roleId = 0;
-    treeTableValue: TreeNode[] = [];
+    treeTableValueMenu: CustomTreeNode[] = [];
+    treeTableValueFeature: CustomTreeNode[] = [];
+    activeTab = 0;
 
-    cols = [
+    colsFeature = [
         { field: 'name', header: 'Feature', minWidth: 200 },
         { field: '', header: '', minWidth: 200 },
         { field: 'isSearch', header: 'Search', minWidth: 25 },
         { field: 'isAdd', header: 'Add', minWidth: 25 },
         { field: 'isViewed', header: 'View', minWidth: 25 },
         { field: 'isEdit', header: 'Edit', minWidth: 25 },
-        // { field: 'isApprove', header: 'Approve', minWidth: 25 },
-        // { field: 'isReject', header: 'Reject', minWidth: 25 },
         { field: 'isDeleted', header: 'Delete', minWidth: 25 },
         { field: 'isSave', header: 'Save', minWidth: 25 },
-        // { field: 'isClear', header: 'Clear', minWidth: 25 },
         { field: 'isCancel', header: 'Cancel', minWidth: 25 }
-        // { field: 'isProcess', header: 'Process', minWidth: 25 },
-        // { field: 'isImport', header: 'Import', minWidth: 25 },
-        // { field: 'isExport', header: 'Export', minWidth: 25 }
+    ];
+
+    colsMenu = [
+        { field: 'name', header: 'Name' },
+        { field: 'description', header: 'Description' }
     ];
 
     constructor(
@@ -108,50 +192,47 @@ export class SetRolePermission implements OnInit {
 
     loadTreeTable() {
         forkJoin({
+            mainmenus: this.http.get<any[]>(`${environment.apiBase}/mainmenu/treetable`),
             features: this.http.get<any[]>(`${environment.apiBase}/features/treetable`),
-            selectedPermissions: this.http.get<any[]>(`${environment.apiBase}/permissions/role/${this.roleId}`)
-        }).subscribe(({ features, selectedPermissions }) => {
-            const featureTree = this.convertToTreeNodes(features);
-            this.treeTableValue = this.mapPermissions(featureTree, selectedPermissions);
+            permissions: this.http.get<PermissionResponse>(`${environment.apiBase}/permissions/role/${this.roleId}`)
+        }).subscribe(({ mainmenus, features, permissions }) => {
+            this.treeTableValueMenu = this.mapPermissionsMenu(this.convertToTreeNodesMenu(mainmenus), permissions.mainMenuPermissions);
+            this.treeTableValueFeature = this.mapPermissionsFeature(this.convertToTreeNodesFeature(features), permissions.featurePermissions);
         });
     }
 
-    private convertToTreeNodes(features: any[]): TreeNode[] {
-        return features.map((feature) => ({
+    private convertToTreeNodesFeature(features: any[]): CustomTreeNode[] {
+        return features.map(feature => ({
             key: feature.id?.toString(),
-            data: {
-                id: feature.id,
-                name: feature.name,
-                code: feature.code,
-                type: feature.type,
-                routePath: feature.routePath,
-                icon: feature.icon,
-                order: feature.order,
-                bStatus: feature.bStatus
-            },
-            children: feature.children ? this.convertToTreeNodes(feature.children) : [],
+            data: { ...feature },
+            children: feature.children ? this.convertToTreeNodesFeature(feature.children) : [],
             expanded: true
         }));
     }
 
-    mapPermissions(features: TreeNode[], selectedPermissions: any[]): TreeNode[] {
-        const permissionMap = new Map<number, any>();
+    private convertToTreeNodesMenu(mainmenus: any[]): CustomTreeNode[] {
+        return mainmenus.map(menu => ({
+            key: menu.id?.toString(),
+            data: {
+                id: menu.id,
+                name: menu.name,
+                description: menu.description,
+                icon: menu.icon,
+                code: menu.code
+            },
+            children: menu.children ? this.convertToTreeNodesMenu(menu.children) : [],
+            expanded: true,
+            selected: false
+        }));
+    }
 
-        // Correct mapping using `featureId`
-        selectedPermissions.forEach((p) => {
-            if (p && p.featureId) {
-                permissionMap.set(p.featureId, p);
-            }
-        });
+    mapPermissionsFeature(features: CustomTreeNode[], featurePermissions: FeaturePermission[]): CustomTreeNode[] {
+        const permissionMap = new Map<number, FeaturePermission>();
+        featurePermissions.forEach(p => p.featureId && permissionMap.set(p.featureId, p));
 
-        const mapNode = (nodes: TreeNode[]): TreeNode[] =>
-            nodes.map((node) => {
-                if (!node || !node.data || !node.data.id) {
-                    return node;
-                }
-
-                const perm = permissionMap.get(node.data.id);
-
+        const mapNode = (nodes: CustomTreeNode[]): CustomTreeNode[] =>
+            nodes.map(node => {
+                const perm = node?.data?.id ? permissionMap.get(node.data.id) : null;
                 return {
                     ...node,
                     data: {
@@ -160,100 +241,162 @@ export class SetRolePermission implements OnInit {
                         isAdd: perm?.isAdd ?? false,
                         isViewed: perm?.isViewed ?? false,
                         isEdit: perm?.isEdit ?? false,
-                        isApprove: perm?.isApprove ?? false,
-                        isReject: perm?.isReject ?? false,
                         isDeleted: perm?.isDeleted ?? false,
                         isSave: perm?.isSave ?? false,
-                        isClear: perm?.isClear ?? false,
-                        isCancel: perm?.isCancel ?? false,
-                        isProcess: perm?.isProcess ?? false,
-                        isImport: perm?.isImport ?? false,
-                        isExport: perm?.isExport ?? false,
-
-                        // Disable flags
-                        isSearchDisabled: perm?.isSearchDisabled ?? false,
-                        isAddDisabled: perm?.isAddDisabled ?? false,
-                        isViewedDisabled: perm?.isViewedDisabled ?? false,
-                        isEditDisabled: perm?.isEditDisabled ?? false,
-                        isApproveDisabled: perm?.isApproveDisabled ?? false,
-                        isRejectDisabled: perm?.isRejectDisabled ?? false,
-                        isDeletedDisabled: perm?.isDeletedDisabled ?? false,
-                        isSaveDisabled: perm?.isSaveDisabled ?? false,
-                        isClearDisabled: perm?.isClearDisabled ?? false,
-                        isCancelDisabled: perm?.isCancelDisabled ?? false,
-                        isProcessDisabled: perm?.isProcessDisabled ?? false,
-                        isImportDisabled: perm?.isImportDisabled ?? false,
-                        isExportDisabled: perm?.isExportDisabled ?? false,
-
-                        // Optional: show feature code from permissions if needed
-                        code: perm?.featureCode ?? node.data.code
+                        isCancel: perm?.isCancel ?? false
                     },
-                    children: node.children ? mapNode(node.children) : []
+                    children: node.children ? mapNode(node.children as CustomTreeNode[]) : []
                 };
             });
 
         return mapNode(features);
     }
 
+    // mapPermissionsMenu(mainmenus: CustomTreeNode[], menuPermissions: MainMenuPermission[]): CustomTreeNode[] {
+    //     const permissionMap = new Map<number, MainMenuPermission>();
+    //     menuPermissions.forEach(p => p.menuId && permissionMap.set(p.menuId, p));
+    //
+    //     const mapNode = (nodes: CustomTreeNode[]): CustomTreeNode[] =>
+    //         nodes.map(node => {
+    //             const perm = node?.data?.id ? permissionMap.get(node.data.id) : null;
+    //             return {
+    //                 ...node,
+    //                 selected: !!perm?.isVisible,
+    //                 children: node.children ? mapNode(node.children as CustomTreeNode[]) : [],
+    //                 selectable: true
+    //             };
+    //         });
+    //
+    //     return mapNode(mainmenus);
+    // }
+
+    mapPermissionsMenu(mainmenus: CustomTreeNode[], menuPermissions: MainMenuPermission[]): CustomTreeNode[] {
+        // Map backend response using mainMenuId
+        const permissionMap = new Map<number, MainMenuPermission>();
+        menuPermissions.forEach(p => p.mainMenuId && permissionMap.set(p.mainMenuId, p));
+
+        const mapNode = (nodes: CustomTreeNode[]): CustomTreeNode[] =>
+            nodes.map(node => {
+                const perm = node?.data?.id ? permissionMap.get(node.data.id) : null;
+                return {
+                    ...node,
+                    selected: !!perm?.isVisible,  // <-- use isVisible
+                    children: node.children ? mapNode(node.children as CustomTreeNode[]) : [],
+                    selectable: true
+                };
+            });
+        return mapNode(mainmenus);
+    }
+
+
+    // saveRolePermission() {
+    //     const payload: any[] = [];
+    //
+    //     const traverseFeatures = (nodes: CustomTreeNode[]) => {
+    //         for (const node of nodes) {
+    //             const d = node.data;
+    //             if (d?.id) {
+    //                 payload.push({
+    //                     roleId: this.roleId,
+    //                     featureId: d.id,
+    //                     isSearch: !!d.isSearch,
+    //                     isAdd: !!d.isAdd,
+    //                     isViewed: !!d.isViewed,
+    //                     isEdit: !!d.isEdit,
+    //                     isDeleted: !!d.isDeleted,
+    //                     isSave: !!d.isSave,
+    //                     isCancel: !!d.isCancel
+    //                 });
+    //             }
+    //             node.children && traverseFeatures(node.children as CustomTreeNode[]);
+    //         }
+    //     };
+    //
+    //     const traverseMenus = (nodes: CustomTreeNode[]) => {
+    //         for (const node of nodes) {
+    //             const d = node.data;
+    //             if (d?.id && node.selected) {
+    //                 payload.push({
+    //                     roleId: this.roleId,
+    //                     menuId: d.id
+    //                 });
+    //             }
+    //             node.children && traverseMenus(node.children as CustomTreeNode[]);
+    //         }
+    //     };
+    //
+    //     traverseFeatures(this.treeTableValueFeature);
+    //     traverseMenus(this.treeTableValueMenu);
+    //
+    //     this.http.post(`${environment.apiBase}/permissions/bulk`, payload).subscribe({
+    //         next: () => {
+    //             alert('Permissions saved successfully!');
+    //             this.router.navigate(['/rolepermission']);
+    //         },
+    //         error: (err) => {
+    //             console.error('Error saving permissions:', err);
+    //             alert('Failed to save permissions. Please try again.');
+    //         }
+    //     });
+    // }
+
     saveRolePermission() {
-        const payload: any[] = [];
+        const featurePermissions: any[] = [];
+        const mainMenuPermissions: any[] = [];
 
-        console.log('Starting saveRolePermission...');
-        console.log('Current roleId:', this.roleId);
-
-        const traverse = (nodes: TreeNode[]) => {
+        // --- Collect feature permissions ---
+        const traverseFeatures = (nodes: CustomTreeNode[]) => {
             for (const node of nodes) {
                 const d = node.data;
-                if (d && d.id) {
-                    const permissionEntry = {
+                if (d?.id) {
+                    featurePermissions.push({
                         roleId: this.roleId,
                         featureId: d.id,
                         isSearch: !!d.isSearch,
                         isAdd: !!d.isAdd,
                         isViewed: !!d.isViewed,
                         isEdit: !!d.isEdit,
-                        // isApprove: !!d.isApprove,
-                        // isReject: !!d.isReject,
                         isDeleted: !!d.isDeleted,
                         isSave: !!d.isSave,
-                        // isClear: !!d.isClear,
                         isCancel: !!d.isCancel
-                        // isProcess: !!d.isProcess,
-                        // isImport: !!d.isImport,
-                        // isExport: !!d.isExport
-                    };
-
-                    console.log(`Adding permission for feature ${d.id} (${d.name || 'unnamed'}):`);
-                    console.log(permissionEntry);
-
-                    payload.push(permissionEntry);
-                } else {
-                    console.warn('Skipping node due to missing data or id:', node);
+                    });
                 }
-                if (node.children) {
-                    traverse(node.children);
-                }
+                node.children && traverseFeatures(node.children as CustomTreeNode[]);
             }
         };
 
-        traverse(this.treeTableValue);
+        // --- Collect menu permissions ---
+        const traverseMenus = (nodes: CustomTreeNode[]) => {
+            for (const node of nodes) {
+                const d = node.data;
+                if (d?.id) {
+                    mainMenuPermissions.push({
+                        roleId: this.roleId,
+                        mainMenuId: d.id,
+                        isVisible: !!node.selected
+                    });
+                }
+                node.children && traverseMenus(node.children as CustomTreeNode[]);
+            }
+        };
 
-        console.log('Final payload:', payload);
-        console.log(`Sending ${payload.length} permission entries to server...`);
+
+        traverseFeatures(this.treeTableValueFeature);
+        traverseMenus(this.treeTableValueMenu);
+
+        // --- Send as a single object matching PermissionBulkDTO ---
+        const payload = {
+            featurePermissions,
+            mainMenuPermissions
+        };
 
         this.http.post(`${environment.apiBase}/permissions/bulk`, payload).subscribe({
             next: () => {
-                console.log('Permissions saved successfully!');
                 alert('Permissions saved successfully!');
                 this.router.navigate(['/rolepermission']);
             },
             error: (err) => {
-                console.error('Failed to save permissions:', err);
-                console.error('Error details:', {
-                    status: err.status,
-                    message: err.message,
-                    error: err.error
-                });
+                console.error('Error saving permissions:', err);
                 alert('Failed to save permissions. Please try again.');
             }
         });
