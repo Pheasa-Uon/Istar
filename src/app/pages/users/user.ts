@@ -56,7 +56,7 @@ import { PermissionService } from '../service/permission.service';
                         <th style="min-width:200px">Name</th>
                         <th style="min-width:200px">Last Login Date</th>
                         <th style="min-width:245px">Email</th>
-                        <th style="min-width:150px">Status</th>
+                        <th style="min-width:100px">Status</th>
                         <th style="min-width:200px">Actions</th>
                     </tr>
                 </ng-template>

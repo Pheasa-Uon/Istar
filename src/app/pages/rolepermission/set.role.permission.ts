@@ -61,24 +61,55 @@ interface CustomTreeNode extends TreeNode {
                 <p-tabView [(activeIndex)]="activeTab">
                     <!-- Menu Tab -->
                     <p-tabPanel header="Menu">
+<!--                        <p-treetable-->
+<!--                            [value]="treeTableValueMenu"-->
+<!--                            [columns]="colsMenu"-->
+<!--                            selectionMode="checkbox"-->
+<!--                            dataKey="key"-->
+<!--                            [scrollable]="true"-->
+<!--                            [tableStyle]="{ 'min-width': '50rem' }">-->
+<!--                            <ng-template pTemplate="header" let-columns>-->
+<!--                                <tr>-->
+<!--                                    <th *ngFor="let col of columns">{{ col.header }}</th>-->
+<!--                                </tr>-->
+<!--                            </ng-template>-->
+<!--                            <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">-->
+<!--                                <tr [ttRow]="rowNode">-->
+<!--                                    <td *ngFor="let col of columns; let i = index" style="white-space: nowrap; padding: 5px 10px;">-->
+<!--                                        <ng-container *ngIf="i === 0">-->
+<!--                                            <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>-->
+<!--                                            <input type="checkbox" [(ngModel)]="rowNode.selected" style="margin-right: 10px;"/>-->
+<!--                                            <span *ngIf="rowData.icon" class="pi" [ngClass]="rowData.icon" style="margin-right: 5px;"></span>-->
+<!--                                            {{ rowData.name }}-->
+<!--                                        </ng-container>-->
+<!--                                        <ng-container *ngIf="i === 1">-->
+<!--                                            {{ rowData.description }}-->
+<!--                                        </ng-container>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                            </ng-template>-->
+<!--                        </p-treetable>-->
                         <p-treetable
                             [value]="treeTableValueMenu"
                             [columns]="colsMenu"
-                            selectionMode="checkbox"
                             dataKey="key"
                             [scrollable]="true"
                             [tableStyle]="{ 'min-width': '50rem' }">
+
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
                                     <th *ngFor="let col of columns">{{ col.header }}</th>
                                 </tr>
                             </ng-template>
+
                             <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
                                 <tr [ttRow]="rowNode">
                                     <td *ngFor="let col of columns; let i = index" style="white-space: nowrap; padding: 5px 10px;">
                                         <ng-container *ngIf="i === 0">
                                             <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-                                            <input type="checkbox" [(ngModel)]="rowNode.selected" />
+                                            <input
+                                                type="checkbox"
+                                                [(ngModel)]="rowData.isVisible" style="margin-right: 10px;" />
                                             <span *ngIf="rowData.icon" class="pi" [ngClass]="rowData.icon" style="margin-right: 5px;"></span>
                                             {{ rowData.name }}
                                         </ng-container>
@@ -89,6 +120,7 @@ interface CustomTreeNode extends TreeNode {
                                 </tr>
                             </ng-template>
                         </p-treetable>
+
                     </p-tabPanel>
 
                     <!-- Application Tab -->
@@ -221,8 +253,7 @@ export class SetRolePermission implements OnInit {
                 code: menu.code
             },
             children: menu.children ? this.convertToTreeNodesMenu(menu.children) : [],
-            expanded: true,
-            selected: false
+            expanded: true
         }));
     }
 
@@ -252,24 +283,6 @@ export class SetRolePermission implements OnInit {
         return mapNode(features);
     }
 
-    // mapPermissionsMenu(mainmenus: CustomTreeNode[], menuPermissions: MainMenuPermission[]): CustomTreeNode[] {
-    //     const permissionMap = new Map<number, MainMenuPermission>();
-    //     menuPermissions.forEach(p => p.menuId && permissionMap.set(p.menuId, p));
-    //
-    //     const mapNode = (nodes: CustomTreeNode[]): CustomTreeNode[] =>
-    //         nodes.map(node => {
-    //             const perm = node?.data?.id ? permissionMap.get(node.data.id) : null;
-    //             return {
-    //                 ...node,
-    //                 selected: !!perm?.isVisible,
-    //                 children: node.children ? mapNode(node.children as CustomTreeNode[]) : [],
-    //                 selectable: true
-    //             };
-    //         });
-    //
-    //     return mapNode(mainmenus);
-    // }
-
     mapPermissionsMenu(mainmenus: CustomTreeNode[], menuPermissions: MainMenuPermission[]): CustomTreeNode[] {
         // Map backend response using mainMenuId
         const permissionMap = new Map<number, MainMenuPermission>();
@@ -278,13 +291,23 @@ export class SetRolePermission implements OnInit {
         const mapNode = (nodes: CustomTreeNode[]): CustomTreeNode[] =>
             nodes.map(node => {
                 const perm = node?.data?.id ? permissionMap.get(node.data.id) : null;
+                // return {
+                //     ...node,
+                //     selected: !!perm?.isVisible,  // <-- use isVisible
+                //     children: node.children ? mapNode(node.children as CustomTreeNode[]) : [],
+                //     selectable: true
+                // };
                 return {
                     ...node,
-                    selected: !!perm?.isVisible,  // <-- use isVisible
+                    data: {
+                        ...node.data,
+                        isVisible: perm?.isVisible ?? false   // <-- keep it in data
+                    },
                     children: node.children ? mapNode(node.children as CustomTreeNode[]) : [],
-                    selectable: true
+                    expanded: true
                 };
             });
+
         return mapNode(mainmenus);
     }
 
@@ -373,7 +396,7 @@ export class SetRolePermission implements OnInit {
                     mainMenuPermissions.push({
                         roleId: this.roleId,
                         mainMenuId: d.id,
-                        isVisible: !!node.selected
+                        isVisible: !!d.isVisible   // ✅ FIXED
                     });
                 }
                 node.children && traverseMenus(node.children as CustomTreeNode[]);
@@ -383,6 +406,9 @@ export class SetRolePermission implements OnInit {
 
         traverseFeatures(this.treeTableValueFeature);
         traverseMenus(this.treeTableValueMenu);
+
+        console.log(featurePermissions);
+        console.log(mainMenuPermissions);
 
         // --- Send as a single object matching PermissionBulkDTO ---
         const payload = {
