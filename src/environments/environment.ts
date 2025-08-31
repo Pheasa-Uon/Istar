@@ -1,8 +1,8 @@
 export const environment = {
     production: false,
-    apiBase: 'http://localhost:8080/api',
+    apiBase: 'http://localhost:8080/api/coregetways',
     apiEndpoints: {
-        auth: '/auth',
+        auth: '/authentication',
         users: {
             usersprofile: '/users',
             userstatuses: '/users/status',
