@@ -51,7 +51,7 @@ import { PermissionService } from '../service/permission.service';
             <p-table [value]="usersList" *ngIf="usersList" [scrollable]="true" scrollHeight="400px" class="mt-4">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="min-width:100px">Id</th>
+                        <th style="min-width:100px">User Id</th>
                         <th style="min-width:200px">UserName</th>
                         <th style="min-width:200px">Name</th>
                         <th style="min-width:200px">Last Login Date</th>
