@@ -39,9 +39,19 @@ interface MainMenuPermission {
     isVisible: boolean;
 }
 
+interface ReportPermission {
+    roleId: number;
+    reportId: number;
+    reportCode: string;
+    isViewed: boolean;
+    isExport: boolean;
+    bstatus: boolean;
+}
+
 interface PermissionResponse {
     featurePermissions: FeaturePermission[];
     mainMenuPermissions: MainMenuPermission[];
+    reportPermissions: ReportPermission[];
 }
 
 interface CustomTreeNode extends TreeNode {
@@ -131,7 +141,36 @@ interface CustomTreeNode extends TreeNode {
 
                     <!-- Reporting Tab -->
                     <p-tabPanel header="Reporting">
-                        <p class="m-0">Reporting content goes here...</p>
+                        <p-treetable
+                            [value]="treeTableValueReport"
+                            [columns]="colsReport"
+                            [scrollable]="true"
+                            scrollHeight="475px"
+                            [tableStyle]="{ 'min-width': '1000px' }">
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th *ngFor="let col of columns" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; text-align: center; white-space: nowrap;">
+                                        {{ col.header }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+                                <tr [ttRow]="rowNode">
+                                    <td *ngFor="let col of columns; let i = index" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; white-space: nowrap; text-align: center;">
+                                        <ng-container *ngIf="i === 0">
+                                            <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                                            {{ rowData[col.field] }}
+                                        </ng-container>
+                                        <ng-container *ngIf="i === 1">
+                                            {{ rowData[col.field] }}
+                                        </ng-container>
+                                        <ng-container *ngIf="i > 1">
+                                            <input type="checkbox" [(ngModel)]="rowData[col.field]" [disabled]="rowData[col.field + 'Disabled']" />
+                                        </ng-container>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-treetable>
                     </p-tabPanel>
                 </p-tabView>
             </div>
@@ -148,6 +187,7 @@ export class SetRolePermission implements OnInit {
     roleId = 0;
     treeTableValueMenu: CustomTreeNode[] = [];
     treeTableValueFeature: CustomTreeNode[] = [];
+    treeTableValueReport: CustomTreeNode[] = [];
     activeTab = 0;
 
     colsFeature = [
@@ -165,6 +205,13 @@ export class SetRolePermission implements OnInit {
     colsMenu = [
         { field: 'name', header: 'Name' },
         { field: 'description', header: 'Description' }
+    ];
+
+    colsReport = [
+        { field: 'name', header: 'Report Name', minWidth: 200 },
+        { field: 'description', header: 'Description', minWidth: 200 },
+        { field: 'isViewed', header: 'View', minWidth: 25 },
+        { field: 'isExport', header: 'Export', minWidth: 25 },
     ];
 
     constructor(
@@ -198,10 +245,12 @@ export class SetRolePermission implements OnInit {
         forkJoin({
             mainmenus: this.http.get<any[]>(`${environment.apiBase}/mainmenu/treetable`),
             features: this.http.get<any[]>(`${environment.apiBase}/features/treetable`),
+            reports: this.http.get<any[]>(`${environment.apiBase}/reports/treetable`),
             permissions: this.http.get<PermissionResponse>(`${environment.apiBase}/permissions/role/${this.roleId}`)
-        }).subscribe(({ mainmenus, features, permissions }) => {
+        }).subscribe(({ mainmenus, features, reports, permissions }) => {
             this.treeTableValueMenu = this.mapPermissionsMenu(this.convertToTreeNodesMenu(mainmenus), permissions.mainMenuPermissions);
             this.treeTableValueFeature = this.mapPermissionsFeature(this.convertToTreeNodesFeature(features), permissions.featurePermissions);
+            this.treeTableValueReport = this.mapPermissionsReport(this.convertToTreeNodesReports(reports), permissions.reportPermissions);
         });
     }
 
@@ -225,6 +274,15 @@ export class SetRolePermission implements OnInit {
                 code: menu.code
             },
             children: menu.children ? this.convertToTreeNodesMenu(menu.children) : [],
+            expanded: true
+        }));
+    }
+
+    private convertToTreeNodesReports(reports: any[]): CustomTreeNode[] {
+        return reports.map(report => ({
+            key: report.id?.toString(),
+            data: { ...report },
+            children: report.children ? this.convertToTreeNodesFeature(report.children) : [],
             expanded: true
         }));
     }
@@ -283,6 +341,27 @@ export class SetRolePermission implements OnInit {
         return mapNode(mainmenus);
     }
 
+    mapPermissionsReport(reports: CustomTreeNode[], reportPermissions: ReportPermission[]): CustomTreeNode[] {
+        const permissionMap = new Map<number, ReportPermission>();
+        reportPermissions.forEach(p => p.reportId && permissionMap.set(p.reportId, p));
+
+        const mapNode = (nodes: CustomTreeNode[]): CustomTreeNode[] =>
+            nodes.map(node => {
+                const perm = node?.data?.id ? permissionMap.get(node.data.id) : null;
+                return {
+                    ...node,
+                    data: {
+                        ...node.data,
+                        isViewed: perm?.isViewed ?? false,
+                        isExport: perm?.isExport ?? false,
+                    },
+                    children: node.children ? mapNode(node.children as CustomTreeNode[]) : []
+                };
+            });
+
+        return mapNode(reports);
+    }
+
 
     // saveRolePermission() {
     //     const payload: any[] = [];
@@ -338,6 +417,7 @@ export class SetRolePermission implements OnInit {
     saveRolePermission() {
         const featurePermissions: any[] = [];
         const mainMenuPermissions: any[] = [];
+        const reportPermissions: any[] = [];
 
         // --- Collect feature permissions ---
         const traverseFeatures = (nodes: CustomTreeNode[]) => {
@@ -375,17 +455,36 @@ export class SetRolePermission implements OnInit {
             }
         };
 
+        // --- Collect feature permissions ---
+        const traverseReports = (nodes: CustomTreeNode[]) => {
+            for (const node of nodes) {
+                const d = node.data;
+                if (d?.id) {
+                    reportPermissions.push({
+                        roleId: this.roleId,
+                        featureId: d.id,
+                        isViewed: !!d.isViewed,
+                        isExport: !!d.isExport,
+                    });
+                }
+                node.children && traverseReports(node.children as CustomTreeNode[]);
+            }
+        };
+
 
         traverseFeatures(this.treeTableValueFeature);
         traverseMenus(this.treeTableValueMenu);
+        traverseReports(this.treeTableValueReport);
 
         console.log(featurePermissions);
         console.log(mainMenuPermissions);
+        console.log(reportPermissions);
 
         // --- Send as a single object matching PermissionBulkDTO ---
         const payload = {
             featurePermissions,
-            mainMenuPermissions
+            mainMenuPermissions,
+            reportPermissions
         };
 
         this.http.post(`${environment.apiBase}/permissions/bulk`, payload).subscribe({
