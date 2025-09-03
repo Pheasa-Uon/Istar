@@ -76,7 +76,7 @@ interface CustomTreeNode extends TreeNode {
                             [columns]="colsMenu"
                             dataKey="key"
                             [scrollable]="true"
-                            [tableStyle]="{ 'min-width': '50rem' }">
+                            [tableStyle]="{ 'min-width': '1000px' }">
 
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
@@ -115,14 +115,14 @@ interface CustomTreeNode extends TreeNode {
                             [tableStyle]="{ 'min-width': '1000px' }">
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
-                                    <th *ngFor="let col of columns" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; text-align: center; white-space: nowrap;">
+                                    <th *ngFor="let col of columns" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; text-align: left; white-space: nowrap;">
                                         {{ col.header }}
                                     </th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
                                 <tr [ttRow]="rowNode">
-                                    <td *ngFor="let col of columns; let i = index" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; white-space: nowrap; text-align: center;">
+                                    <td *ngFor="let col of columns; let i = index" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; white-space: nowrap; text-align: left;">
                                         <ng-container *ngIf="i === 0">
                                             <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
                                             {{ rowData[col.field] }}
@@ -149,14 +149,14 @@ interface CustomTreeNode extends TreeNode {
                             [tableStyle]="{ 'min-width': '1000px' }">
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
-                                    <th *ngFor="let col of columns" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; text-align: center; white-space: nowrap;">
+                                    <th *ngFor="let col of columns" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; text-align: left; white-space: nowrap;">
                                         {{ col.header }}
                                     </th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
                                 <tr [ttRow]="rowNode">
-                                    <td *ngFor="let col of columns; let i = index" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; white-space: nowrap; text-align: center;">
+                                    <td *ngFor="let col of columns; let i = index" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; white-space: nowrap; text-align: left;">
                                         <ng-container *ngIf="i === 0">
                                             <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
                                             {{ rowData[col.field] }}
@@ -208,8 +208,8 @@ export class SetRolePermission implements OnInit {
     ];
 
     colsReport = [
-        { field: 'name', header: 'Report Name', minWidth: 200 },
-        { field: 'description', header: 'Description', minWidth: 200 },
+        { field: 'name', header: 'Report Name', minWidth: 500 },
+        { field: 'description', header: 'Description', minWidth: 500 },
         { field: 'isViewed', header: 'View', minWidth: 25 },
         { field: 'isExport', header: 'Export', minWidth: 25 },
     ];
