@@ -434,6 +434,7 @@ export class SetRolePermission implements OnInit {
                         isDeleted: !!d.isDeleted,
                         isSave: !!d.isSave,
                         isCancel: !!d.isCancel
+                        // Add other flags if needed: isApprove, isReject, isClear, isProcess, isImport, isExport
                     });
                 }
                 node.children && traverseFeatures(node.children as CustomTreeNode[]);
@@ -448,21 +449,21 @@ export class SetRolePermission implements OnInit {
                     mainMenuPermissions.push({
                         roleId: this.roleId,
                         mainMenuId: d.id,
-                        isVisible: !!d.isVisible   // ✅ FIXED
+                        isVisible: !!d.isVisible
                     });
                 }
                 node.children && traverseMenus(node.children as CustomTreeNode[]);
             }
         };
 
-        // --- Collect feature permissions ---
+        // --- Collect report permissions ---
         const traverseReports = (nodes: CustomTreeNode[]) => {
             for (const node of nodes) {
                 const d = node.data;
                 if (d?.id) {
                     reportPermissions.push({
                         roleId: this.roleId,
-                        featureId: d.id,
+                        reportId: d.id,  // Note: using reportId, not featureId
                         isViewed: !!d.isViewed,
                         isExport: !!d.isExport,
                     });
@@ -471,16 +472,21 @@ export class SetRolePermission implements OnInit {
             }
         };
 
-
         traverseFeatures(this.treeTableValueFeature);
         traverseMenus(this.treeTableValueMenu);
         traverseReports(this.treeTableValueReport);
 
-        console.log(featurePermissions);
-        console.log(mainMenuPermissions);
-        console.log(reportPermissions);
+        console.log('Feature permissions:', featurePermissions);
+        console.log('Menu permissions:', mainMenuPermissions);
+        console.log('Report permissions:', reportPermissions);
 
-        // --- Send as a single object matching PermissionBulkDTO ---
+        // Validate roleId is not null
+        if (!this.roleId) {
+            alert('Role ID is required!');
+            return;
+        }
+
+        // Create the payload matching PermissionBulkDTO structure
         const payload = {
             featurePermissions,
             mainMenuPermissions,
@@ -494,7 +500,11 @@ export class SetRolePermission implements OnInit {
             },
             error: (err) => {
                 console.error('Error saving permissions:', err);
-                alert('Failed to save permissions. Please try again.');
+                if (err.status === 403) {
+                    alert('Access denied. You do not have permission to perform this action.');
+                } else {
+                    alert('Failed to save permissions. Please try again.');
+                }
             }
         });
     }
