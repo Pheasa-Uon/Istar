@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
 })
 export class PermissionService {
 
-    private Url = environment.apiBase + environment.apiEndpoints.auth;
+    private Url = environment.apiBase + environment.apiEndpoints.permission;
     // private cache?: PermissionMap;
     // constructor(private http: HttpClient) {}
     // load(): Observable<PermissionMap> {
@@ -31,7 +31,7 @@ export class PermissionService {
     constructor(private http: HttpClient) {}
 
     loadPerminsions(){
-        return this.http.get<PermissionMap>(`${this.Url}/me/permissions`).subscribe((permissions) => {
+        return this.http.get<PermissionMap>(`${this.Url}/feature/me`).subscribe((permissions) => {
 
             this.permissions = permissions;
             localStorage.setItem('permissions', JSON.stringify(permissions));

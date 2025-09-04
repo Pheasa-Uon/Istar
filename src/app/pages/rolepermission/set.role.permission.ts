@@ -246,7 +246,7 @@ export class SetRolePermission implements OnInit {
             mainmenus: this.http.get<any[]>(`${environment.apiBase}/mainmenu/treetable`),
             features: this.http.get<any[]>(`${environment.apiBase}/features/treetable`),
             reports: this.http.get<any[]>(`${environment.apiBase}/reports/treetable`),
-            permissions: this.http.get<PermissionResponse>(`${environment.apiBase}/permissions/role/${this.roleId}`)
+            permissions: this.http.get<PermissionResponse>(`${environment.apiBase}/rolepermissions/role/${this.roleId}`)
         }).subscribe(({ mainmenus, features, reports, permissions }) => {
             this.treeTableValueMenu = this.mapPermissionsMenu(this.convertToTreeNodesMenu(mainmenus), permissions.mainMenuPermissions);
             this.treeTableValueFeature = this.mapPermissionsFeature(this.convertToTreeNodesFeature(features), permissions.featurePermissions);
@@ -493,7 +493,7 @@ export class SetRolePermission implements OnInit {
             reportPermissions
         };
 
-        this.http.post(`${environment.apiBase}/permissions/bulk`, payload).subscribe({
+        this.http.post(`${environment.apiBase}/rolepermissions/bulk`, payload).subscribe({
             next: () => {
                 alert('Permissions saved successfully!');
                 this.router.navigate(['/rolepermission']);

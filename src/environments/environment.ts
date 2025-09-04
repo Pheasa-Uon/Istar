@@ -3,6 +3,7 @@ export const environment = {
     apiBase: 'http://localhost:8080/api/coregateways',
     apiEndpoints: {
         auth: '/authentication',
+        permission: '/permissions',
         users: {
             usersprofile: '/users',
             userstatuses: '/users/status',
@@ -11,7 +12,7 @@ export const environment = {
             rolesprofile: '/roles',
             rolesstatus: '/roles/status',
         },
-        permissions: '/rolepermissions',
+        rolepermissions: '/rolepermissions',
         userroles: '/userroles',
 
 
