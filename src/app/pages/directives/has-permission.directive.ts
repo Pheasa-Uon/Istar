@@ -1,5 +1,5 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
-import { PermissionService } from '../service/permission.service';
+import { FeaturePermissionService } from '../service/feature.permission.service';
 
 @Directive({
   selector: '[hasPermission]'
@@ -7,7 +7,7 @@ import { PermissionService } from '../service/permission.service';
 export class HasPermissionDirective {
     // private feature?: string;
     // private action?: 'SEARCH' | 'ADD' | 'VIEW' | 'EDIT' | 'APPROVE' | 'REJECT' | 'DELETED' | 'SAVE' | 'CLEAR' | 'CANCEL' | 'PROCESS' | 'IMPORT' | 'EXPORT';
-    // constructor(private tpl: TemplateRef<any>, private viewContainer: ViewContainerRef, private permissionService: PermissionService) { }
+    // constructor(private tpl: TemplateRef<any>, private viewContainer: ViewContainerRef, private permissionService: FeaturePermissionService) { }
     // @Input('hasPerm') set setConfig(cfg: {feature: string; action: 'SEARCH' | 'ADD' | 'VIEW' | 'EDIT' | 'APPROVE' | 'REJECT' | 'DELETED' | 'SAVE' | 'CLEAR' | 'CANCEL' | 'PROCESS' | 'IMPORT' | 'EXPORT'}){
     //     this.feature = cfg.feature;
     //     this.action = cfg.action;
@@ -26,7 +26,7 @@ export class HasPermissionDirective {
     constructor(
         private templateRef: TemplateRef<any>,
         private viewContainer: ViewContainerRef,
-        private permissionService: PermissionService
+        private permissionService: FeaturePermissionService
     ) { }
 
     @Input()

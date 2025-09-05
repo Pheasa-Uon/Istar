@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { PermissionService } from '../service/permission.service';
+import { FeaturePermissionService } from '../service/feature.permission.service';
 import { HasPermissionDirective } from '../directives/has-permission.directive';
 import { TabViewModule } from 'primeng/tabview';
 
@@ -218,7 +218,7 @@ export class SetRolePermission implements OnInit {
         private http: HttpClient,
         private route: ActivatedRoute,
         private router: Router,
-        private permissionService: PermissionService
+        private permissionService: FeaturePermissionService
     ) {
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();

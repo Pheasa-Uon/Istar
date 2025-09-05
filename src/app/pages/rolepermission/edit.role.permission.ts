@@ -12,7 +12,7 @@ import { MessageService } from '../message/message.service';
 import { Message } from '../message/message'; // adjust path if needed
 import { RolePermissionService, RolePermission } from '../service/role.permission.service';
 import { HasPermissionDirective } from '../directives/has-permission.directive';
-import { PermissionService } from '../service/permission.service';
+import { FeaturePermissionService } from '../service/feature.permission.service';
 
 @Component({
     selector: 'app-edit-role-permission',
@@ -80,7 +80,7 @@ export class EditRolePermission {
         private router: Router,
         private rolePermissionService: RolePermissionService,
         private messageService: MessageService,
-        private permissionService: PermissionService
+        private permissionService: FeaturePermissionService
     ) {
         const navigation = this.router.getCurrentNavigation();
         if (navigation?.extras.state?.['rolePermissions']) {

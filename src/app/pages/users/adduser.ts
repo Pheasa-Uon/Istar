@@ -11,7 +11,7 @@ import { ButtonGroup } from 'primeng/buttongroup';
 import { UserService, User } from '../service/user.service';
 import { MessageService } from '../message/message.service';
 import { Message } from '../message/message';
-import { PermissionService } from '../service/permission.service';
+import { FeaturePermissionService } from '../service/feature.permission.service';
 import { HasPermissionDirective } from '../directives/has-permission.directive';
 
 @Component({
@@ -118,7 +118,7 @@ export class AddUser {
         private router: Router,
         private userService: UserService,
         private messageService: MessageService,
-        private permissionService: PermissionService
+        private permissionService: FeaturePermissionService
     ) {
         this.permissionService.loadFromCache();
         this.permissionService.loadFromCache();

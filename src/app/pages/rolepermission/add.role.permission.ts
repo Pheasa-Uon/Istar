@@ -13,7 +13,7 @@ import { Message } from '../message/message';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { Fluid } from 'primeng/fluid';
 import { Select } from 'primeng/select';
-import { PermissionService } from '../service/permission.service';
+import { FeaturePermissionService } from '../service/feature.permission.service';
 import { HasPermissionDirective } from '../directives/has-permission.directive';
 
 @Component({
@@ -86,7 +86,7 @@ export class AddRolePermission {
         private router: Router,
         private rolePermissionService: RolePermissionService,
         private messageService: MessageService,
-        private permissionService: PermissionService
+        private permissionService: FeaturePermissionService
     ) {
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();

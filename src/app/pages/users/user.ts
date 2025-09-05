@@ -19,7 +19,7 @@ import { MessageService } from '../message/message.service';
 import { UsersStatusService } from '../service/user.status.service';
 import { RolesStatusService } from '../service/roles.status.service';
 import { HasPermissionDirective } from '../directives/has-permission.directive';
-import { PermissionService } from '../service/permission.service';
+import { FeaturePermissionService } from '../service/feature.permission.service';
 
 @Component({
     selector: 'app-users',
@@ -171,7 +171,7 @@ export class Users {
         private userStatusService: UsersStatusService,
         private rolesStatusService: RolesStatusService,
         private router: Router,
-        private permissionService: PermissionService
+        private permissionService: FeaturePermissionService
     ) {
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();

@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
 @Injectable({
     providedIn: 'root',
 })
-export class PermissionService {
+export class FeaturePermissionService {
 
     private Url = environment.apiBase + environment.apiEndpoints.permission;
     // private cache?: PermissionMap;

@@ -16,7 +16,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService} from '../message/message.service';
 import { forkJoin } from 'rxjs';
 import { RolesStatusService } from '../service/roles.status.service';
-import { PermissionService } from '../service/permission.service';
+import { FeaturePermissionService } from '../service/feature.permission.service';
 import { HasPermissionDirective } from '../directives/has-permission.directive';
 
 @Component({
@@ -120,7 +120,7 @@ export class RolePermissions {
         private messageService: MessageService,
         private statusService: RolesStatusService,
         private router: Router,
-        private permissionService: PermissionService
+        private permissionService: FeaturePermissionService
     ) {
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();
