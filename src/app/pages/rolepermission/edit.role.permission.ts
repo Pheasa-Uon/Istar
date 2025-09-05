@@ -53,8 +53,8 @@ import { FeaturePermissionService } from '../service/feature.permission.service'
 
                 <div class="card flex flex-wrap gap-0 w-full justify-end">
                     <p-buttongroup>
-                        <p-button *hasPermission="['RLP', 'save']" label="Save" icon="pi pi-check" (click)="saveRolePermission()" />
-                        <p-button *hasPermission="['RLP', 'cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
+                        <p-button *hasFeaturePermission="['RLP', 'save']" label="Save" icon="pi pi-check" (click)="saveRolePermission()" />
+                        <p-button *hasFeaturePermission="['RLP', 'cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
                     </p-buttongroup>
                 </div>
             </div>

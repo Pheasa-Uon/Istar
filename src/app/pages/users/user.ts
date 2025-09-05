@@ -31,7 +31,7 @@ import { FeaturePermissionService } from '../service/feature.permission.service'
 
             <p-fluid class="flex flex-col md:flex-row gap-2 justify-end items-center">
                 <div class="flex flex-wrap gap-2 md:w-1/2">
-                    <p-button *hasPermission="['USR','add']" label="Add New" icon="pi pi-user-plus" (click)="addNewUser()"></p-button>
+                    <p-button *hasFeaturePermission="['USR','add']" label="Add New" icon="pi pi-user-plus" (click)="addNewUser()"></p-button>
                 </div>
                 <div class="md:w-1/2">
                     <div class="card flex flex-col gap-2">
@@ -43,7 +43,7 @@ import { FeaturePermissionService } from '../service/feature.permission.service'
                 </div>
                 <div class="card flex flex-col gap-2">
                     <div class="flex flex-wrap gap-2 md:w-1/2 justify-end items-center">
-                        <p-button *hasPermission="['USR','search']" type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" (click)="searchUsers()" />
+                        <p-button *hasFeaturePermission="['USR','search']" type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" (click)="searchUsers()" />
                     </div>
                 </div>
             </p-fluid>
@@ -70,9 +70,9 @@ import { FeaturePermissionService } from '../service/feature.permission.service'
                         <td>{{ getUserStatus(user.userStatus) }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
-                                <p-button *hasPermission="['USR','view']" icon="pi pi-eye" text raised rounded (click)="viewUser(user)"></p-button>
-                                <p-button *hasPermission="['USR','edit']" icon="pi pi-pencil" severity="info" text raised rounded (click)="editUser(user)"></p-button>
-                                <p-button *hasPermission="['USR','deleted']" icon="pi pi-trash" severity="danger" text raised rounded (click)="deleteUser(user)"></p-button>
+                                <p-button *hasFeaturePermission="['USR','view']" icon="pi pi-eye" text raised rounded (click)="viewUser(user)"></p-button>
+                                <p-button *hasFeaturePermission="['USR','edit']" icon="pi pi-pencil" severity="info" text raised rounded (click)="editUser(user)"></p-button>
+                                <p-button *hasFeaturePermission="['USR','deleted']" icon="pi pi-trash" severity="danger" text raised rounded (click)="deleteUser(user)"></p-button>
                             </div>
                         </td>
                     </tr>

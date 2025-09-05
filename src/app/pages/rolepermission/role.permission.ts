@@ -29,7 +29,7 @@ import { HasPermissionDirective } from '../directives/has-permission.directive';
 
             <p-fluid class="flex flex-col md:flex-row gap-2 justify-end items-center">
                 <div class="flex flex-wrap gap-2 md:w-1/2">
-                    <p-button *hasPermission="['RLP','add']" label="Add New" icon="pi pi-user-plus" (click)="addRolePermission()"></p-button>
+                    <p-button *hasFeaturePermission="['RLP','add']" label="Add New" icon="pi pi-user-plus" (click)="addRolePermission()"></p-button>
                 </div>
                 <div class="md:w-1/2">
                     <div class="card flex flex-col gap-2">
@@ -41,7 +41,7 @@ import { HasPermissionDirective } from '../directives/has-permission.directive';
                 </div>
                 <div class="card flex flex-col gap-2">
                     <div class="flex flex-wrap gap-2 md:w-1/2 justify-end items-center">
-                        <p-button *hasPermission="['RLP','search']"  type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" (click)="searchRoles()" />
+                        <p-button *hasFeaturePermission="['RLP','search']"  type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" (click)="searchRoles()" />
                     </div>
                 </div>
             </p-fluid>
@@ -64,10 +64,10 @@ import { HasPermissionDirective } from '../directives/has-permission.directive';
                         <td>{{ getRolesStatus(rolePermissions.rolesStatus || '') }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
-                                <p-button *hasPermission="['RLP','view']"  icon="pi pi-eye" text raised rounded (click)="viewRole(rolePermissions)" />
-                                <p-button *hasPermission="['RLP','add']"  icon="pi pi-share-alt" severity="info" text raised rounded (click)="setRolePermission(rolePermissions)" />
-                                <p-button *hasPermission="['RLP','edit']"  icon="pi pi-pencil" severity="info" text raised rounded (click)="editRolePermission(rolePermissions)" />
-                                <p-button *hasPermission="['RLP','deleted']"  icon="pi pi-trash" severity="danger" text raised rounded (click)="deleteRole(rolePermissions)" />
+                                <p-button *hasFeaturePermission="['RLP','view']"  icon="pi pi-eye" text raised rounded (click)="viewRole(rolePermissions)" />
+                                <p-button *hasFeaturePermission="['RLP','add']"  icon="pi pi-share-alt" severity="info" text raised rounded (click)="setRolePermission(rolePermissions)" />
+                                <p-button *hasFeaturePermission="['RLP','edit']"  icon="pi pi-pencil" severity="info" text raised rounded (click)="editRolePermission(rolePermissions)" />
+                                <p-button *hasFeaturePermission="['RLP','deleted']"  icon="pi pi-trash" severity="danger" text raised rounded (click)="deleteRole(rolePermissions)" />
                             </div>
                         </td>
                     </tr>

@@ -1,6 +1,6 @@
 // models/permission.model.ts
 export type Action = 'SEARCH' | 'ADD' | 'VIEW' | 'EDIT' | 'APPROVE' | 'REJECT' | 'DELETED' | 'SAVE' | 'CLEAR' | 'CANCEL' | 'PROCESS' | 'IMPORT' | 'EXPORT';
-export interface PermissionFlags {
+export interface FeaturePermissionFlags {
     search?: boolean;
     add?: boolean;
     view?: boolean;
@@ -12,11 +12,12 @@ export interface PermissionFlags {
     clear?: boolean;
     cancel?: boolean;
     process?: boolean;
+
     imported?: boolean;
     exported?: boolean;
 }
-export type PermissionMap = {
-    [featureCode: string]: PermissionFlags;
+export type FeaturePermissionMap = {
+    [featureCode: string]: FeaturePermissionFlags;
 }
 
 export interface RoleFeaturePermission {

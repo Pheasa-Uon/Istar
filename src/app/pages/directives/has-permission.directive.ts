@@ -2,7 +2,7 @@ import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { FeaturePermissionService } from '../service/feature.permission.service';
 
 @Directive({
-  selector: '[hasPermission]'
+  selector: '[hasFeaturePermission]'
 })
 export class HasPermissionDirective {
     // private feature?: string;
@@ -21,7 +21,7 @@ export class HasPermissionDirective {
     // }
 
     private feature = ''
-    private action: keyof import('../model/permission.model').PermissionFlags = 'view';
+    private action: keyof import('../model/permission.model').FeaturePermissionFlags = 'view';
 
     constructor(
         private templateRef: TemplateRef<any>,
@@ -30,7 +30,7 @@ export class HasPermissionDirective {
     ) { }
 
     @Input()
-    set hasPermission(value: [string, keyof import('../model/permission.model').PermissionFlags]) {
+    set hasFeaturePermission(value: [string, keyof import('../model/permission.model').FeaturePermissionFlags]) {
         this.feature = value[0];
         this.action = value[1];
         this.updateView();

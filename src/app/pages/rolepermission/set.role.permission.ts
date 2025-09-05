@@ -176,8 +176,8 @@ interface CustomTreeNode extends TreeNode {
             </div>
 
             <div class="flex justify-end gap-2 mt-6">
-                <button *hasPermission="['RLP', 'save']" pButton label="Save" icon="pi pi-save" (click)="saveRolePermission()"></button>
-                <button *hasPermission="['RLP', 'cancel']" pButton label="Cancel" icon="pi pi-times" class="p-button-secondary" (click)="goBack()"></button>
+                <button *hasFeaturePermission="['RLP', 'save']" pButton label="Save" icon="pi pi-save" (click)="saveRolePermission()"></button>
+                <button *hasFeaturePermission="['RLP', 'cancel']" pButton label="Cancel" icon="pi pi-times" class="p-button-secondary" (click)="goBack()"></button>
             </div>
         </div>
     `

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { tap, shareReplay } from 'rxjs/operators';
-import { PermissionFlags, PermissionMap } from '../model/permission.model';
+import { FeaturePermissionMap, FeaturePermissionFlags } from '../model/permission.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -27,18 +27,18 @@ export class FeaturePermissionService {
     //     return !!f[key];
     // }
 
-    private permissions: PermissionMap = {};
+    private permissions: FeaturePermissionMap = {};
     constructor(private http: HttpClient) {}
 
     loadPerminsions(){
-        return this.http.get<PermissionMap>(`${this.Url}/feature/me`).subscribe((permissions) => {
+        return this.http.get<FeaturePermissionMap>(`${this.Url}/feature/me`).subscribe((permissions) => {
 
             this.permissions = permissions;
             localStorage.setItem('permissions', JSON.stringify(permissions));
         });
     }
 
-    getPermission(feature: string, action: keyof PermissionFlags): boolean {
+    getPermission(feature: string, action: keyof FeaturePermissionFlags): boolean {
         return this.permissions?.[feature]?.[action] ?? false;
     }
 

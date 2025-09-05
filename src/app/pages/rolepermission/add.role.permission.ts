@@ -58,8 +58,8 @@ import { HasPermissionDirective } from '../directives/has-permission.directive';
                     <div class="card flex flex-wrap gap-0 w-full justify-end">
                         <p-buttongroup>
                             <!--                        <p-button label="Save" icon="pi pi-check" (click)="saveRolePermission()" />-->
-                            <p-button *hasPermission="['RLP','save']" type="submit" label="Save" icon="pi pi-check" [disabled]="roleForm.invalid" />
-                            <p-button *hasPermission="['RLP','cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
+                            <p-button *hasFeaturePermission="['RLP','save']" type="submit" label="Save" icon="pi pi-check" [disabled]="roleForm.invalid" />
+                            <p-button *hasFeaturePermission="['RLP','cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
                         </p-buttongroup>
                     </div>
                 </div>
