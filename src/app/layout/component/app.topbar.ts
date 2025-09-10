@@ -15,7 +15,8 @@ import { LayoutService } from '../service/layout.service';
             <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
                 <i class="pi pi-bars"></i>
             </button>
-            <a class="layout-topbar-logo" routerLink="/dashboard">
+            <a class="layout-topbar-logo" routerLink="/dashboard" style="display: flex; align-items: center; text-decoration: none;">
+                <img src="assets/image/logo_istar.png" alt="Istar Business Intelligence" style="height: 35px; width: auto; margin-right: 10px;">
                 <!--
                 <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -35,7 +36,7 @@ import { LayoutService } from '../service/layout.service';
                     </g>
                 </svg>
                 -->
-                <span>Istar Business Intelligence</span>
+                <span style="white-space: nowrap; font-weight: bold;">Istar Business Intelligence</span>
             </a>
         </div>
 
