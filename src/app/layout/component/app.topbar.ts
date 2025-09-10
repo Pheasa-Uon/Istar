@@ -16,6 +16,7 @@ import { LayoutService } from '../service/layout.service';
                 <i class="pi pi-bars"></i>
             </button>
             <a class="layout-topbar-logo" routerLink="/dashboard">
+                <img src="assets/image/midas.png" alt="Istar Business Intelligence" style="height: 35px; width: auto; margin-right: 25px;">
                 <!--
                 <a class="layout-topbar-logo" routerLink="/dashboard" style="display: flex; align-items: center; text-decoration: none;">
                 <img src="assets/image/logo_istar.png" alt="Istar Business Intelligence" style="height: 35px; width: auto; margin-right: 10px;">
@@ -38,7 +39,6 @@ import { LayoutService } from '../service/layout.service';
                 </svg>
                 <span style="white-space: nowrap; font-weight: bold;">Istar Business Intelligence</span>
                 -->
-                <span>Istar Business Intelligence</span>
             </a>
         </div>
 
