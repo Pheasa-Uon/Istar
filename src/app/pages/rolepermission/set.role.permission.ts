@@ -173,7 +173,10 @@ interface CustomTreeNode extends TreeNode {
                                             {{ rowData[col.field] }}
                                         </ng-container>
                                         <ng-container *ngIf="i > 1">
-                                            <input type="checkbox" [(ngModel)]="rowData[col.field]" [disabled]="rowData[col.field + 'Disabled']" />
+                                            <input *ngIf="!hasChildren(rowData); else emptyCell" type="checkbox" [(ngModel)]="rowData[col.field]" [disabled]="rowData[col.field + 'Disabled']" />
+                                            <ng-template #emptyCell>
+                                                <span></span>
+                                            </ng-template>
                                         </ng-container>
                                     </td>
                                 </tr>
