@@ -131,7 +131,15 @@ interface CustomTreeNode extends TreeNode {
                                             {{ rowData[col.field] }}
                                         </ng-container>
                                         <ng-container *ngIf="i > 1">
-                                            <input type="checkbox" [(ngModel)]="rowData[col.field]" [disabled]="rowData[col.field + 'Disabled']" />
+                                            <!-- Hide checkbox for parent nodes with children -->
+                                            <input
+                                                *ngIf="!hasChildren(rowData); else emptyCell"
+                                                type="checkbox"
+                                                [(ngModel)]="rowData[col.field]"
+                                                [disabled]="rowData[col.field + 'Disabled']" />
+                                            <ng-template #emptyCell>
+                                                <span></span>
+                                            </ng-template>
                                         </ng-container>
                                     </td>
                                 </tr>
@@ -230,6 +238,11 @@ export class SetRolePermission implements OnInit {
         this.loadTreeTable();
     }
 
+    // Helper method to check if a node has children
+    hasChildren(rowData: any): boolean {
+        return rowData.children && rowData.children.length > 0;
+    }
+
     loadRole() {
         if (this.roleId > 0) {
             this.http.get(`${environment.apiBase}/roles/${this.roleId}`).subscribe({
@@ -257,7 +270,11 @@ export class SetRolePermission implements OnInit {
     private convertToTreeNodesFeature(features: any[]): CustomTreeNode[] {
         return features.map(feature => ({
             key: feature.id?.toString(),
-            data: { ...feature },
+            data: {
+                ...feature,
+                // Add flag to identify parent nodes
+                isParent: feature.children && feature.children.length > 0
+            },
             children: feature.children ? this.convertToTreeNodesFeature(feature.children) : [],
             expanded: true
         }));
@@ -271,7 +288,8 @@ export class SetRolePermission implements OnInit {
                 name: menu.name,
                 description: menu.description,
                 icon: menu.icon,
-                code: menu.code
+                code: menu.code,
+                isParent: menu.children && menu.children.length > 0
             },
             children: menu.children ? this.convertToTreeNodesMenu(menu.children) : [],
             expanded: true
@@ -281,8 +299,11 @@ export class SetRolePermission implements OnInit {
     private convertToTreeNodesReports(reports: any[]): CustomTreeNode[] {
         return reports.map(report => ({
             key: report.id?.toString(),
-            data: { ...report },
-            children: report.children ? this.convertToTreeNodesFeature(report.children) : [],
+            data: {
+                ...report,
+                isParent: report.children && report.children.length > 0
+            },
+            children: report.children ? this.convertToTreeNodesReports(report.children) : [],
             expanded: true
         }));
     }
@@ -304,7 +325,15 @@ export class SetRolePermission implements OnInit {
                         isEdit: perm?.isEdit ?? false,
                         isDeleted: perm?.isDeleted ?? false,
                         isSave: perm?.isSave ?? false,
-                        isCancel: perm?.isCancel ?? false
+                        isCancel: perm?.isCancel ?? false,
+                        // Disable permission editing for parent nodes
+                        isSearchDisabled: node.data.isParent,
+                        isAddDisabled: node.data.isParent,
+                        isViewedDisabled: node.data.isParent,
+                        isEditDisabled: node.data.isParent,
+                        isDeletedDisabled: node.data.isParent,
+                        isSaveDisabled: node.data.isParent,
+                        isCancelDisabled: node.data.isParent
                     },
                     children: node.children ? mapNode(node.children as CustomTreeNode[]) : []
                 };
@@ -314,24 +343,17 @@ export class SetRolePermission implements OnInit {
     }
 
     mapPermissionsMenu(mainmenus: CustomTreeNode[], menuPermissions: MainMenuPermission[]): CustomTreeNode[] {
-        // Map backend response using mainMenuId
         const permissionMap = new Map<number, MainMenuPermission>();
         menuPermissions.forEach(p => p.mainMenuId && permissionMap.set(p.mainMenuId, p));
 
         const mapNode = (nodes: CustomTreeNode[]): CustomTreeNode[] =>
             nodes.map(node => {
                 const perm = node?.data?.id ? permissionMap.get(node.data.id) : null;
-                // return {
-                //     ...node,
-                //     selected: !!perm?.isVisible,  // <-- use isVisible
-                //     children: node.children ? mapNode(node.children as CustomTreeNode[]) : [],
-                //     selectable: true
-                // };
                 return {
                     ...node,
                     data: {
                         ...node.data,
-                        isVisible: perm?.isVisible ?? false   // <-- keep it in data
+                        isVisible: perm?.isVisible ?? false
                     },
                     children: node.children ? mapNode(node.children as CustomTreeNode[]) : [],
                     expanded: true
@@ -354,6 +376,9 @@ export class SetRolePermission implements OnInit {
                         ...node.data,
                         isViewed: perm?.isViewed ?? false,
                         isExport: perm?.isExport ?? false,
+                        // Disable permission editing for parent nodes in reports too
+                        isViewedDisabled: node.data.isParent,
+                        isExportDisabled: node.data.isParent
                     },
                     children: node.children ? mapNode(node.children as CustomTreeNode[]) : []
                 };
@@ -361,58 +386,6 @@ export class SetRolePermission implements OnInit {
 
         return mapNode(reports);
     }
-
-
-    // saveRolePermission() {
-    //     const payload: any[] = [];
-    //
-    //     const traverseFeatures = (nodes: CustomTreeNode[]) => {
-    //         for (const node of nodes) {
-    //             const d = node.data;
-    //             if (d?.id) {
-    //                 payload.push({
-    //                     roleId: this.roleId,
-    //                     featureId: d.id,
-    //                     isSearch: !!d.isSearch,
-    //                     isAdd: !!d.isAdd,
-    //                     isViewed: !!d.isViewed,
-    //                     isEdit: !!d.isEdit,
-    //                     isDeleted: !!d.isDeleted,
-    //                     isSave: !!d.isSave,
-    //                     isCancel: !!d.isCancel
-    //                 });
-    //             }
-    //             node.children && traverseFeatures(node.children as CustomTreeNode[]);
-    //         }
-    //     };
-    //
-    //     const traverseMenus = (nodes: CustomTreeNode[]) => {
-    //         for (const node of nodes) {
-    //             const d = node.data;
-    //             if (d?.id && node.selected) {
-    //                 payload.push({
-    //                     roleId: this.roleId,
-    //                     menuId: d.id
-    //                 });
-    //             }
-    //             node.children && traverseMenus(node.children as CustomTreeNode[]);
-    //         }
-    //     };
-    //
-    //     traverseFeatures(this.treeTableValueFeature);
-    //     traverseMenus(this.treeTableValueMenu);
-    //
-    //     this.http.post(`${environment.apiBase}/permissions/bulk`, payload).subscribe({
-    //         next: () => {
-    //             alert('Permissions saved successfully!');
-    //             this.router.navigate(['/rolepermission']);
-    //         },
-    //         error: (err) => {
-    //             console.error('Error saving permissions:', err);
-    //             alert('Failed to save permissions. Please try again.');
-    //         }
-    //     });
-    // }
 
     saveRolePermission() {
         const featurePermissions: any[] = [];
@@ -423,7 +396,7 @@ export class SetRolePermission implements OnInit {
         const traverseFeatures = (nodes: CustomTreeNode[]) => {
             for (const node of nodes) {
                 const d = node.data;
-                if (d?.id) {
+                if (d?.id && !d.isParent) { // Only collect permissions for non-parent nodes
                     featurePermissions.push({
                         roleId: this.roleId,
                         featureId: d.id,
@@ -434,7 +407,6 @@ export class SetRolePermission implements OnInit {
                         isDeleted: !!d.isDeleted,
                         isSave: !!d.isSave,
                         isCancel: !!d.isCancel
-                        // Add other flags if needed: isApprove, isReject, isClear, isProcess, isImport, isExport
                     });
                 }
                 node.children && traverseFeatures(node.children as CustomTreeNode[]);
@@ -460,10 +432,10 @@ export class SetRolePermission implements OnInit {
         const traverseReports = (nodes: CustomTreeNode[]) => {
             for (const node of nodes) {
                 const d = node.data;
-                if (d?.id) {
+                if (d?.id && !d.isParent) { // Only collect permissions for non-parent nodes
                     reportPermissions.push({
                         roleId: this.roleId,
-                        reportId: d.id,  // Note: using reportId, not featureId
+                        reportId: d.id,
                         isViewed: !!d.isViewed,
                         isExport: !!d.isExport,
                     });
