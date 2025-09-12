@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { environment } from '../../../environments/environment'; // ✅ adjust based on path
+import { environment } from '../../../../../../environments/environment'; // ✅ adjust based on path
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { RolePermission } from '../model/RolePermission';
+import { RolePermission } from '../../../../model/RolePermission';
 // import { User } from '../../models/user.model'; // or wherever your User model is
 
 export interface User {

@@ -7,9 +7,9 @@ import { ButtonModule } from 'primeng/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { FeaturePermissionService } from '../service/feature.permission.service';
-import { HasPermissionDirective } from '../directives/has-permission.directive';
+import { environment } from '../../../../../environments/environment';
+import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { TabViewModule } from 'primeng/tabview';
 
 // ---- Interfaces ----

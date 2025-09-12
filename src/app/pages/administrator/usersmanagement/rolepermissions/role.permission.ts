@@ -10,14 +10,14 @@ import { InputIconModule } from 'primeng/inputicon';
 import { DialogModule } from 'primeng/dialog';
 import { Fluid } from 'primeng/fluid';
 import { DividerModule } from 'primeng/divider';
-import { RolePermissionService, RolePermission} from '../service/role.permission.service';
+import { RolePermissionService, RolePermission} from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
 import { TreeTableModule } from 'primeng/treetable';
 import { CheckboxModule } from 'primeng/checkbox';
-import { MessageService} from '../message/message.service';
+import { MessageService} from '../../../message/message.service';
 import { forkJoin } from 'rxjs';
-import { RolesStatusService } from '../service/roles.status.service';
-import { FeaturePermissionService } from '../service/feature.permission.service';
-import { HasPermissionDirective } from '../directives/has-permission.directive';
+import { RolesStatusService } from '../../../service/administrator/usersmanagement/rolepermissions/roles.status.service';
+import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 
 @Component({
     selector: 'app-role-permission',

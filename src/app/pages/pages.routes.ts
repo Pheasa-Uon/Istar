@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { Documentation } from './documentation/documentation';
-import { Crud } from './crud/crud';
-import { Empty } from './empty/empty';
-import { Users} from './users/user';
-import { RolePermissions } from './rolepermission/role.permission';
+import { Documentation } from '../UI/documentation/documentation';
+import { Crud } from '../UI/crud/crud';
+import { Empty } from '../UI/empty/empty';
+import { Users} from './administrator/usersmanagement/users/user';
+import { RolePermissions } from './administrator/usersmanagement/rolepermissions/role.permission';
 
 export default [
     { path: 'documentation', component: Documentation },

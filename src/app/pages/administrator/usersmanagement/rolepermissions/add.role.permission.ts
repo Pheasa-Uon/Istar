@@ -1,4 +1,4 @@
-// app/pages/rolepermission/add.role.permission.ts
+// app/pages/rolepermissions/add.role.permission.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -7,14 +7,14 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { TextareaModule } from 'primeng/textarea';
-import { RolePermissionService, RolePermission } from '../service/role.permission.service';
-import { MessageService } from '../message/message.service';
-import { Message } from '../message/message';
+import { RolePermissionService, RolePermission } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
+import { MessageService } from '../../../message/message.service';
+import { Message } from '../../../message/message';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { Fluid } from 'primeng/fluid';
 import { Select } from 'primeng/select';
-import { FeaturePermissionService } from '../service/feature.permission.service';
-import { HasPermissionDirective } from '../directives/has-permission.directive';
+import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 
 @Component({
     selector: 'app-add-role-permission',

@@ -11,15 +11,15 @@ import { InputIconModule } from 'primeng/inputicon';
 import { DialogModule } from 'primeng/dialog';
 import { Fluid } from 'primeng/fluid';
 import { DividerModule } from 'primeng/divider';
-import { UserService, User } from '../service/user.service';
-import { RolePermissionService, RolePermission } from '../service/role.permission.service';
+import { UserService, User } from '../../../service/administrator/usersmanagement/users/user.service';
+import { RolePermissionService, RolePermission } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
 import { TreeTableModule } from 'primeng/treetable';
 import { CheckboxModule } from 'primeng/checkbox';
-import { MessageService } from '../message/message.service';
-import { UsersStatusService } from '../service/user.status.service';
-import { RolesStatusService } from '../service/roles.status.service';
-import { HasPermissionDirective } from '../directives/has-permission.directive';
-import { FeaturePermissionService } from '../service/feature.permission.service';
+import { MessageService } from '../../../message/message.service';
+import { UsersStatusService } from '../../../service/administrator/usersmanagement/users/user.status.service';
+import { RolesStatusService } from '../../../service/administrator/usersmanagement/rolepermissions/roles.status.service';
+import { HasPermissionDirective } from '../../../directives/has-permission.directive';
+import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 
 @Component({
     selector: 'app-users',

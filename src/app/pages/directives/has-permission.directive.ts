@@ -1,5 +1,5 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
-import { FeaturePermissionService } from '../service/feature.permission.service';
+import { FeaturePermissionService } from '../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 
 @Directive({
   selector: '[hasFeaturePermission]'

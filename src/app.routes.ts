@@ -2,16 +2,16 @@ import { Routes } from '@angular/router';
 import { AppLayout } from './app/layout/component/app.layout';
 import { Login } from './app/pages/auth/login';
 import { Dashboard } from './app/pages/dashboard/dashboard';
-import { Documentation } from './app/pages/documentation/documentation';
-import { Landing } from './app/pages/landing/landing';
+import { Documentation } from './app/UI/documentation/documentation';
+import { Landing } from './app/UI/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
-import { Users } from './app/pages/users/user';
-import { AddUser } from './app/pages/users/adduser';
-import { EditUser } from './app/pages/users/edituser';
-import { RolePermissions } from './app/pages/rolepermission/role.permission';
-import { AddRolePermission } from './app/pages/rolepermission/add.role.permission';
-import { EditRolePermission } from './app/pages/rolepermission/edit.role.permission';
-import { SetRolePermission } from './app/pages/rolepermission/set.role.permission';
+import { Users } from './app/pages/administrator/usersmanagement/users/user';
+import { AddUser } from './app/pages/administrator/usersmanagement/users/adduser';
+import { EditUser } from './app/pages/administrator/usersmanagement/users/edituser';
+import { RolePermissions } from './app/pages/administrator/usersmanagement/rolepermissions/role.permission';
+import { AddRolePermission } from './app/pages/administrator/usersmanagement/rolepermissions/add.role.permission';
+import { EditRolePermission } from './app/pages/administrator/usersmanagement/rolepermissions/edit.role.permission';
+import { SetRolePermission } from './app/pages/administrator/usersmanagement/rolepermissions/set.role.permission';
 import { AuthGuard} from './app/pages/auth/AuthGuard';
 
 export const appRoutes: Routes = [
@@ -49,7 +49,7 @@ export const appRoutes: Routes = [
             { path: 'setrolepermission/:id', component: SetRolePermission },
 
             // Lazy loaded modules - make sure these modules exist and export NgModule classes
-            { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
+            { path: 'uikit', loadChildren: () => import('./app/UI/uikit/uikit.routes') },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }
         ]
     },
