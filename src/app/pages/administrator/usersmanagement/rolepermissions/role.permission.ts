@@ -13,7 +13,7 @@ import { DividerModule } from 'primeng/divider';
 import { RolePermissionService, RolePermission} from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
 import { TreeTableModule } from 'primeng/treetable';
 import { CheckboxModule } from 'primeng/checkbox';
-import { MessageService} from '../../../message/message.service';
+import { MessageService} from '../../../../UI/message/message.service';
 import { forkJoin } from 'rxjs';
 import { RolesStatusService } from '../../../service/administrator/usersmanagement/rolepermissions/roles.status.service';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';

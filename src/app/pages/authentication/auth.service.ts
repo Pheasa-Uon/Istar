@@ -1,4 +1,4 @@
-// src/app/pages/auth/auth.service.ts
+// src/app/pages/authentication/authentication.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment'; // Make sure this path is correct

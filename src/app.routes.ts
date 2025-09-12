@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AppLayout } from './app/layout/component/app.layout';
-import { Login } from './app/pages/auth/login';
+import { Login } from './app/pages/authentication/login';
 import { Dashboard } from './app/pages/dashboard/dashboard';
 import { Documentation } from './app/UI/documentation/documentation';
 import { Landing } from './app/UI/landing/landing';
@@ -12,7 +12,7 @@ import { RolePermissions } from './app/pages/administrator/usersmanagement/rolep
 import { AddRolePermission } from './app/pages/administrator/usersmanagement/rolepermissions/add.role.permission';
 import { EditRolePermission } from './app/pages/administrator/usersmanagement/rolepermissions/edit.role.permission';
 import { SetRolePermission } from './app/pages/administrator/usersmanagement/rolepermissions/set.role.permission';
-import { AuthGuard} from './app/pages/auth/AuthGuard';
+import { AuthGuard} from './app/pages/authentication/AuthGuard';
 
 export const appRoutes: Routes = [
 
@@ -55,7 +55,7 @@ export const appRoutes: Routes = [
     },
 
     // Auth module lazy loaded (optional, depends on your setup)
-    { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
+    { path: 'auth', loadChildren: () => import('./app/pages/authentication/auth.routes') },
 
     // Not found page
     { path: 'notfound', component: Notfound },

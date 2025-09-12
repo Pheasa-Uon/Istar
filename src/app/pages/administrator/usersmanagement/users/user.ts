@@ -15,7 +15,7 @@ import { UserService, User } from '../../../service/administrator/usersmanagemen
 import { RolePermissionService, RolePermission } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
 import { TreeTableModule } from 'primeng/treetable';
 import { CheckboxModule } from 'primeng/checkbox';
-import { MessageService } from '../../../message/message.service';
+import { MessageService } from '../../../../UI/message/message.service';
 import { UsersStatusService } from '../../../service/administrator/usersmanagement/users/user.status.service';
 import { RolesStatusService } from '../../../service/administrator/usersmanagement/rolepermissions/roles.status.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';

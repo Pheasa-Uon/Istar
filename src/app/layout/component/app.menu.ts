@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
 import { environment } from '../../../environments/environment';
-import { AuthService } from '../../pages/auth/auth.service';
+import { AuthService } from '../../pages/authentication/auth.service';
 import { MenuPermissionDTO, MenuService } from '../service/menu.service';
 
 @Component({
@@ -90,17 +90,17 @@ export class AppMenu implements OnInit {
                                 {
                                     label: 'Login',
                                     icon: 'pi pi-fw pi-sign-in',
-                                    routerLink: ['/auth/login']
+                                    routerLink: ['/authentication/login']
                                 },
                                 {
                                     label: 'Error',
                                     icon: 'pi pi-fw pi-times-circle',
-                                    routerLink: ['/auth/error']
+                                    routerLink: ['/authentication/error']
                                 },
                                 {
                                     label: 'Access Denied',
                                     icon: 'pi pi-fw pi-lock',
-                                    routerLink: ['/auth/access']
+                                    routerLink: ['/authentication/access']
                                 }
                             ]
                         },

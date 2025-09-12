@@ -9,8 +9,8 @@ import { Textarea } from 'primeng/textarea';
 import { Fluid } from 'primeng/fluid';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { UserService, User } from '../../../service/administrator/usersmanagement/users/user.service';
-import { MessageService } from '../../../message/message.service';
-import { Message } from '../../../message/message';
+import { MessageService } from '../../../../UI/message/message.service';
+import { Message } from '../../../../UI/message/message';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 
