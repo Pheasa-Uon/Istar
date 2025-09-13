@@ -53,6 +53,7 @@ interface ExportColumn {
         InputIconModule,
         IconFieldModule,
         ConfirmDialogModule
+
     ],
     template: `
         <p-toolbar styleClass="mb-6">

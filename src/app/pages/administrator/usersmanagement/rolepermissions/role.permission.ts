@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,28 +8,50 @@ import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { DialogModule } from 'primeng/dialog';
-import { Fluid } from 'primeng/fluid';
 import { DividerModule } from 'primeng/divider';
-import { RolePermissionService, RolePermission} from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
 import { TreeTableModule } from 'primeng/treetable';
 import { CheckboxModule } from 'primeng/checkbox';
-import { MessageService} from '../../../../UI/message/message.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { forkJoin } from 'rxjs';
+
+import { Fluid } from 'primeng/fluid';
+import { HasPermissionDirective } from '../../../directives/has-permission.directive';
+import { RolePermissionService, RolePermission } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
 import { RolesStatusService } from '../../../service/administrator/usersmanagement/rolepermissions/roles.status.service';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
-import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 
 @Component({
     selector: 'app-role-permission',
     standalone: true,
-    imports: [CommonModule, FormsModule, TableModule, InputTextModule, ButtonModule, IconFieldModule, InputIconModule, DialogModule, Fluid, DividerModule, TreeTableModule, CheckboxModule, HasPermissionDirective],
+    imports: [
+        CommonModule,
+        FormsModule,
+        TableModule,
+        InputTextModule,
+        ButtonModule,
+        IconFieldModule,
+        InputIconModule,
+        DialogModule,
+        Fluid,
+        DividerModule,
+        TreeTableModule,
+        CheckboxModule,
+        HasPermissionDirective,
+        ConfirmDialogModule
+    ],
+    providers: [ConfirmationService, MessageService],
     template: `
         <div class="card">
             <div class="font-semibold text-xl mb-4">Role Permission</div>
 
             <p-fluid class="flex flex-col md:flex-row gap-2 justify-end items-center">
                 <div class="flex flex-wrap gap-2 md:w-1/2">
-                    <p-button *hasFeaturePermission="['RLP','add']" label="Add New" icon="pi pi-user-plus" (click)="addRolePermission()"></p-button>
+                    <p-button *hasFeaturePermission="['RLP','add']"
+                              label="Add New"
+                              icon="pi pi-user-plus"
+                              (click)="addRolePermission()">
+                    </p-button>
                 </div>
                 <div class="md:w-1/2">
                     <div class="card flex flex-col gap-2">
@@ -41,7 +63,13 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
                 </div>
                 <div class="card flex flex-col gap-2">
                     <div class="flex flex-wrap gap-2 md:w-1/2 justify-end items-center">
-                        <p-button *hasFeaturePermission="['RLP','search']"  type="button" label="Search" icon="pi pi-search" [loading]="loading[0]" (click)="searchRoles()" />
+                        <p-button *hasFeaturePermission="['RLP','search']"
+                                  type="button"
+                                  label="Search"
+                                  icon="pi pi-search"
+                                  [loading]="loading[0]"
+                                  (click)="searchRoles()">
+                        </p-button>
                     </div>
                 </div>
             </p-fluid>
@@ -64,10 +92,40 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
                         <td>{{ getRolesStatus(rolePermissions.rolesStatus || '') }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
-                                <p-button *hasFeaturePermission="['RLP','view']"  icon="pi pi-eye" text raised rounded (click)="viewRole(rolePermissions)" />
-                                <p-button *hasFeaturePermission="['RLP','add']"  icon="pi pi-share-alt" severity="info" text raised rounded (click)="setRolePermission(rolePermissions)" />
-                                <p-button *hasFeaturePermission="['RLP','edit']"  icon="pi pi-pencil" severity="info" text raised rounded (click)="editRolePermission(rolePermissions)" />
-                                <p-button *hasFeaturePermission="['RLP','deleted']"  icon="pi pi-trash" severity="danger" text raised rounded (click)="deleteRole(rolePermissions)" />
+                                <p-button *hasFeaturePermission="['RLP','view']"
+                                          icon="pi pi-eye"
+                                          text
+                                          raised
+                                          rounded
+                                          (click)="viewRole(rolePermissions)">
+                                </p-button>
+
+                                <p-button *hasFeaturePermission="['RLP','add']"
+                                          icon="pi pi-share-alt"
+                                          severity="info"
+                                          text
+                                          raised
+                                          rounded
+                                          (click)="setRolePermission(rolePermissions)">
+                                </p-button>
+
+                                <p-button *hasFeaturePermission="['RLP','edit']"
+                                          icon="pi pi-pencil"
+                                          severity="info"
+                                          text
+                                          raised
+                                          rounded
+                                          (click)="editRolePermission(rolePermissions)">
+                                </p-button>
+
+                                <p-button *hasFeaturePermission="['RLP','deleted']"
+                                          icon="pi pi-trash"
+                                          severity="danger"
+                                          text
+                                          raised
+                                          rounded
+                                          (click)="deleteRole(rolePermissions)">
+                                </p-button>
                             </div>
                         </td>
                     </tr>
@@ -76,7 +134,11 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
         </div>
 
         <!-- View User Dialog -->
-        <p-dialog header="Role Permission Details" [(visible)]="displayDetails" [modal]="true" [style]="{ width: '1100px' }" [closable]="true">
+        <p-dialog header="Role Permission Details"
+                  [(visible)]="displayDetails"
+                  [modal]="true"
+                  [style]="{ width: '1100px' }"
+                  [closable]="true">
             <p-divider></p-divider>
             <div class="flex flex-col md:flex-row">
                 <!-- Labels Column 1 -->
@@ -104,6 +166,9 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
                 </div>
             </div>
         </p-dialog>
+
+        <!-- Confirmation Dialog -->
+        <p-confirmDialog></p-confirmDialog>
     `
 })
 export class RolePermissions {
@@ -113,14 +178,14 @@ export class RolePermissions {
     displayDetails = false;
     selectedRole: RolePermission | null = null;
     statusMap: Record<string, string> = {};
-    //showPassword = false;
 
     constructor(
         private rolePermissionService: RolePermissionService,
         private messageService: MessageService,
         private statusService: RolesStatusService,
         private router: Router,
-        private permissionService: FeaturePermissionService
+        private permissionService: FeaturePermissionService,
+        private confirmationService: ConfirmationService
     ) {
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();
@@ -137,7 +202,7 @@ export class RolePermissions {
             },
             error: (err) => {
                 console.error('Initialization error:', err);
-                this.messageService.show({
+                this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
                     detail: 'Failed to load initial data.'
@@ -155,14 +220,13 @@ export class RolePermissions {
             },
             error: () => {
                 this.loading[0] = false;
-                // show error message if needed
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Search failed.'
+                });
             }
         });
-    }
-
-    load(index: number) {
-        this.loading[index] = true;
-        setTimeout(() => (this.loading[index] = false), 1000);
     }
 
     addRolePermission() {
@@ -183,30 +247,37 @@ export class RolePermissions {
     }
 
     deleteRole(rolePermissions: RolePermission) {
-        if (confirm(`Are you sure you want to delete role "${rolePermissions.name}"?`)) {
-            this.rolePermissionService.deleteRole(rolePermissions.id!).subscribe({
-                next: () => {
-                    // Removed UI update here
-
-                    // Show success message only
-                    this.messageService.show({
-                        severity: 'success',
-                        summary: 'Deleted',
-                        detail: `User "${rolePermissions.name}" deleted successfully.`
-                    });
-                },
-                error: (err) => {
-                    this.messageService.show({
-                        severity: 'error',
-                        summary: 'Error',
-                        detail: 'Failed to delete user.'
-                    });
-                }
-            });
-        }
+        this.confirmationService.confirm({
+            message: `Are you sure you want to delete role "${rolePermissions.name}"?`,
+            header: 'Confirm',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                this.rolePermissionService.deleteRole(rolePermissions.id!).subscribe({
+                    next: () => {
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Deleted',
+                            detail: `Role "${rolePermissions.name}" deleted successfully.`,
+                            life: 3000
+                        });
+                        // remove from UI list
+                        this.roleList = this.roleList.filter(r => r.id !== rolePermissions.id);
+                    },
+                    error: () => {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: 'Failed to delete role.',
+                            life: 3000
+                        });
+                    }
+                });
+            }
+        });
     }
 
     getRolesStatus(code: string): string {
         return this.statusMap[code] || code;
     }
 }
+
