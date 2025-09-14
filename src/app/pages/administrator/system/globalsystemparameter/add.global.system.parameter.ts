@@ -24,7 +24,7 @@ import {
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 
 @Component({
-    selector: 'app-add-role-permission',
+    selector: 'app-add-global-system-parameter',
     standalone: true,
     imports: [
         CommonModule,
@@ -59,9 +59,11 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                                 [options]="dropdownModuleNameItems"
                                 optionLabel="name" optionValue="code"
                                 placeholder="Select One" class="w-full"
-                                (onChange)="onModuleChange($event)">
+                                (onChange)="onModuleChange($event)"
+                                [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.moduleName }"
+                                required>
                             </p-select>
-                            <small *ngIf="gspForm.submitted && !globalSystemParameter.moduleName" class="text-red-500">Module Name is required.</small>
+                            <small *ngIf="submitted && !globalSystemParameter.moduleName" class="text-red-500">Module Name is required.</small>
                         </div>
 
                         <div class="flex flex-wrap gap-2 w-full">
@@ -71,9 +73,11 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                                 [(ngModel)]="globalSystemParameter.fieldName"
                                 [options]="dropdownFieldItems"
                                 optionLabel="name" optionValue="code"
-                                placeholder="Select One" class="w-full">
+                                placeholder="Select One" class="w-full"
+                                [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.fieldName }"
+                                required>
                             </p-select>
-                            <small *ngIf="gspForm.submitted && !globalSystemParameter.fieldName" class="text-red-500">Field Name is required.</small>
+                            <small *ngIf="submitted && !globalSystemParameter.fieldName" class="text-red-500">Field Name is required.</small>
                         </div>
                     </div>
 
@@ -81,13 +85,18 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="sysParCode">Sys par code <span class="text-red-500">*</span></label>
-                            <input pInputText id="sysParCode" name="sysParCode" type="text" placeholder="Sys par code" [(ngModel)]="globalSystemParameter.sysParCode"  maxlength="15" /> <!-- 👈 limit to 15 characters -->
-                            <small *ngIf="gspForm.submitted && !globalSystemParameter.sysParCode" class="text-red-500">Sys par code is required.</small>
+                            <input pInputText id="sysParCode" name="sysParCode" type="text" placeholder="Sys par code"
+                                   [(ngModel)]="globalSystemParameter.sysParCode" maxlength="15"
+                                   required class="w-full"
+                                   [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.sysParCode }" />
+                            <small *ngIf="submitted && !globalSystemParameter.sysParCode" class="text-red-500">Sys par code is required.</small>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="valueName">Value Name <span class="text-red-500">*</span></label>
-                            <input pInputText id="valueName" name="valueName" type="text" placeholder="Value Name" [(ngModel)]="globalSystemParameter.valueName" />
-                            <small *ngIf="gspForm.submitted && !globalSystemParameter.valueName" class="text-red-500">Value Name is required.</small>
+                            <input pInputText id="valueName" name="valueName" type="text" placeholder="Value Name"
+                                   [(ngModel)]="globalSystemParameter.valueName" required class="w-full"
+                                   [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.valueName }" />
+                            <small *ngIf="submitted && !globalSystemParameter.valueName" class="text-red-500">Value Name is required.</small>
                         </div>
                     </div>
 
@@ -95,16 +104,19 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="localValueName">Local Value Name <span class="text-red-500">*</span></label>
-                            <input pInputText id="localValueName" name="localValueName" type="text" placeholder="Local value name" [(ngModel)]="globalSystemParameter.localValueName" />
-                            <small *ngIf="gspForm.submitted && !globalSystemParameter.localValueName" class="text-red-500">Local value name is required.</small>
+                            <input pInputText id="localValueName" name="localValueName" type="text" placeholder="Local value name"
+                                   [(ngModel)]="globalSystemParameter.localValueName" required class="w-full"
+                                   [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.localValueName }" />
+                            <small *ngIf="submitted && !globalSystemParameter.localValueName" class="text-red-500">Local value name is required.</small>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="displayOrder">Order <span class="text-red-500">*</span></label>
-                            <input pInputText id="displayOrder" name="displayOrder" type="number" placeholder="Order" [(ngModel)]="globalSystemParameter.displayOrder" />
-                            <small *ngIf="gspForm.submitted && (globalSystemParameter.displayOrder === null || globalSystemParameter.displayOrder === undefined)" class="text-red-500">
+                            <input pInputText id="displayOrder" name="displayOrder" type="number" placeholder="Order"
+                                   [(ngModel)]="globalSystemParameter.displayOrder" required class="w-full"
+                                   [ngClass]="{ 'p-invalid': submitted && (globalSystemParameter.displayOrder === null || globalSystemParameter.displayOrder === undefined) }" />
+                            <small *ngIf="submitted && (globalSystemParameter.displayOrder === null || globalSystemParameter.displayOrder === undefined)" class="text-red-500">
                                 Order is required.
                             </small>
-
                         </div>
                     </div>
 
@@ -112,20 +124,27 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="status">Status</label>
-                            <p-select id="status" name="status" [(ngModel)]="globalSystemParameter.sysParStatus" [options]="dropdownStatusItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
+                            <p-select id="status" name="status"
+                                      [(ngModel)]="globalSystemParameter.sysParStatus"
+                                      [options]="dropdownStatusItems"
+                                      optionLabel="name" optionValue="code"
+                                      placeholder="Select One" class="w-full"></p-select>
                         </div>
                     </div>
 
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="description">Description</label>
-                        <textarea pTextarea id="description" name="description" rows="4" [(ngModel)]="globalSystemParameter.description"></textarea>
+                        <textarea pTextarea id="description" name="description" rows="4"
+                                  [(ngModel)]="globalSystemParameter.description" class="w-full"></textarea>
                     </div>
 
                     <!-- Buttons -->
                     <div class="card flex flex-wrap gap-0 w-full justify-end">
                         <p-buttongroup>
-                            <p-button *hasFeaturePermission="['GSP','save']" type="submit" label="Save" icon="pi pi-check" [disabled]="gspForm.invalid"></p-button>
-                            <p-button *hasFeaturePermission="['GSP','cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
+                            <p-button *hasFeaturePermission="['GSP','save']" type="submit" label="Save" icon="pi pi-check"
+                                      [disabled]="gspForm.invalid"></p-button>
+                            <p-button *hasFeaturePermission="['GSP','cancel']" label="Cancel" icon="pi pi-times"
+                                      (click)="goBack()"></p-button>
                         </p-buttongroup>
                     </div>
                 </div>
@@ -134,6 +153,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
     `
 })
 export class AddGlobalSystemParameter implements OnInit {
+    submitted = false; // Added submitted flag like in AddUser
     globalSystemParameter: GlobalSystemParameter = {
         id: undefined,
         sysParCode: '',
@@ -191,6 +211,19 @@ export class AddGlobalSystemParameter implements OnInit {
     }
 
     saveGlobalSystemParameter() {
+        this.submitted = true; // Set submitted flag like in AddUser
+
+        // Validate required fields before proceeding
+        if (!this.globalSystemParameter.moduleName ||
+            !this.globalSystemParameter.fieldName ||
+            !this.globalSystemParameter.sysParCode ||
+            !this.globalSystemParameter.valueName ||
+            !this.globalSystemParameter.localValueName ||
+            this.globalSystemParameter.displayOrder === null ||
+            this.globalSystemParameter.displayOrder === undefined) {
+            return; // don't proceed if required fields are missing
+        }
+
         this.globalSystemParameterService.addGlobalSystemParameter(this.globalSystemParameter).subscribe({
             next: () => {
                 this.messageService.show({

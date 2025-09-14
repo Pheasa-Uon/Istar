@@ -1,4 +1,3 @@
-// app/pages/rolepermissions/add.role.permission.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -33,12 +32,12 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="roleid">Role Id</label>
-                            <input pInputText id="roleid" name="rolesCode" type="text" placeholder="Auto" [readOnly]="true" [(ngModel)]="rolepermission.rolesCode" />
+                            <input pInputText id="roleid" name="rolesCode" type="text" placeholder="Auto" [readOnly]="true" [(ngModel)]="rolepermission.rolesCode" class="w-full" />
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="name">Role Name <span class="text-red-500">*</span></label>
-                            <input pInputText id="name" name="name" type="text" [(ngModel)]="rolepermission.name" required class="w-full" [ngClass]="{ 'p-invalid': roleForm.submitted && !rolepermission.name }" />
-                            <small *ngIf="roleForm.submitted && !rolepermission.name" class="text-red-500">Role Name is required.</small>
+                            <input pInputText id="name" name="name" type="text" [(ngModel)]="rolepermission.name" required class="w-full" [ngClass]="{ 'p-invalid': submitted && !rolepermission.name }" />
+                            <small *ngIf="submitted && !rolepermission.name" class="text-red-500">Role Name is required.</small>
                         </div>
                     </div>
 
@@ -52,12 +51,11 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
 
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="description">Description</label>
-                        <textarea pTextarea id="description" name="description" rows="4" [(ngModel)]="rolepermission.description"></textarea>
+                        <textarea pTextarea id="description" name="description" rows="4" [(ngModel)]="rolepermission.description" class="w-full"></textarea>
                     </div>
 
                     <div class="card flex flex-wrap gap-0 w-full justify-end">
                         <p-buttongroup>
-                            <!--                        <p-button label="Save" icon="pi pi-check" (click)="saveRolePermission()" />-->
                             <p-button *hasFeaturePermission="['RLP','save']" type="submit" label="Save" icon="pi pi-check" [disabled]="roleForm.invalid" />
                             <p-button *hasFeaturePermission="['RLP','cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
                         </p-buttongroup>
@@ -68,6 +66,7 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
     `
 })
 export class AddRolePermission {
+    submitted = false; // Added submitted flag
     rolepermission: RolePermission = {
         id: undefined,
         rolesCode: '',
@@ -97,6 +96,12 @@ export class AddRolePermission {
     }
 
     saveRolePermission() {
+        this.submitted = true; // Set submitted flag
+
+        if (!this.rolepermission.name) {
+            return; // don't proceed if required field is missing
+        }
+
         this.rolePermissionService.addRolePermission(this.rolepermission).subscribe({
             next: () => {
                 this.messageService.show({
