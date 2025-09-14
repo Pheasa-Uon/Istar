@@ -61,7 +61,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
         </p-fluid>
     `
 })
-export class EditRolePermission {
+export class EditGlobalSystemParameter {
     role: RolePermission = {
         id: undefined,
         rolesCode: '',
@@ -91,7 +91,7 @@ export class EditRolePermission {
     }
 
     goBack() {
-        this.router.navigate(['/role-permission']);
+        this.router.navigate(['/rolepermission']);
     }
 
     saveRolePermission() {

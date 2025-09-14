@@ -76,7 +76,7 @@ interface CustomTreeNode extends TreeNode {
                             [columns]="colsMenu"
                             dataKey="key"
                             [scrollable]="true"
-                            [tableStyle]="{ 'min-width': '1000px' }">
+                            [tableStyle]="{ 'min-width': '450px' }">
 
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
@@ -112,7 +112,7 @@ interface CustomTreeNode extends TreeNode {
                             [columns]="colsFeature"
                             [scrollable]="true"
                             scrollHeight="475px"
-                            [tableStyle]="{ 'min-width': '1000px' }">
+                            [tableStyle]="{ 'min-width': '450px' }">
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
                                     <th *ngFor="let col of columns" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; text-align: left; white-space: nowrap;">
@@ -154,7 +154,7 @@ interface CustomTreeNode extends TreeNode {
                             [columns]="colsReport"
                             [scrollable]="true"
                             scrollHeight="475px"
-                            [tableStyle]="{ 'min-width': '1000px' }">
+                            [tableStyle]="{ 'min-width': '450px' }">
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
                                     <th *ngFor="let col of columns" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; text-align: left; white-space: nowrap;">
@@ -471,7 +471,7 @@ export class SetRolePermission implements OnInit {
         this.http.post(`${environment.apiBase}/rolepermissions/bulk`, payload).subscribe({
             next: () => {
                 alert('Permissions saved successfully!');
-                this.router.navigate(['/rolepermission']);
+                this.router.navigate(['/role-permission']);
             },
             error: (err) => {
                 console.error('Error saving permissions:', err);
@@ -485,6 +485,6 @@ export class SetRolePermission implements OnInit {
     }
 
     goBack() {
-        this.router.navigate(['/rolepermission']);
+        this.router.navigate(['/role-permission']);
     }
 }

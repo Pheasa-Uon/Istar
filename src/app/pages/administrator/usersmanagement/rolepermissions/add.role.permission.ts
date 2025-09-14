@@ -93,7 +93,7 @@ export class AddRolePermission {
     }
 
     goBack() {
-        this.router.navigate(['/rolepermission']);
+        this.router.navigate(['/role-permission']);
     }
 
     saveRolePermission() {

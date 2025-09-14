@@ -162,7 +162,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     `
 })
 
-export class Users {
+export class UsersComponent {
     usersList: User[] = [];
     roleList: RolePermission[] = [];
     loading = [false];
@@ -267,11 +267,11 @@ export class Users {
     }
 
     addNewUser() {
-        this.router.navigate(['/adduser']);
+        this.router.navigate(['/add-user']);
     }
 
     editUser(user: User) {
-        this.router.navigate(['/edituser'], { state: { user } });
+        this.router.navigate(['/edit-user'], { state: { user } });
     }
 
     // deleteUser(user: User) {

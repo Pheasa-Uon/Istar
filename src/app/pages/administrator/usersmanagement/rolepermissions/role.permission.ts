@@ -171,7 +171,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
         <p-confirmDialog></p-confirmDialog>
     `
 })
-export class RolePermissions {
+export class RolePermissionsComponent {
     roleList: RolePermission[] = [];
     loading = [false];
     searchText = '';
@@ -230,15 +230,15 @@ export class RolePermissions {
     }
 
     addRolePermission() {
-        this.router.navigate(['/addrolepermission']);
+        this.router.navigate(['/add-role-permission']);
     }
 
     editRolePermission(rolePermissions: RolePermission) {
-        this.router.navigate(['/editrolepermission'], { state: { rolePermissions } });
+        this.router.navigate(['/edit-role-permission'], { state: { rolePermissions } });
     }
 
     setRolePermission(rolePermissions: RolePermission) {
-        this.router.navigate(['/setrolepermission', rolePermissions.id]);
+        this.router.navigate(['/set-role-permission', rolePermissions.id]);
     }
 
     viewRole(rolePermissions: RolePermission) {

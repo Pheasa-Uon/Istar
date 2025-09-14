@@ -5,14 +5,17 @@ import { Dashboard } from './app/pages/dashboard/dashboard';
 import { Documentation } from './app/UI/documentation/documentation';
 import { Landing } from './app/UI/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
-import { Users } from './app/pages/administrator/usersmanagement/users/user';
+import { UsersComponent } from './app/pages/administrator/usersmanagement/users/user';
 import { AddUser } from './app/pages/administrator/usersmanagement/users/adduser';
 import { EditUser } from './app/pages/administrator/usersmanagement/users/edituser';
-import { RolePermissions } from './app/pages/administrator/usersmanagement/rolepermissions/role.permission';
+import { RolePermissionsComponent } from './app/pages/administrator/usersmanagement/rolepermissions/role.permission';
 import { AddRolePermission } from './app/pages/administrator/usersmanagement/rolepermissions/add.role.permission';
 import { EditRolePermission } from './app/pages/administrator/usersmanagement/rolepermissions/edit.role.permission';
 import { SetRolePermission } from './app/pages/administrator/usersmanagement/rolepermissions/set.role.permission';
 import { AuthGuard} from './app/pages/authentication/AuthGuard';
+import { GlobalSystemParameterComponent } from './app/pages/administrator/system/globalsystemparameter/global.system.parameter';
+import { AddGlobalSystemParameter } from './app/pages/administrator/system/globalsystemparameter/add.global.system.parameter';
+import { EditGlobalSystemParameter } from './app/pages/administrator/system/globalsystemparameter/edit.global.system.parameter';
 
 export const appRoutes: Routes = [
 
@@ -37,16 +40,20 @@ export const appRoutes: Routes = [
             { path: 'documentation', component: Documentation },
 
             // User routes
-            { path: 'user', component: Users },
-            { path: 'adduser', component: AddUser },
-            // { path: 'edituser', canActivate: [PermissionGuard('USR','EDIT')], loadComponent: () => EditUser },
-            { path: 'edituser', component: EditUser },
+            { path: 'user', component: UsersComponent },
+            { path: 'add-user', component: AddUser },
+            { path: 'edit-user', component: EditUser },
 
             // Role permissions routes
-            { path: 'rolepermission', component: RolePermissions },
-            { path: 'addrolepermission', component: AddRolePermission },
-            { path: 'editrolepermission', component: EditRolePermission },
-            { path: 'setrolepermission/:id', component: SetRolePermission },
+            { path: 'role-permission', component: RolePermissionsComponent },
+            { path: 'add-role-permission', component: AddRolePermission },
+            { path: 'edit-role-permission', component: EditRolePermission },
+            { path: 'set-role-permission/:id', component: SetRolePermission },
+
+            // Global System Parameter routes
+            { path: 'global-system-parameter', component: GlobalSystemParameterComponent },
+            { path: 'add-global-system-parameter', component: AddGlobalSystemParameter },
+            { path: 'edit-global-system-parameter', component: EditGlobalSystemParameter },
 
             // Lazy loaded modules - make sure these modules exist and export NgModule classes
             { path: 'uikit', loadChildren: () => import('./app/UI/uikit/uikit.routes') },

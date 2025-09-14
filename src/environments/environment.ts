@@ -14,8 +14,9 @@ export const environment = {
         },
         rolepermissions: '/rolepermissions',
         userroles: '/userroles',
-
-
-
+        system: {
+            convertername: '/converter-name',
+            globalSystemParameter: '/system/global-system-parameter'
+        }
     }
 };
