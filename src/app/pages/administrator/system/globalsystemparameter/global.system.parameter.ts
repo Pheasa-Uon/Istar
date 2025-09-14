@@ -64,8 +64,19 @@ import { GSPStatusService } from '../../../service/administrator/system/gsp.stat
                     </div>
                 </div>
             </p-fluid>
-
+            <!--
             <p-table [value]="gspList" [scrollable]="true" scrollHeight="475px" class="mt-4">
+            -->
+            <p-table
+                [value]="gspList"
+                [rows]="5"
+                [paginator]="true"
+                [rowHover]="true"
+                dataKey="id"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} global system parameters"
+                [showCurrentPageReport]="true"
+                [rowsPerPageOptions]="[5, 10, 15, 20, 25, 30]"
+            >
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="min-width:100px">Sys Par Code</th>
