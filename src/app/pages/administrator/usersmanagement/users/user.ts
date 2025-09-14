@@ -48,7 +48,9 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                 </div>
             </p-fluid>
 
-            <p-table [value]="usersList" *ngIf="usersList" [scrollable]="true" scrollHeight="400px" class="mt-4">
+            <p-table
+                [value]="usersList" *ngIf="usersList" [scrollable]="true" scrollHeight="475px" class="mt-4"
+            >
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="min-width:100px">User Id</th>
