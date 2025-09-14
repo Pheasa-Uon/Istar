@@ -52,8 +52,20 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
                 </div>
             </p-fluid>
 
+            <!--
             <p-table
                 [value]="usersList" *ngIf="usersList" [scrollable]="true" scrollHeight="475px" class="mt-4"
+            >
+            -->
+            <p-table
+                [value]="usersList" *ngIf="usersList"
+                [rows]="5"
+                [paginator]="true"
+                [rowHover]="true"
+                dataKey="id"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Users"
+                [showCurrentPageReport]="true"
+                [rowsPerPageOptions]="[5, 10, 15, 20, 25, 30]"
             >
                 <ng-template pTemplate="header">
                     <tr>
@@ -77,8 +89,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button *hasFeaturePermission="['USR','view']" icon="pi pi-eye" text raised rounded (click)="viewUser(user)"></p-button>
-                                <p-button *hasFeaturePermission="['USR','edit']" icon="pi pi-pencil" severity="info" text raised rounded (click)="editUser(user)"></p-button>
-                                <p-button *hasFeaturePermission="['USR','deleted']" icon="pi pi-trash" severity="danger" text raised rounded (click)="deleteUser(user)"></p-button>
+                                <p-button *hasFeaturePermission="['USR','edit']" icon="pi pi-user-edit" severity="info" text raised rounded (click)="editUser(user)"></p-button>
+                                <p-button *hasFeaturePermission="['USR','deleted']" icon="pi pi-user-minus" severity="danger" text raised rounded (click)="deleteUser(user)"></p-button>
                             </div>
                         </td>
                     </tr>
@@ -292,7 +304,7 @@ export class UsersComponent {
         this.confirmationService.confirm({
             message: `Are you sure you want to delete user name "${user.name}"?`,
             header: 'Confirm',
-            icon: 'pi pi-exclamation-triangle',
+            icon: 'pi pi-fw pi-exclamation-circle',
             accept: () =>{
                 this.userService.deleteUser(user.id!).subscribe({
                     next: () => {
