@@ -25,26 +25,21 @@ export class GSPStatusService {
         return this.http.get<Record<string, string>>(`${this.apiUrlGSP}/status`);
     }
 
-    getFieldNames(): Observable<Record<string, string>> {
-        return this.http.get<Record<string, string>>(`${this.apiUrl}/module-fields`);
+    getModuleFields(moduleCode: string): Observable<DropdownItemFieldName[]> {
+        const params = new HttpParams().set('keyword', moduleCode);
+        return this.http
+            .get<{ [key: string]: string }>(`${this.apiUrl}/module-fields`, { params })
+            .pipe(map(data => Object.keys(data).map(key => ({ code: key, name: data[key] }))));
     }
 
-    getModuleFields(keyword: string = ''): Observable<DropdownItemFieldName[]> {
-        const params = new HttpParams().set('keyword', keyword);
-        return this.http.get<{[key: string]: string}>(`${this.apiUrl}/module-fields`, { params })
-            .pipe(
-                map(data => Object.keys(data).map(key => ({ code: key, name: data[key] })))
-            );
+    getDropDownModuleNames(): Observable<DropdownItemModuleName[]> {
+        return this.http
+            .get<{ [key: string]: string }>(`${this.apiUrl}/module-names`)
+            .pipe(map(data => Object.keys(data).map(key => ({ code: key, name: data[key] }))));
     }
 
     getModuleNames(): Observable<Record<string, string>> {
         return this.http.get<Record<string, string>>(`${this.apiUrl}/module-names`);
     }
 
-    getDropDownModuleNames(): Observable<DropdownItemModuleName[]> {
-        return this.http.get<{[key: string]: string}>(`${this.apiUrl}/module-names`)
-            .pipe(
-                map(data => Object.keys(data).map(key => ({ code: key, name: data[key] })))
-            );
-    }
 }
