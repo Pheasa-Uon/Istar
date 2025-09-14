@@ -37,7 +37,7 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
                         </div>
 
                         <div class="flex flex-wrap gap-2 w-full">
-                            <label for="name">Name <span class="text-red-500">*</span></label>
+                            <label for="name">Login Name <span class="text-red-500">*</span></label>
                             <input pInputText id="name" name="name" type="text" [(ngModel)]="user.name" required class="w-full" [ngClass]="{ 'p-invalid': userForm.submitted && !user.name }" />
                             <small *ngIf="userForm.submitted && !user.name" class="text-red-500">Name is required.</small>
                         </div>

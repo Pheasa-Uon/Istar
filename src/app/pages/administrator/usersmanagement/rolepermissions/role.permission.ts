@@ -78,7 +78,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="min-width:100px">Id</th>
-                        <th style="min-width:250px">Name</th>
+                        <th style="min-width:250px">Role Name</th>
                         <th style="min-width:250px">Description</th>
                         <th style="min-width:150px">Status</th>
                         <th style="min-width:200px">Actions</th>
@@ -155,7 +155,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
 
                 <!-- Labels Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div><strong>Name:</strong></div>
+                    <div><strong>Role Name:</strong></div>
                     <div><strong>Status:</strong></div>
                 </div>
 

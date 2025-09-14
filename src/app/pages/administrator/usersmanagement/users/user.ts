@@ -11,20 +11,24 @@ import { InputIconModule } from 'primeng/inputicon';
 import { DialogModule } from 'primeng/dialog';
 import { Fluid } from 'primeng/fluid';
 import { DividerModule } from 'primeng/divider';
+import { ConfirmationService, MessageService } from 'primeng/api';
+
 import { UserService, User } from '../../../service/administrator/usersmanagement/users/user.service';
 import { RolePermissionService, RolePermission } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
 import { TreeTableModule } from 'primeng/treetable';
 import { CheckboxModule } from 'primeng/checkbox';
-import { MessageService } from '../../../message/message.service';
+//import { MessageService } from '../../../message/message.service';
 import { UsersStatusService } from '../../../service/administrator/usersmanagement/users/user.status.service';
 import { RolesStatusService } from '../../../service/administrator/usersmanagement/rolepermissions/roles.status.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
     selector: 'app-users',
     standalone: true,
-    imports: [CommonModule, FormsModule, TableModule, InputTextModule, ButtonModule, IconFieldModule, InputIconModule, DialogModule, Fluid, DividerModule, TreeTableModule, CheckboxModule, HasPermissionDirective],
+    imports: [CommonModule, FormsModule, TableModule, InputTextModule, ButtonModule, IconFieldModule, InputIconModule, DialogModule, Fluid, DividerModule, TreeTableModule, CheckboxModule, HasPermissionDirective,ConfirmDialogModule],
+    providers: [ConfirmationService, MessageService],
     template: `
         <div class="card">
             <div class="font-semibold text-xl mb-4">Users Profile</div>
@@ -55,7 +59,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                     <tr>
                         <th style="min-width:100px">User Id</th>
                         <th style="min-width:200px">UserName</th>
-                        <th style="min-width:200px">Name</th>
+                        <th style="min-width:200px">Login Name</th>
                         <th style="min-width:200px">Last Login Date</th>
                         <th style="min-width:245px">Email</th>
                         <th style="min-width:100px">Status</th>
@@ -101,7 +105,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                 </div>
 
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div><strong>Name:</strong></div>
+                    <div><strong>Login Name:</strong></div>
                     <div><strong>Password:</strong></div>
                     <div><strong>Status:</strong></div>
                 </div>
@@ -152,6 +156,9 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                 </ng-template>
             </p-table>
         </p-dialog>
+
+        <!-- Confirmation Dialog -->
+        <p-confirmDialog></p-confirmDialog>
     `
 })
 
@@ -173,7 +180,8 @@ export class Users {
         private userStatusService: UsersStatusService,
         private rolesStatusService: RolesStatusService,
         private router: Router,
-        private permissionService: FeaturePermissionService
+        private permissionService: FeaturePermissionService,
+        private confirmationService: ConfirmationService
     ) {
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();
@@ -193,7 +201,7 @@ export class Users {
                 this.roleList = roles;
             },
             error: () => {
-                this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to load data' });
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load data' });
             }
         });
     }
@@ -213,12 +221,12 @@ export class Users {
                         }));
                     },
                     error: () => {
-                        this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to load user roles' });
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load user roles' });
                     }
                 });
             },
             error: () => {
-                this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to load all roles' });
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load all roles' });
             }
         });
     }
@@ -230,21 +238,21 @@ export class Users {
         if (role.checked) {
             this.userService.assignRole(payload).subscribe({
                 next: () => {
-                    this.messageService.show({ severity: 'success', summary: 'Assigned', detail: `Role "${role.name}" assigned.` });
+                    this.messageService.add({ severity: 'success', summary: 'Assigned', detail: `Role "${role.name}" assigned.` });
                 },
                 error: () => {
                     role.checked = false;
-                    this.messageService.show({ severity: 'error', summary: 'Error', detail: `Failed to assign role "${role.name}".` });
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: `Failed to assign role "${role.name}".` });
                 }
             });
         } else {
             this.userService.removeRole(payload).subscribe({
                 next: () => {
-                    this.messageService.show({ severity: 'success', summary: 'Removed', detail: `Role "${role.name}" removed.` });
+                    this.messageService.add({ severity: 'success', summary: 'Removed', detail: `Role "${role.name}" removed.` });
                 },
                 error: () => {
                     role.checked = true;
-                    this.messageService.show({ severity: 'error', summary: 'Error', detail: `Failed to remove role "${role.name}".` });
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: `Failed to remove role "${role.name}".` });
                 }
             });
         }
@@ -266,18 +274,47 @@ export class Users {
         this.router.navigate(['/edituser'], { state: { user } });
     }
 
+    // deleteUser(user: User) {
+    //     if (confirm(`Are you sure you want to delete user "${user.name}"?`)) {
+    //         this.userService.deleteUser(user.id!).subscribe({
+    //             next: () => {
+    //                 this.usersList = this.usersList.filter((u) => u.id !== user.id);
+    //                 this.messageService.show({ severity: 'success', summary: 'Deleted', detail: `User "${user.name}" deleted.` });
+    //             },
+    //             error: () => {
+    //                 this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to delete user.' });
+    //             }
+    //         });
+    //     }
+    // }
+
     deleteUser(user: User) {
-        if (confirm(`Are you sure you want to delete user "${user.name}"?`)) {
-            this.userService.deleteUser(user.id!).subscribe({
-                next: () => {
-                    this.usersList = this.usersList.filter((u) => u.id !== user.id);
-                    this.messageService.show({ severity: 'success', summary: 'Deleted', detail: `User "${user.name}" deleted.` });
-                },
-                error: () => {
-                    this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Failed to delete user.' });
-                }
-            });
-        }
+        this.confirmationService.confirm({
+            message: `Are you sure you want to delete user name "${user.name}"?`,
+            header: 'Confirm',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () =>{
+                this.userService.deleteUser(user.id!).subscribe({
+                    next: () => {
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Deleted',
+                            detail: `User "${user.name}" deleted.`,
+                            life: 3000
+                        });
+                        this.usersList = this.usersList.filter(u => u.id !== user.id);
+                    },
+                    error: () => {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: 'Failed to delete user.',
+                            life: 3000
+                        });
+                    }
+                });
+            }
+        })
     }
 
     searchUsers() {
@@ -301,27 +338,27 @@ export class Users {
         if (role.checked) {
             this.userService.assignRole(request).subscribe({
                 next: () =>
-                    this.messageService.show({
+                    this.messageService.add({
                         severity: 'success',
                         summary: 'Role Assigned',
                         detail: `${role.name} assigned to ${this.selectedUser?.name || this.selectedUser?.username || 'user'}`
                     }),
                 error: () => {
                     role.checked = true;
-                    this.messageService.show({ severity: 'error', summary: 'Error', detail: `Failed to assign role` });
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: `Failed to assign role` });
                 }
             });
         } else {
             this.userService.removeRole(request).subscribe({
                 next: () =>
-                    this.messageService.show({
+                    this.messageService.add({
                         severity: 'success',
                         summary: 'Role Removed',
                         detail: `${role.name} removed from ${this.selectedUser?.name || this.selectedUser?.username || 'user'}`
                     }),
                 error: () => {
                     role.checked = false;
-                    this.messageService.show({ severity: 'error', summary: 'Error', detail: `Failed to remove role` });
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: `Failed to remove role` });
                 }
             });
         }

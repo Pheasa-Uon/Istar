@@ -33,7 +33,7 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
                         <input pInputText id="userid" type="text" [(ngModel)]="user.userCode" [readonly]="true" name="userCode" />
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
-                        <label for="name">Name <span class="text-red-500">*</span></label>
+                        <label for="name">Login Name <span class="text-red-500">*</span></label>
                         <input pInputText id="name" type="text" [(ngModel)]="user.name" name="name" required />
                     </div>
                 </div>

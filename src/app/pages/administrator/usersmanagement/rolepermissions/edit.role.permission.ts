@@ -33,7 +33,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                         <input pInputText id="roleid" type="text" [(ngModel)]="role.rolesCode" [readOnly]="true" />
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
-                        <label for="name">Name</label>
+                        <label for="name">Role Name <span class="text-red-500">*</span></label>
                         <input pInputText id="name" type="text" [(ngModel)]="role.name" />
                     </div>
                 </div>
