@@ -130,6 +130,9 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                                       optionLabel="name" optionValue="code"
                                       placeholder="Select One" class="w-full"></p-select>
                         </div>
+                        <div class="flex flex-wrap gap-2 w-full">
+
+                        </div>
                     </div>
 
                     <div class="flex flex-wrap gap-2 w-full">

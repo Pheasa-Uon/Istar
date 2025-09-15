@@ -49,7 +49,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                 <div class="flex flex-wrap gap-2 md:w-1/2">
                     <p-button *hasFeaturePermission="['RLP','add']"
                               label="Add New"
-                              icon="pi pi-user-plus"
+                              icon="pi pi-plus"
                               (click)="addRolePermission()">
                     </p-button>
                 </div>
