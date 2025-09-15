@@ -111,6 +111,9 @@ import {
                         <label for="status">Status</label>
                         <p-select id="status" name="status" [(ngModel)]="globalSystemParameter.sysParStatus" [options]="dropdownStatusItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
                     </div>
+                    <div class="flex flex-wrap gap-2 w-full">
+
+                    </div>
                 </div>
 
                 <div class="flex flex-wrap gap-2 w-full">
