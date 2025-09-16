@@ -20,9 +20,12 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
 import { RolePermissionService, RolePermission } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
 import { RolesDropdownItemService } from '../../../service/administrator/usersmanagement/rolepermissions/roles.dropdown.item.service';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { Currency } from '../../../model/Currency';
+import { CurrencyService } from '../../../service/administrator/system/currency.service';
+import { CurrencyDropdownItemService } from '../../../service/administrator/system/currency.dropdown.item.service';
 
 @Component({
-    selector: 'app-role-permission',
+    selector: 'app-currency',
     standalone: true,
     imports: [
         CommonModule,
@@ -43,14 +46,14 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
     providers: [ConfirmationService, MessageService],
     template: `
         <div class="card">
-            <div class="font-semibold text-xl mb-4">Role Permission</div>
+            <div class="font-semibold text-xl mb-4">Currency</div>
 
             <p-fluid class="flex flex-col md:flex-row gap-2 justify-end items-center">
                 <div class="flex flex-wrap gap-2 md:w-1/2">
-                    <p-button *hasFeaturePermission="['RLP','add']"
+                    <p-button *hasFeaturePermission="['CUR','add']"
                               label="Add New"
                               icon="pi pi-plus"
-                              (click)="addRolePermission()">
+                              (click)="addNew()">
                     </p-button>
                 </div>
                 <div class="md:w-1/2">
@@ -68,7 +71,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                                   label="Search"
                                   icon="pi pi-search"
                                   [loading]="loading[0]"
-                                  (click)="searchRoles()">
+                                  (click)="search()">
                         </p-button>
                     </div>
                 </div>
@@ -80,65 +83,56 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
              >
              -->
             <p-table
-                [value]="roleList"
+                [value]="currencyList"
                 [rows]="5"
                 [paginator]="true"
                 [rowHover]="true"
                 dataKey="id"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} role permissions"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} currency"
                 [showCurrentPageReport]="true"
                 [rowsPerPageOptions]="[5, 10, 15, 20, 25, 30]"
             >
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="min-width:100px">Id</th>
-                        <th style="min-width:250px">Role Name</th>
-                        <th style="min-width:250px">Description</th>
+                        <th style="min-width:100px">Currency Code</th>
+                        <th style="min-width:250px">Currency Char</th>
+                        <th style="min-width:250px">Name</th>
                         <th style="min-width:150px">Status</th>
                         <th style="min-width:200px">Actions</th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-rolePermissions>
+                <ng-template pTemplate="body" let-currency>
                     <tr>
-                        <td>{{ rolePermissions.rolesCode }}</td>
-                        <td>{{ rolePermissions.name }}</td>
-                        <td>{{ rolePermissions.description }}</td>
-                        <td>{{ getRolesStatus(rolePermissions.rolesStatus || '') }}</td>
+                        <td>{{ currency.currencyCode }}</td>
+                        <td>{{ currency.currencyChar }} ({{ currency.currencySymbol }})</td>
+                        <td>{{ currency.currencyName }}</td>
+                        <td>{{ getStatus(currency.currencyStatus || '') }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
-                                <p-button *hasFeaturePermission="['RLP','view']"
+                                <p-button *hasFeaturePermission="['CUR','view']"
                                           icon="pi pi-eye"
                                           text
                                           raised
                                           rounded
-                                          (click)="viewRole(rolePermissions)">
+                                          (click)="view(currency)">
                                 </p-button>
 
-                                <p-button *hasFeaturePermission="['RLP','add']"
-                                          icon="pi pi-share-alt"
-                                          severity="info"
-                                          text
-                                          raised
-                                          rounded
-                                          (click)="setRolePermission(rolePermissions)">
-                                </p-button>
-
-                                <p-button *hasFeaturePermission="['RLP','edit']"
+                                <p-button *hasFeaturePermission="['CUR','edit']"
                                           icon="pi pi-pencil"
                                           severity="info"
                                           text
                                           raised
                                           rounded
-                                          (click)="editRolePermission(rolePermissions)">
+                                          (click)="edit(currency)">
                                 </p-button>
 
-                                <p-button *hasFeaturePermission="['RLP','deleted']"
+                                <p-button *hasFeaturePermission="['CUR','deleted']"
                                           icon="pi pi-trash"
                                           severity="danger"
                                           text
                                           raised
                                           rounded
-                                          (click)="deleteRole(rolePermissions)">
+                                          (click)="delete(currency)">
                                 </p-button>
                             </div>
                         </td>
@@ -148,7 +142,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
         </div>
 
         <!-- View User Dialog -->
-        <p-dialog header="Role Permission Details"
+        <p-dialog header="Currency Details"
                   [(visible)]="displayDetails"
                   [modal]="true"
                   [style]="{ width: '1100px' }"
@@ -157,26 +151,40 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
             <div class="flex flex-col md:flex-row">
                 <!-- Labels Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div><strong>Role Id:</strong></div>
+                    <div><strong>Currency code:</strong></div>
+                    <div><strong>Currency Number:</strong></div>
+                    <div><strong>Currency Name:</strong></div>
+                    <div><strong>Decimal Digits:</strong></div>
+                    <div><strong>Order:</strong></div>
                     <div><strong>Description:</strong></div>
                 </div>
 
                 <!-- Values Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedRole?.rolesCode }}</div>
-                    <div>{{ selectedRole?.description }}</div>
+                    <div>{{ selectedCurrency?.currencyCode }}</div>
+                    <div>{{ selectedCurrency?.currencyNumber }}</div>
+                    <div>{{ selectedCurrency?.currencyName }}</div>
+                    <div>{{ selectedCurrency?.decimalDigits }}</div>
+                    <div>{{ selectedCurrency?.displayOrder }}</div>
+                    <div>{{ selectedCurrency?.description }}</div>
                 </div>
 
                 <!-- Labels Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div><strong>Role Name:</strong></div>
+                    <div><strong>Currency Char:</strong></div>
+                    <div><strong>Currency Symbol:</strong></div>
+                    <div><strong>Local Currency Name:</strong></div>
+                    <div><strong>Rounding Digits:</strong></div>
                     <div><strong>Status:</strong></div>
                 </div>
 
                 <!-- Values Column 2 -->
-                <div class="w-full md:w-1/4 flex flex-col space-y-5 py-5">
-                    <div>{{ selectedRole?.name }}</div>
-                    <div>{{ getRolesStatus(selectedRole?.rolesStatus || '') }}</div>
+                <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
+                    <div>{{ selectedCurrency?.currencyChar }}</div>
+                    <div>{{ selectedCurrency?.currencySymbol }}</div>
+                    <div>{{ selectedCurrency?.localCurrencyName }}</div>
+                    <div>{{ selectedCurrency?.roundingDigits != null ? selectedCurrency?.roundingDigits : '-' }}</div>
+                    <div>{{ getStatus(selectedCurrency?.currencyStatus || '') }}</div>
                 </div>
             </div>
         </p-dialog>
@@ -185,18 +193,18 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
         <p-confirmDialog></p-confirmDialog>
     `
 })
-export class RolePermissionsComponent {
-    roleList: RolePermission[] = [];
+export class CurrencyComponent {
+    currencyList: Currency[] = [];
     loading = [false];
     searchText = '';
     displayDetails = false;
-    selectedRole: RolePermission | null = null;
+    selectedCurrency: Currency | null = null;
     statusMap: Record<string, string> = {};
 
     constructor(
-        private rolePermissionService: RolePermissionService,
+        private currencyService: CurrencyService,
         private messageService: MessageService,
-        private statusService: RolesDropdownItemService,
+        private statusService: CurrencyDropdownItemService,
         private router: Router,
         private permissionService: FeaturePermissionService,
         private confirmationService: ConfirmationService
@@ -207,12 +215,12 @@ export class RolePermissionsComponent {
 
     ngOnInit() {
         forkJoin({
-            statusMap: this.statusService.getRolesStatus(),
-            roles: this.rolePermissionService.getAllRolePermission()
+            statusMap: this.statusService.getCurrencyStatus(),
+            roles: this.currencyService.getAllCurrency()
         }).subscribe({
             next: ({ statusMap, roles }) => {
                 this.statusMap = statusMap;
-                this.roleList = roles;
+                this.currencyList = roles;
             },
             error: (err) => {
                 console.error('Initialization error:', err);
@@ -225,11 +233,11 @@ export class RolePermissionsComponent {
         });
     }
 
-    searchRoles() {
+    search() {
         this.loading[0] = true;
-        this.rolePermissionService.searchRoles(this.searchText).subscribe({
-            next: (RolePermission) => {
-                this.roleList = RolePermission;
+        this.currencyService.searchCurrency(this.searchText).subscribe({
+            next: (Currency) => {
+                this.currencyList = Currency;
                 this.loading[0] = false;
             },
             error: () => {
@@ -243,39 +251,35 @@ export class RolePermissionsComponent {
         });
     }
 
-    addRolePermission() {
-        this.router.navigate(['/add-role-permission']);
+    addNew() {
+        this.router.navigate(['/add-currency']);
     }
 
-    editRolePermission(rolePermissions: RolePermission) {
-        this.router.navigate(['/edit-role-permission'], { state: { rolePermissions } });
+    edit(currency: Currency) {
+        this.router.navigate(['/edit-currency'], { state: { currency } });
     }
 
-    setRolePermission(rolePermissions: RolePermission) {
-        this.router.navigate(['/set-role-permission', rolePermissions.id]);
-    }
-
-    viewRole(rolePermissions: RolePermission) {
-        this.selectedRole = rolePermissions;
+    view(currency: Currency) {
+        this.selectedCurrency = currency;
         this.displayDetails = true;
     }
 
-    deleteRole(rolePermissions: RolePermission) {
+    delete(currency: Currency) {
         this.confirmationService.confirm({
-            message: `Are you sure you want to delete role "${rolePermissions.name}"?`,
+            message: `Are you sure you want to delete role "${currency.currencyName}"?`,
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.rolePermissionService.deleteRole(rolePermissions.id!).subscribe({
+                this.currencyService.deleteCurrency(currency.id!).subscribe({
                     next: () => {
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Deleted',
-                            detail: `Role "${rolePermissions.name}" deleted successfully.`,
+                            detail: `Role "${currency.currencyName}" deleted successfully.`,
                             life: 3000
                         });
                         // remove from UI list
-                        this.roleList = this.roleList.filter(r => r.id !== rolePermissions.id);
+                        this.currencyList = this.currencyList.filter(r => r.id !== currency.id);
                     },
                     error: () => {
                         this.messageService.add({
@@ -290,7 +294,7 @@ export class RolePermissionsComponent {
         });
     }
 
-    getRolesStatus(code: string): string {
+    getStatus(code: string): string {
         return this.statusMap[code] || code;
     }
 }

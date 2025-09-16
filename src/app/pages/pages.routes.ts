@@ -5,6 +5,7 @@ import { Empty } from '../UI/empty/empty';
 import { UsersComponent} from './administrator/usersmanagement/users/user';
 import { RolePermissionsComponent } from './administrator/usersmanagement/rolepermissions/role.permission';
 import { GlobalSystemParameterComponent } from './administrator/system/globalsystemparameter/global.system.parameter';
+import { CurrencyComponent } from './administrator/system/currency/currency';
 
 export default [
     { path: 'documentation', component: Documentation },
@@ -13,6 +14,7 @@ export default [
     { path: 'user', component: UsersComponent },
     { path: 'role-permission', component: RolePermissionsComponent },
     { path: 'global-system-parameter', component: GlobalSystemParameterComponent },
+    { path: 'currency', component: CurrencyComponent },
     //{ path: '', redirectTo: 'user', pathMatch: 'full' },
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;

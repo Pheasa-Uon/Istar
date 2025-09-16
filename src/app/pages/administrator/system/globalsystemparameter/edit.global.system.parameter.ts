@@ -19,8 +19,8 @@ import {
 } from '../../../service/administrator/system/global.system.parameter.service';
 import {
     DropdownItemFieldName,
-    DropdownItemModuleName, GSPStatusService
-} from '../../../service/administrator/system/gsp.status.service';
+    DropdownItemModuleName, GspDropdownItemService
+} from '../../../service/administrator/system/gsp.dropdown.item.service';
 
 @Component({
     selector: 'app-edit-global-system-parameter',
@@ -157,7 +157,7 @@ export class EditGlobalSystemParameter {
         private messageService: MessageService,
         private permissionService: FeaturePermissionService,
         private globalSystemParameterService: GlobalSystemParameterService,
-        private moduleService: GSPStatusService
+        private moduleService: GspDropdownItemService
     ) {
         const navigation = this.router.getCurrentNavigation();
         if (navigation?.extras.state?.['gsp']) {

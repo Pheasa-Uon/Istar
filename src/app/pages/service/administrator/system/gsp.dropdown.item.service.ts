@@ -15,8 +15,8 @@ export interface DropdownItemFieldName {
 }
 
 @Injectable({ providedIn: 'root' })
-export class GSPStatusService {
-    private apiUrl = environment.apiBase + environment.apiEndpoints.system.convertername;
+export class GspDropdownItemService {
+    private apiUrl = environment.apiBase + environment.apiEndpoints.system.converterName;
     private apiUrlGSP = environment.apiBase + environment.apiEndpoints.system.globalSystemParameter;
 
     constructor(private http: HttpClient) {}

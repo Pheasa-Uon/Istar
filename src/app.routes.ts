@@ -16,6 +16,9 @@ import { AuthGuard} from './app/pages/authentication/AuthGuard';
 import { GlobalSystemParameterComponent } from './app/pages/administrator/system/globalsystemparameter/global.system.parameter';
 import { AddGlobalSystemParameter } from './app/pages/administrator/system/globalsystemparameter/add.global.system.parameter';
 import { EditGlobalSystemParameter } from './app/pages/administrator/system/globalsystemparameter/edit.global.system.parameter';
+import { CurrencyComponent } from './app/pages/administrator/system/currency/currency';
+import { AddCurrency } from './app/pages/administrator/system/currency/add.currency';
+import { EditCurrency } from './app/pages/administrator/system/currency/edit.currency';
 
 export const appRoutes: Routes = [
 
@@ -54,6 +57,11 @@ export const appRoutes: Routes = [
             { path: 'global-system-parameter', component: GlobalSystemParameterComponent },
             { path: 'add-global-system-parameter', component: AddGlobalSystemParameter },
             { path: 'edit-global-system-parameter', component: EditGlobalSystemParameter },
+
+            // Global System Parameter routes
+            { path: 'currency', component: CurrencyComponent },
+            { path: 'add-currency', component: AddCurrency },
+            { path: 'edit-currency', component: EditCurrency },
 
             // Lazy loaded modules - make sure these modules exist and export NgModule classes
             { path: 'uikit', loadChildren: () => import('./app/UI/uikit/uikit.routes') },

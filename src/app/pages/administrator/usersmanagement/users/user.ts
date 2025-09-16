@@ -18,8 +18,8 @@ import { RolePermissionService, RolePermission } from '../../../service/administ
 import { TreeTableModule } from 'primeng/treetable';
 import { CheckboxModule } from 'primeng/checkbox';
 //import { MessageService } from '../../../message/message.service';
-import { UsersStatusService } from '../../../service/administrator/usersmanagement/users/user.status.service';
-import { RolesStatusService } from '../../../service/administrator/usersmanagement/rolepermissions/roles.status.service';
+import { UsersStatusService } from '../../../service/administrator/usersmanagement/users/user.dropdown.item.service';
+import { RolesDropdownItemService } from '../../../service/administrator/usersmanagement/rolepermissions/roles.dropdown.item.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -190,7 +190,7 @@ export class UsersComponent {
         private rolePermissionService: RolePermissionService,
         private messageService: MessageService,
         private userStatusService: UsersStatusService,
-        private rolesStatusService: RolesStatusService,
+        private rolesStatusService: RolesDropdownItemService,
         private router: Router,
         private permissionService: FeaturePermissionService,
         private confirmationService: ConfirmationService

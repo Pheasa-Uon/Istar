@@ -21,7 +21,7 @@ interface DecodedToken {
 export class AuthService {
 
 
-    private apiUrl = environment.apiBase + environment.apiEndpoints.auth;
+    private apiUrl = environment.apiBase + environment.apiEndpoints.authentication;
 
     constructor(private http: HttpClient, private router: Router) {}
 

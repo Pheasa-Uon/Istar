@@ -38,13 +38,18 @@ export class AppMenu implements OnInit {
                 .map(m => this.mapToMenuItem(m));
 
             // Add the static "Quit" menu item
+            const AboutMenuItem: MenuItem = {
+                label: 'About',
+                icon: 'pi pi-fw pi-question-circle',
+                routerLink: ['/']
+            };
             const quitMenuItem: MenuItem = {
                 label: 'Quit',
                 icon: 'pi pi-fw pi-sign-out',
                 command: () => this.logout()
             };
 
-            dynamicMenuItems.push(quitMenuItem);
+            dynamicMenuItems.push(AboutMenuItem,quitMenuItem);
 
             // Create the main menu structure that matches the old format
             this.model = [

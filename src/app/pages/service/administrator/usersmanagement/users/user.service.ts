@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { environment } from '../../../../../../environments/environment'; // ✅ adjust based on path
+import { environment } from '../../../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RolePermission } from '../../../../model/RolePermission';
-// import { User } from '../../models/user.model'; // or wherever your User model is
 
 export interface User {
     id?: number;
@@ -21,14 +20,13 @@ export interface User {
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-    private usersUrl = environment.apiBase + environment.apiEndpoints.users.usersprofile;
-    private userStatusesUrl = environment.apiBase + environment.apiEndpoints.users.userstatuses;
-    private roleUrl = environment.apiBase + environment.apiEndpoints.userroles;
+    private userUrl = environment.apiBase + environment.apiEndpoints.usersManagement.users;
+    private roleUrl = environment.apiBase + environment.apiEndpoints.usersManagement.userRoles;
 
     constructor(private http: HttpClient) {}
 
     getAllUsers(): Observable<User[]> {
-        return this.http.get<User[]>(this.usersUrl).pipe(
+        return this.http.get<User[]>(this.userUrl).pipe(
             map(users =>
                 users.map(user => ({
                     ...user,
@@ -39,7 +37,7 @@ export class UserService {
     }
 
     getUserById(userId: number): Observable<User> {
-        return this.http.get<User>(`${this.usersUrl}/${userId}`).pipe(
+        return this.http.get<User>(`${this.userUrl}/${userId}`).pipe(
             map(user => ({
                 ...user,
                 lastLoginAt: user.lastLoginAt ? new Date(user.lastLoginAt) : undefined
@@ -48,19 +46,19 @@ export class UserService {
     }
 
     addUser(user: User): Observable<User> {
-        return this.http.post<User>(this.usersUrl, user);
+        return this.http.post<User>(this.userUrl, user);
     }
 
     updateUser(user: Partial<User> & { id: number }): Observable<User> {
-        return this.http.put<User>(`${this.usersUrl}/edit/${user.id}`, user);
+        return this.http.put<User>(`${this.userUrl}/edit/${user.id}`, user);
     }
 
     deleteUser(userId: number): Observable<void> {
-        return this.http.delete<void>(`${this.usersUrl}/${userId}`);
+        return this.http.delete<void>(`${this.userUrl}/${userId}`);
     }
 
     resetPassword(userId: number): Observable<User> {
-        return this.http.put<User>(`${this.usersUrl}/${userId}/reset-password`, {});
+        return this.http.put<User>(`${this.userUrl}/${userId}/reset-password`, {});
     }
 
     searchUsers(keyword: string): Observable<User[]> {
@@ -70,7 +68,7 @@ export class UserService {
             'Authorization': `Bearer ${token || ''}`
         });
 
-        const url = `${this.usersUrl}/search?keyword=${encodeURIComponent(keyword)}`;
+        const url = `${this.userUrl}/search?keyword=${encodeURIComponent(keyword)}`;
 
         return this.http.get<User[]>(url, { headers });
     }

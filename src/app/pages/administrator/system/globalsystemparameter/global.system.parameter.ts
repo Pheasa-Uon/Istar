@@ -17,7 +17,7 @@ import { Fluid } from 'primeng/fluid';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { GlobalSystemParameterService, GlobalSystemParameter } from '../../../service/administrator/system/global.system.parameter.service';
-import { GSPStatusService } from '../../../service/administrator/system/gsp.status.service';
+import { GspDropdownItemService } from '../../../service/administrator/system/gsp.dropdown.item.service';
 
 @Component({
     selector: 'app-global-system-parameter',
@@ -164,7 +164,7 @@ export class GlobalSystemParameterComponent {
     constructor(
         private gspService: GlobalSystemParameterService,
         private messageService: MessageService,
-        private statusService: GSPStatusService,
+        private statusService: GspDropdownItemService,
         private router: Router,
         private permissionService: FeaturePermissionService,
         private confirmationService: ConfirmationService

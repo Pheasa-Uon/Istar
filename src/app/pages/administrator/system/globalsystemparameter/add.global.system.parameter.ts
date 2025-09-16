@@ -18,9 +18,9 @@ import {
 } from '../../../service/administrator/system/global.system.parameter.service';
 import {
     DropdownItemModuleName,
-    GSPStatusService,
+    GspDropdownItemService,
     DropdownItemFieldName
-} from '../../../service/administrator/system/gsp.status.service';
+} from '../../../service/administrator/system/gsp.dropdown.item.service';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 
 @Component({
@@ -182,7 +182,7 @@ export class AddGlobalSystemParameter implements OnInit {
         private globalSystemParameterService: GlobalSystemParameterService,
         private messageService: MessageService,
         private permissionService: FeaturePermissionService,
-        private moduleService: GSPStatusService
+        private moduleService: GspDropdownItemService
     ) {
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();

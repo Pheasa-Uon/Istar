@@ -5,10 +5,10 @@ import { environment } from '../../../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class UsersStatusService {
-    private apiUrl = environment.apiBase + environment.apiEndpoints.users.userstatuses;
+    private apiUrl = environment.apiBase + environment.apiEndpoints.usersManagement.users;
     constructor(private http: HttpClient) {}
 
     getUserStatus(): Observable<Record<string, string>> {
-        return this.http.get<Record<string, string>>(this.apiUrl);
+        return this.http.get<Record<string, string>>(`${this.apiUrl}/status`);
     }
 }

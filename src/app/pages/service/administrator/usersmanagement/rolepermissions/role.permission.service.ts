@@ -16,7 +16,7 @@ export interface RolePermission {
 
 @Injectable({ providedIn: 'root' })
 export class RolePermissionService {
-    private apiUrl = environment.apiBase + environment.apiEndpoints.roles.rolesprofile;
+    private apiUrl = environment.apiBase + environment.apiEndpoints.usersManagement.roles;
 
     constructor(private http: HttpClient) {}
 
