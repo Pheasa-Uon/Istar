@@ -32,6 +32,10 @@ export class GspDropdownItemService {
             .pipe(map(data => Object.keys(data).map(key => ({ code: key, name: data[key] }))));
     }
 
+    getModuleFieldNames(): Observable<Record<string, string>> {
+        return this.http.get<Record<string, string>>(`${this.apiUrl}/module-fields`);
+    }
+
     getDropDownModuleNames(): Observable<DropdownItemModuleName[]> {
         return this.http
             .get<{ [key: string]: string }>(`${this.apiUrl}/module-names`)

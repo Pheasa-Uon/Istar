@@ -90,7 +90,7 @@ import { GspDropdownItemService } from '../../../service/administrator/system/gs
                 <ng-template pTemplate="body" let-gsp>
                     <tr>
                         <td>{{ gsp.sysParCode }}</td>
-                        <td>{{ gsp.fieldName }}</td>
+                        <td>{{ getModuleFieldNames(gsp.fieldName || '') }}</td>
                         <td>{{ gsp.valueName }}</td>
                         <td>{{ gsp.localValueName }}</td>
                         <td>{{ getModuleNames(gsp.moduleName || '') }}</td>
@@ -160,6 +160,7 @@ export class GlobalSystemParameterComponent {
     selectedGSP: GlobalSystemParameter | null = null;
     statusMap: Record<string, string> = {};
     moduleNameMap: Record<string, string> = {};
+    fieldNameMap: Record<string, string> = {};
 
     constructor(
         private gspService: GlobalSystemParameterService,
@@ -176,7 +177,9 @@ export class GlobalSystemParameterComponent {
     ngOnInit() {
         forkJoin({
             statusMap: this.statusService.getGSPStatus(),
+            fieldNameMap: this.statusService.getModuleFieldNames(),
             moduleNameMap: this.statusService.getModuleNames(),
+
             gspList: this.gspService.getAllGlobalSystemParameter()
         }).subscribe({
             next: ({ statusMap, moduleNameMap, gspList }) => {
@@ -256,6 +259,10 @@ export class GlobalSystemParameterComponent {
     }
 
     getGSPStatus(code: string): string {
+        return this.statusMap[code] || code;
+    }
+
+    getModuleFieldNames(code: string): string {
         return this.statusMap[code] || code;
     }
 
