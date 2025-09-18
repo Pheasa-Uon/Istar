@@ -62,56 +62,51 @@ import {
                             <small *ngIf="submitted && !country.countryName" class="text-red-500">Country name is required.</small>
                         </div>
                         <div class="flex flex-col gap-2 w-full">
-                            <label for="localCountryName">Local Country Name <span class="text-red-500">*</span></label>
+                            <label for="localCountryName">Local Country Name </label>
                             <input pInputText id="localCountryName" name="localCountryName" type="text"
                                    placeholder="Local Country Name" [(ngModel)]="country.localCountryName"
                                    class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.localCountryName }" />
-                            <small *ngIf="submitted && !country.localCountryName" class="text-red-500">Local Country Name is required.</small>
                         </div>
                     </div>
 
                     <!-- Selects: Currency, Language -->
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-col gap-2 w-full">
-                            <label for="currencyId">Currency <span class="text-red-500">*</span></label>
+                            <label for="currencyId">Currency </label>
                             <p-select id="currencyId" name="currencyId" class="w-full"
                                       [options]="dropdownCurrencyItems"
                                       optionLabel="name"
                                       optionValue="id"
                                       [(ngModel)]="country.currencyId"
                                       placeholder="Select Currency"></p-select>
-                            <small *ngIf="submitted && !country.currencyId" class="text-red-500">Currency is required.</small>
                         </div>
                         <div class="flex flex-col gap-2 w-full">
-                            <label for="language">Language <span class="text-red-500">*</span></label>
+                            <label for="language">Language </label>
                             <p-select id="language" name="language" class="w-full"
                                       [options]="dropdownLanguageItems"
                                       optionLabel="valueName" optionValue="sysParCode"
                                       [(ngModel)]="country.language"
                                       placeholder="Select Language"></p-select>
-                            <small *ngIf="submitted && !country.language" class="text-red-500">Language is required.</small>
                         </div>
                     </div>
 
                     <!-- Selects: Region, Blacklist -->
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-col gap-2 w-full">
-                            <label for="region">Region <span class="text-red-500">*</span></label>
+                            <label for="region">Region </label>
                             <p-select id="region" name="region" class="w-full"
                                       [options]="dropdownRegionItems"
                                       optionLabel="valueName" optionValue="sysParCode"
                                       [(ngModel)]="country.region"
                                       placeholder="Select Region"></p-select>
-                            <small *ngIf="submitted && !country.region" class="text-red-500">Region is required.</small>
                         </div>
                         <div class="flex flex-col gap-2 w-full">
-                            <label for="blacklist">Blacklist <span class="text-red-500">*</span></label>
+                            <label for="blacklist">Blacklist </label>
                             <p-select id="blacklist" name="blacklist" class="w-full"
                                       [options]="dropdownBlacklistItems"
                                       optionLabel="valueName" optionValue="sysParCode"
                                       [(ngModel)]="country.blacklist"
                                       placeholder="Select Blacklist"></p-select>
-                            <small *ngIf="submitted && !country.blacklist" class="text-red-500">Blacklist is required.</small>
                         </div>
                     </div>
 

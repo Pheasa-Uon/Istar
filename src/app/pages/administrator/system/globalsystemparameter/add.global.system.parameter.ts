@@ -144,7 +144,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                     <!-- Buttons -->
                     <div class="card flex flex-wrap gap-0 w-full justify-end">
                         <p-buttongroup>
-                            <p-button *hasFeaturePermission="['GSP','save']" type="submit" label="Save" icon="pi pi-check"
+                            <p-button *hasFeaturePermission="['GSP','save']" type="submit" label="Create New" icon="pi pi-plus-circle"
                                       [disabled]="gspForm.invalid"></p-button>
                             <p-button *hasFeaturePermission="['GSP','cancel']" label="Cancel" icon="pi pi-times"
                                       (click)="goBack()"></p-button>

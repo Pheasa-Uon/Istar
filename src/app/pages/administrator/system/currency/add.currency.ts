@@ -113,7 +113,7 @@ import { Currency } from '../../../model/administrator/system/Currency';
 
                     <div class="card flex flex-wrap gap-0 w-full justify-end">
                         <p-buttongroup>
-                            <p-button *hasFeaturePermission="['CUR','save']" type="submit" label="Save" icon="pi pi-check" [disabled]="Form.invalid" />
+                            <p-button *hasFeaturePermission="['CUR','save']" type="submit" label="Create New" icon="pi pi-plus-circle" [disabled]="Form.invalid" />
                             <p-button *hasFeaturePermission="['CUR','cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
                         </p-buttongroup>
                     </div>
