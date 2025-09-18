@@ -17,15 +17,13 @@ import { forkJoin } from 'rxjs';
 
 import { Fluid } from 'primeng/fluid';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
-import { RolePermissionService, RolePermission } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
-import { RolesDropdownItemService } from '../../../service/administrator/usersmanagement/rolepermissions/roles.dropdown.item.service';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
-import { Currency } from '../../../model/administrator/system/Currency';
-import { CurrencyService } from '../../../service/administrator/system/currency.service';
-import { CurrencyDropdownItemService } from '../../../service/administrator/system/currency.dropdown.item.service';
+import { Country } from '../../../model/administrator/system/Country';
+import { CountryService } from '../../../service/administrator/system/country.service';
+import { CountryDropdownItemService } from '../../../service/administrator/system/country.dropdown.item.service';
 
 @Component({
-    selector: 'app-currency',
+    selector: 'app-country',
     standalone: true,
     imports: [
         CommonModule,
@@ -46,11 +44,11 @@ import { CurrencyDropdownItemService } from '../../../service/administrator/syst
     providers: [ConfirmationService, MessageService],
     template: `
         <div class="card">
-            <div class="font-semibold text-xl mb-4">Currency</div>
+            <div class="font-semibold text-xl mb-4">Country</div>
 
             <p-fluid class="flex flex-col md:flex-row gap-2 justify-end items-center">
                 <div class="flex flex-wrap gap-2 md:w-1/2">
-                    <p-button *hasFeaturePermission="['CUR','add']"
+                    <p-button *hasFeaturePermission="['COU','add']"
                               label="Add New"
                               icon="pi pi-plus"
                               (click)="addNew()">
@@ -66,7 +64,7 @@ import { CurrencyDropdownItemService } from '../../../service/administrator/syst
                 </div>
                 <div class="card flex flex-col gap-2">
                     <div class="flex flex-wrap gap-2 md:w-1/2 justify-end items-center">
-                        <p-button *hasFeaturePermission="['RLP','search']"
+                        <p-button *hasFeaturePermission="['COU','search']"
                                   type="button"
                                   label="Search"
                                   icon="pi pi-search"
@@ -83,56 +81,58 @@ import { CurrencyDropdownItemService } from '../../../service/administrator/syst
              >
              -->
             <p-table
-                [value]="currencyList"
+                [value]="countryList"
                 [rows]="5"
                 [paginator]="true"
                 [rowHover]="true"
                 dataKey="id"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} currency"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} country"
                 [showCurrentPageReport]="true"
                 [rowsPerPageOptions]="[5, 10, 15, 20, 25, 30]"
             >
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="min-width:100px">Currency Code</th>
-                        <th style="min-width:250px">Currency Char</th>
+                        <th style="min-width:150px">ISO 2 Alpha</th>
+                        <th style="min-width:150px">ISO 3 Alpha</th>
                         <th style="min-width:250px">Name</th>
+                        <th style="min-width:250px">Language</th>
                         <th style="min-width:150px">Status</th>
                         <th style="min-width:200px">Actions</th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-currency>
+                <ng-template pTemplate="body" let-country>
                     <tr>
-                        <td>{{ currency.currencyCode }}</td>
-                        <td>{{ currency.currencyChar }} ({{ currency.currencySymbol }})</td>
-                        <td>{{ currency.currencyName }}</td>
-                        <td>{{ getStatus(currency.currencyStatus || '') }}</td>
+                        <td>{{ country.iso2Alpha }}</td>
+                        <td>{{ country.iso3Alpha }}</td>
+                        <td>{{ country.countryName }}</td>
+                        <td>{{ getLanguages(country.language || '') }}</td>
+                        <td>{{ getStatus(country.countryStatus || '') }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
-                                <p-button *hasFeaturePermission="['CUR','view']"
+                                <p-button *hasFeaturePermission="['COU','view']"
                                           icon="pi pi-eye"
                                           text
                                           raised
                                           rounded
-                                          (click)="view(currency)">
+                                          (click)="view(country)">
                                 </p-button>
 
-                                <p-button *hasFeaturePermission="['CUR','edit']"
+                                <p-button *hasFeaturePermission="['COU','edit']"
                                           icon="pi pi-pencil"
                                           severity="info"
                                           text
                                           raised
                                           rounded
-                                          (click)="edit(currency)">
+                                          (click)="edit(country)">
                                 </p-button>
 
-                                <p-button *hasFeaturePermission="['CUR','deleted']"
+                                <p-button *hasFeaturePermission="['COU','deleted']"
                                           icon="pi pi-trash"
                                           severity="danger"
                                           text
                                           raised
                                           rounded
-                                          (click)="delete(currency)">
+                                          (click)="delete(country)">
                                 </p-button>
                             </div>
                         </td>
@@ -142,7 +142,7 @@ import { CurrencyDropdownItemService } from '../../../service/administrator/syst
         </div>
 
         <!-- View User Dialog -->
-        <p-dialog header="Currency Details"
+        <p-dialog header="Country Details"
                   [(visible)]="displayDetails"
                   [modal]="true"
                   [style]="{ width: '1100px' }"
@@ -151,40 +151,40 @@ import { CurrencyDropdownItemService } from '../../../service/administrator/syst
             <div class="flex flex-col md:flex-row">
                 <!-- Labels Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div><strong>Currency code:</strong></div>
-                    <div><strong>Currency Number:</strong></div>
-                    <div><strong>Currency Name:</strong></div>
-                    <div><strong>Decimal Digits:</strong></div>
-                    <div><strong>Order:</strong></div>
+                    <div><strong>ISO 2 Alpha:</strong></div>
+                    <div><strong>Country Name:</strong></div>
+                    <div><strong>Currency:</strong></div>
+                    <div><strong>Region:</strong></div>
+                    <div><strong>Status:</strong></div>
                     <div><strong>Description:</strong></div>
                 </div>
 
                 <!-- Values Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedCurrency?.currencyCode }}</div>
-                    <div>{{ selectedCurrency?.currencyNumber }}</div>
-                    <div>{{ selectedCurrency?.currencyName }}</div>
-                    <div>{{ selectedCurrency?.decimalDigits }}</div>
-                    <div>{{ selectedCurrency?.displayOrder }}</div>
-                    <div>{{ selectedCurrency?.description }}</div>
+                    <div>{{ selectedCountry?.iso2Alpha }}</div>
+                    <div>{{ selectedCountry?.countryName }}</div>
+                    <div>{{ getCurrency(selectedCountry?.currencyId || '')}}</div>
+                    <div>{{ getRegion(selectedCountry?.region || '') }}</div>
+                    <div>{{ getStatus(selectedCountry?.countryStatus || '') }}</div>
+                    <div>{{ selectedCountry?.description }}</div>
                 </div>
 
                 <!-- Labels Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div><strong>Currency Char:</strong></div>
-                    <div><strong>Currency Symbol:</strong></div>
-                    <div><strong>Local Currency Name:</strong></div>
-                    <div><strong>Rounding Digits:</strong></div>
-                    <div><strong>Status:</strong></div>
+                    <div><strong>ISO 3 Alpha:</strong></div>
+                    <div><strong>Local Country Name:</strong></div>
+                    <div><strong>Language:</strong></div>
+                    <div><strong>Blacklist:</strong></div>
+                    <div><strong>Order:</strong></div>
                 </div>
 
                 <!-- Values Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedCurrency?.currencyChar }}</div>
-                    <div>{{ selectedCurrency?.currencySymbol }}</div>
-                    <div>{{ selectedCurrency?.localCurrencyName }}</div>
-                    <div>{{ selectedCurrency?.roundingDigits != null ? selectedCurrency?.roundingDigits : '-' }}</div>
-                    <div>{{ getStatus(selectedCurrency?.currencyStatus || '') }}</div>
+                    <div>{{ selectedCountry?.iso3Alpha }}</div>
+                    <div>{{ selectedCountry?.localCountryName }}</div>
+                    <div>{{ getLanguages(selectedCountry?.language || '') }}</div>
+                    <div>{{ getBlacklist(selectedCountry?.blacklist || '') }}</div>
+                    <div>{{ selectedCountry?.displayOrder }}</div>
                 </div>
             </div>
         </p-dialog>
@@ -193,18 +193,22 @@ import { CurrencyDropdownItemService } from '../../../service/administrator/syst
         <p-confirmDialog></p-confirmDialog>
     `
 })
-export class CurrencyComponent {
-    currencyList: Currency[] = [];
+export class CountryComponent {
+    countryList: Country[] = [];
     loading = [false];
     searchText = '';
     displayDetails = false;
-    selectedCurrency: Currency | null = null;
+    selectedCountry: Country | null = null;
     statusMap: Record<string, string> = {};
+    languageMap: Record<string, string> = {};
+    currencyMap: Record<string, string> = {};
+    regionMap: Record<string, string> = {};
+    blacklistMap: Record<string, string> = {};
 
     constructor(
-        private currencyService: CurrencyService,
+        private countryService: CountryService,
         private messageService: MessageService,
-        private statusService: CurrencyDropdownItemService,
+        private statusService: CountryDropdownItemService,
         private router: Router,
         private permissionService: FeaturePermissionService,
         private confirmationService: ConfirmationService
@@ -215,12 +219,20 @@ export class CurrencyComponent {
 
     ngOnInit() {
         forkJoin({
-            statusMap: this.statusService.getCurrencyStatus(),
-            roles: this.currencyService.getAllCurrency()
+            statusMap: this.statusService.getCountryStatus(),
+            languageMap: this.statusService.getLanguageName(),
+            currencyMap: this.statusService.getCurrencyName(),
+            regionMap: this.statusService.getRegionName(),
+            blacklistMap: this.statusService.getBlacklistName(),
+            country: this.countryService.getAllCountry()
         }).subscribe({
-            next: ({ statusMap, roles }) => {
+            next: ({ statusMap, currencyMap, languageMap, regionMap, blacklistMap, country }) => {
                 this.statusMap = statusMap;
-                this.currencyList = roles;
+                this.languageMap = languageMap;
+                this.currencyMap = currencyMap;
+                this.regionMap = regionMap;
+                this.blacklistMap = blacklistMap;
+                this.countryList = country;
             },
             error: (err) => {
                 console.error('Initialization error:', err);
@@ -235,9 +247,9 @@ export class CurrencyComponent {
 
     search() {
         this.loading[0] = true;
-        this.currencyService.searchCurrency(this.searchText).subscribe({
-            next: (Currency) => {
-                this.currencyList = Currency;
+        this.countryService.searchCountry(this.searchText).subscribe({
+            next: (Country) => {
+                this.countryList = Country;
                 this.loading[0] = false;
             },
             error: () => {
@@ -252,34 +264,34 @@ export class CurrencyComponent {
     }
 
     addNew() {
-        this.router.navigate(['/add-currency']);
+        this.router.navigate(['/add-country']);
     }
 
-    edit(currency: Currency) {
-        this.router.navigate(['/edit-currency'], { state: { currency } });
+    edit(country: Country) {
+        this.router.navigate(['/edit-country'], { state: { country } });
     }
 
-    view(currency: Currency) {
-        this.selectedCurrency = currency;
+    view(country: Country) {
+        this.selectedCountry = country;
         this.displayDetails = true;
     }
 
-    delete(currency: Currency) {
+    delete(country: Country) {
         this.confirmationService.confirm({
-            message: `Are you sure you want to delete role "${currency.currencyName}"?`,
+            message: `Are you sure you want to delete role "${country.countryName}"?`,
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.currencyService.deleteCurrency(currency.id!).subscribe({
+                this.countryService.deleteCountry(country.id!).subscribe({
                     next: () => {
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Deleted',
-                            detail: `Role "${currency.currencyName}" deleted successfully.`,
+                            detail: `Role "${country.countryName}" deleted successfully.`,
                             life: 3000
                         });
                         // remove from UI list
-                        this.currencyList = this.currencyList.filter(r => r.id !== currency.id);
+                        this.countryList = this.countryList.filter(r => r.id !== country.id);
                     },
                     error: () => {
                         this.messageService.add({
@@ -296,6 +308,22 @@ export class CurrencyComponent {
 
     getStatus(code: string): string {
         return this.statusMap[code] || code;
+    }
+
+    getLanguages(code: string): string {
+        return this.languageMap[code] || code;
+    }
+
+    getCurrency(code: string): string {
+        return this.currencyMap[code] || code;
+    }
+
+    getRegion(code: string): string {
+        return this.regionMap[code] || code;
+    }
+
+    getBlacklist(code: string): string {
+        return this.blacklistMap[code] || code;
     }
 }
 

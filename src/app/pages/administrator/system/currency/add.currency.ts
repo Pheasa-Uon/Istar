@@ -14,12 +14,24 @@ import { Select } from 'primeng/select';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
-import { Currency } from '../../../model/Currency';
+import { Currency } from '../../../model/administrator/system/Currency';
 
 @Component({
     selector: 'app-add-currency',
     standalone: true,
-    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, DropdownModule, TextareaModule, Message, ButtonGroup, Fluid, Select, HasPermissionDirective],
+    imports: [
+        CommonModule,
+        FormsModule,
+        InputTextModule,
+        ButtonModule,
+        DropdownModule,
+        TextareaModule,
+        Message,
+        ButtonGroup,
+        Fluid,
+        Select,
+        HasPermissionDirective
+    ],
     template: `
         <form #Form="ngForm" (ngSubmit)="save()" novalidate>
             <div class="fixed top-3/1 right-4 z-50 w-[500px]">

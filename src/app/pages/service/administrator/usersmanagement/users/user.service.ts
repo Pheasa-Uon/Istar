@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { RolePermission } from '../../../../model/RolePermission';
+import { RolePermission } from '../../../../model/administrator/usermanagement/RolePermission';
 
 export interface User {
     id?: number;

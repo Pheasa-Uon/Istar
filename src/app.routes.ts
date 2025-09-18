@@ -19,6 +19,9 @@ import { EditGlobalSystemParameter } from './app/pages/administrator/system/glob
 import { CurrencyComponent } from './app/pages/administrator/system/currency/currency';
 import { AddCurrency } from './app/pages/administrator/system/currency/add.currency';
 import { EditCurrency } from './app/pages/administrator/system/currency/edit.currency';
+import { CountryComponent } from './app/pages/administrator/system/country/country';
+import { AddCountry } from './app/pages/administrator/system/country/add.country';
+import { EditCountry } from './app/pages/administrator/system/country/edit.country';
 
 export const appRoutes: Routes = [
 
@@ -58,10 +61,15 @@ export const appRoutes: Routes = [
             { path: 'add-global-system-parameter', component: AddGlobalSystemParameter },
             { path: 'edit-global-system-parameter', component: EditGlobalSystemParameter },
 
-            // Global System Parameter routes
+            // Currency routes
             { path: 'currency', component: CurrencyComponent },
             { path: 'add-currency', component: AddCurrency },
             { path: 'edit-currency', component: EditCurrency },
+
+            // Country routes
+            { path: 'country', component: CountryComponent },
+            { path: 'add-country', component: AddCountry },
+            { path: 'edit-country', component: EditCountry },
 
             // Lazy loaded modules - make sure these modules exist and export NgModule classes
             { path: 'uikit', loadChildren: () => import('./app/UI/uikit/uikit.routes') },

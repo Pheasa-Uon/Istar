@@ -12,7 +12,7 @@ import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message'; // adjust path if needed
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
-import { Currency } from '../../../model/Currency';
+import { Currency } from '../../../model/administrator/system/Currency';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
 
 @Component({

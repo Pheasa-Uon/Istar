@@ -14,6 +14,7 @@ export const environment = {
             converterName: '/converter-name',
             globalSystemParameter: '/system/global-system-parameter',
             currency: '/system/currency',
+            country: '/system/country',
         }
     }
 };
