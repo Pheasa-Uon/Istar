@@ -173,7 +173,7 @@ export class AddGlobalSystemParameter implements OnInit {
     dropdownFieldItems: DropdownItemFieldName[] = [];
     dropdownStatusItems = [
         { name: 'Active', code: 'A' },
-        { name: 'Blocked', code: 'B' },
+        //{ name: 'Blocked', code: 'B' },
         { name: 'Closed', code: 'C' }
     ];
 

@@ -72,7 +72,7 @@ export class EditRolePermission {
 
     dropdownItems = [
         { name: 'Active', code: 'A' },
-        { name: 'Block', code: 'B' },
+        //{ name: 'Block', code: 'B' },
         { name: 'Close', code: 'C' }
     ];
 

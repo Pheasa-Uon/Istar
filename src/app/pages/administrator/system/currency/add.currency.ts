@@ -129,7 +129,7 @@ export class AddCurrency {
 
     dropdownItems = [
         { name: 'Active', code: 'A' },
-        { name: 'Blocked', code: 'B' },
+        //{ name: 'Blocked', code: 'B' },
         { name: 'Closed', code: 'C' }
     ];
 
