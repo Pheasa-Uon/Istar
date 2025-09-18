@@ -33,6 +33,7 @@ import {
             <div class="p-fluid">
                 <div class="card flex flex-col gap-6 w-full p-4">
                     <div class="font-semibold text-xl">Edit Country</div>
+                    <div class="border-t border-gray-200 my-4"></div>
 
                     <!-- ISO Fields -->
                     <div class="flex flex-col md:flex-row gap-6">

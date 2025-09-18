@@ -28,6 +28,7 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
             <p-fluid>
                 <div class="card flex flex-col gap-6 w-full">
                     <div class="font-semibold text-xl">Add New Currency</div>
+                    <div class="border-t border-gray-200 my-4"></div>
 
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full">

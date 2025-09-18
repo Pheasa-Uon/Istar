@@ -44,6 +44,7 @@ import {
                 <div class="card flex flex-col gap-6 w-full p-4">
                     <div class="font-semibold text-xl">Add New Country</div>
 
+                    <div class="border-t border-gray-200 my-4"></div>
                     <!-- ISO Fields -->
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-col gap-2 w-full">

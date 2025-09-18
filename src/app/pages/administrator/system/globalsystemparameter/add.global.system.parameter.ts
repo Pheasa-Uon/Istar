@@ -48,6 +48,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
             <p-fluid>
                 <div class="card flex flex-col gap-6 w-full">
                     <div class="font-semibold text-xl">Add New Global System Parameter</div>
+                    <div class="border-t border-gray-200 my-4"></div>
 
                     <!-- Module & Field Dropdowns -->
                     <div class="flex flex-col md:flex-row gap-6">
