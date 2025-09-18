@@ -103,7 +103,11 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                         <td>{{ rolePermissions.rolesCode }}</td>
                         <td>{{ rolePermissions.name }}</td>
                         <td>{{ rolePermissions.description }}</td>
-                        <td>{{ getRolesStatus(rolePermissions.rolesStatus || '') }}</td>
+                        <td
+                            [ngStyle]="{
+                                'color': rolePermissions.rolesStatus === 'A' ? 'Green' :
+                                         rolePermissions.rolesStatus === 'I' ? 'Gray' : 'black'
+                        }">{{ getRolesStatus(rolePermissions.rolesStatus || '') }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button *hasFeaturePermission="['RLP','view']"

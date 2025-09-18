@@ -106,7 +106,14 @@ import { CountryDropdownItemService } from '../../../service/administrator/syste
                         <td>{{ country.iso3Alpha }}</td>
                         <td>{{ country.countryName }}</td>
                         <td>{{ getLanguages(country.language || '') }}</td>
-                        <td>{{ getStatus(country.countryStatus || '') }}</td>
+                        <td
+                            [ngStyle]="{
+                                'color': country.countryStatus === 'A' ? 'Green' :
+                                         country.countryStatus === 'I' ? 'Gray' : 'black'
+                        }">
+                            {{ getStatus(country.countryStatus || '') }}
+                        </td>
+
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button *hasFeaturePermission="['COU','view']"

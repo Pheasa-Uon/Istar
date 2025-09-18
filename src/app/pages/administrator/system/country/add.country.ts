@@ -179,7 +179,7 @@ export class AddCountry implements OnInit {
     dropdownItems = [
         { name: 'Active', code: 'A' },
         //{ name: 'Blocked', code: 'B' },
-        { name: 'Closed', code: 'C' }
+        { name: 'Inactive', code: 'I' }
     ];
 
     constructor(

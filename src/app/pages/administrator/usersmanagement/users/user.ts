@@ -85,7 +85,12 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
                         <td>{{ user.name }}</td>
                         <td>{{ user.lastLoginAt | date: 'dd-MM-yyyy HH:mm:ss' }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ getUserStatus(user.userStatus) }}</td>
+                        <td
+                            [ngStyle]="{
+                                'color': user.userStatus === 'A' ? 'Green' :
+                                         user.userStatus === 'I' ? 'Gray' :
+                                         user.userStatus === 'B' ? 'Orange' : 'black'
+                        }">{{ getUserStatus(user.userStatus) }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button *hasFeaturePermission="['USR','view']" icon="pi pi-eye" text raised rounded (click)="viewUser(user)"></p-button>

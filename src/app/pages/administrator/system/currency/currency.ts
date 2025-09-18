@@ -106,7 +106,11 @@ import { CurrencyDropdownItemService } from '../../../service/administrator/syst
                         <td>{{ currency.currencyCode }}</td>
                         <td>{{ currency.currencyChar }} ({{ currency.currencySymbol }})</td>
                         <td>{{ currency.currencyName }}</td>
-                        <td>{{ getStatus(currency.currencyStatus || '') }}</td>
+                        <td
+                            [ngStyle]="{
+                                'color': currency.currencyStatus === 'A' ? 'Green' :
+                                         currency.currencyStatus === 'I' ? 'Gray' : 'black'
+                        }">{{ getStatus(currency.currencyStatus || '') }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button *hasFeaturePermission="['CUR','view']"

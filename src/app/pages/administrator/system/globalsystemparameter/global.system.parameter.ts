@@ -80,10 +80,11 @@ import { GspDropdownItemService } from '../../../service/administrator/system/gs
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="min-width:100px">Sys Par Code</th>
-                        <th style="min-width:250px">Field Name</th>
-                        <th style="min-width:250px">Value Name</th>
-                        <th style="min-width:250px">Local Value Name</th>
-                        <th style="min-width:150px">Module Name</th>
+                        <th style="min-width:150px">Field Name</th>
+                        <th style="min-width:200px">Value Name</th>
+                        <th style="min-width:200px">Local Value Name</th>
+                        <th style="min-width:200px">Module Name</th>
+                        <th style="min-width:150px">Status</th>
                         <th style="min-width:150px">Action</th>
                     </tr>
                 </ng-template>
@@ -94,6 +95,11 @@ import { GspDropdownItemService } from '../../../service/administrator/system/gs
                         <td>{{ gsp.valueName }}</td>
                         <td>{{ gsp.localValueName }}</td>
                         <td>{{ getModuleNames(gsp.moduleName || '') }}</td>
+                        <td
+                            [ngStyle]="{
+                                'color': gsp.sysParStatus === 'A' ? 'Green' :
+                                         gsp.sysParStatus === 'I' ? 'Gray' : 'black'
+                        }">{{ getGSPStatus(gsp.sysParStatus || '') }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button *hasFeaturePermission="['GSP','view']" icon="pi pi-eye" text raised rounded (click)="viewGlobalSystemParameter(gsp)"></p-button>

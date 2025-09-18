@@ -65,6 +65,7 @@ interface CustomTreeNode extends TreeNode {
     template: `
         <div class="card">
             <div class="font-semibold text-xl mb-4">Set Role Permission</div>
+            <div class="border-t border-gray-200 my-4"></div>
             <div class="card">
                 <div class="mb-4 text-lg font-medium text-primary">{{ role?.name || 'Loading...' }}</div>
 

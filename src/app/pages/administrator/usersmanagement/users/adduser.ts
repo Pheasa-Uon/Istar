@@ -109,7 +109,8 @@ export class AddUser {
     dropdownItems = [
         { name: 'Active', code: 'A' },
         { name: 'Blocked', code: 'B' },
-        { name: 'Closed', code: 'C' }
+        //{ name: 'Closed', code: 'C' },
+        { name: 'Inactive', code: 'I' }
     ];
 
     showPassword = false;

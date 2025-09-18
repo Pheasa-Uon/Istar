@@ -168,7 +168,7 @@ export class EditCountry {
     dropdownBlacklistItems: DropdownItemBlacklist[] = [];
     dropdownItems = [
         { name: 'Active', code: 'A' },
-        { name: 'Closed', code: 'C' }
+        { name: 'Inactive', code: 'I' }
     ];
 
     constructor(

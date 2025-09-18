@@ -150,7 +150,8 @@ export class EditGlobalSystemParameter {
     dropdownStatusItems = [
         { name: 'Active', code: 'A' },
         //{ name: 'Blocked', code: 'B' },
-        { name: 'Closed', code: 'C' }
+        //{ name: 'Closed', code: 'C' },
+        { name: 'Inactive', code: 'I' }
     ];
 
     constructor(
