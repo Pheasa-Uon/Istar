@@ -8,6 +8,7 @@ import { GlobalSystemParameterComponent } from './administrator/System/GlobalSys
 import { CurrencyComponent } from './administrator/System/Currency/currency';
 import { CountryComponent } from './administrator/System/Country/country';
 import { SystemParameterComponent } from './administrator/System/SystemParameter/system.parameter';
+import { GlobalPolicyComponent } from './administrator/System/GlobalPolicy/global.policy';
 
 export default [
     { path: 'documentation', component: Documentation },
@@ -19,6 +20,7 @@ export default [
     { path: 'currency', component: CurrencyComponent },
     { path: 'country', component: CountryComponent },
     { path: 'system-parameter', component: SystemParameterComponent },
+    { path: 'global-policy', component: GlobalPolicyComponent },
 
     //{ path: '', redirectTo: 'user', pathMatch: 'full' },
     { path: '**', redirectTo: '/notfound' }

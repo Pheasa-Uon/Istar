@@ -25,6 +25,8 @@ import { EditCountry } from './app/pages/administrator/System/Country/edit.count
 import { SystemParameterComponent } from './app/pages/administrator/System/SystemParameter/system.parameter';
 import { AddSystemParameter } from './app/pages/administrator/System/SystemParameter/add.system.parameter';
 import { EditSystemParameter } from './app/pages/administrator/System/SystemParameter/edit.system.parameter';
+import { GlobalPolicyComponent } from './app/pages/administrator/System/GlobalPolicy/global.policy';
+import { AddGlobalPolicy } from './app/pages/administrator/System/GlobalPolicy/add.global.policy';
 
 export const appRoutes: Routes = [
 
@@ -78,6 +80,11 @@ export const appRoutes: Routes = [
             { path: 'system-parameter', component: SystemParameterComponent },
             { path: 'add-system-parameter', component: AddSystemParameter },
             { path: 'edit-system-parameter', component: EditSystemParameter },
+
+            // Global Policy routes
+            { path: 'global_policy', component: GlobalPolicyComponent },
+            { path: 'add-global_policy', component: AddGlobalPolicy },
+            { path: 'edit-global_policy', component: EditSystemParameter },
 
             // Lazy loaded modules - make sure these modules exist and export NgModule classes
             { path: 'uikit', loadChildren: () => import('./app/UI/uikit/uikit.routes') },

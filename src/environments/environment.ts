@@ -16,6 +16,7 @@ export const environment = {
             currency: '/System/Currency',
             country: '/System/Country',
             systemParameter: '/system/system-parameter',
+            globalPolicy: '/system/global-policy',
         }
     }
 };
