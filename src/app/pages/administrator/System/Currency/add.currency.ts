@@ -17,7 +17,7 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
 import { Currency } from '../../../model/administrator/system/Currency';
 
 @Component({
-    selector: 'app-add-currency',
+    selector: 'app-add-Currency',
     standalone: true,
     imports: [
         CommonModule,

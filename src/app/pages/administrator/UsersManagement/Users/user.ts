@@ -25,7 +25,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
-    selector: 'app-users',
+    selector: 'app-Users',
     standalone: true,
     imports: [CommonModule, FormsModule, TableModule, InputTextModule, ButtonModule, IconFieldModule, InputIconModule, DialogModule, Fluid, DividerModule, TreeTableModule, CheckboxModule, HasPermissionDirective,ConfirmDialogModule],
     providers: [ConfirmationService, MessageService],

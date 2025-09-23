@@ -23,7 +23,7 @@ import {
 } from '../../../service/administrator/system/gsp.dropdown.item.service';
 
 @Component({
-    selector: 'app-edit-global-system-parameter',
+    selector: 'app-edit-global-System-parameter',
     standalone: true,
     imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, Message, HasPermissionDirective],
     template: `

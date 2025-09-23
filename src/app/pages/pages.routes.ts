@@ -2,11 +2,12 @@ import { Routes } from '@angular/router';
 import { Documentation } from '../UI/documentation/documentation';
 import { Crud } from '../UI/crud/crud';
 import { Empty } from '../UI/empty/empty';
-import { UsersComponent} from './administrator/usersmanagement/users/user';
-import { RolePermissionsComponent } from './administrator/usersmanagement/rolepermissions/role.permission';
-import { GlobalSystemParameterComponent } from './administrator/system/globalsystemparameter/global.system.parameter';
-import { CurrencyComponent } from './administrator/system/currency/currency';
-import { CountryComponent } from './administrator/system/country/country';
+import { UsersComponent} from './administrator/UsersManagement/Users/user';
+import { RolePermissionsComponent } from './administrator/UsersManagement/RolePermissions/role.permission';
+import { GlobalSystemParameterComponent } from './administrator/System/GlobalSystemParameter/global.system.parameter';
+import { CurrencyComponent } from './administrator/System/Currency/currency';
+import { CountryComponent } from './administrator/System/Country/country';
+import { SystemParameterComponent } from './administrator/System/SystemParameter/system.parameter';
 
 export default [
     { path: 'documentation', component: Documentation },
@@ -14,9 +15,11 @@ export default [
     { path: 'empty', component: Empty },
     { path: 'user', component: UsersComponent },
     { path: 'role-permission', component: RolePermissionsComponent },
-    { path: 'global-system-parameter', component: GlobalSystemParameterComponent },
+    { path: 'global-System-parameter', component: GlobalSystemParameterComponent },
     { path: 'currency', component: CurrencyComponent },
     { path: 'country', component: CountryComponent },
+    { path: 'system-parameter', component: SystemParameterComponent },
+
     //{ path: '', redirectTo: 'user', pathMatch: 'full' },
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;

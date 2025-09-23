@@ -21,7 +21,7 @@ import {
 } from '../../../service/administrator/system/country.dropdown.item.service';
 
 @Component({
-    selector: 'app-edit-country',
+    selector: 'app-edit-Country',
     standalone: true,
     imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, ButtonGroup, Message, HasPermissionDirective],
     template: `

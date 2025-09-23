@@ -5,16 +5,17 @@ export const environment = {
         authentication: '/authentication',
         permission: '/permissions',
         usersManagement: {
-            users: '/users',
+            users: '/Users',
             roles: '/roles',
-            rolePermissions: '/rolepermissions',
+            rolePermissions: '/RolePermissions',
             userRoles: '/userroles',
         },
         system: {
             converterName: '/converter-name',
-            globalSystemParameter: '/system/global-system-parameter',
-            currency: '/system/currency',
-            country: '/system/country',
+            globalSystemParameter: '/System/global-System-parameter',
+            currency: '/System/Currency',
+            country: '/System/Country',
+            systemParameter: '/system/system-parameter',
         }
     }
 };

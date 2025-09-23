@@ -20,7 +20,7 @@ import { GlobalSystemParameterService, GlobalSystemParameter } from '../../../se
 import { GspDropdownItemService } from '../../../service/administrator/system/gsp.dropdown.item.service';
 
 @Component({
-    selector: 'app-global-system-parameter',
+    selector: 'app-global-System-parameter',
     standalone: true,
     imports: [
         CommonModule,

@@ -5,23 +5,26 @@ import { Dashboard } from './app/pages/dashboard/dashboard';
 import { Documentation } from './app/UI/documentation/documentation';
 import { Landing } from './app/UI/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
-import { UsersComponent } from './app/pages/administrator/usersmanagement/users/user';
-import { AddUser } from './app/pages/administrator/usersmanagement/users/adduser';
-import { EditUser } from './app/pages/administrator/usersmanagement/users/edituser';
-import { RolePermissionsComponent } from './app/pages/administrator/usersmanagement/rolepermissions/role.permission';
-import { AddRolePermission } from './app/pages/administrator/usersmanagement/rolepermissions/add.role.permission';
-import { EditRolePermission } from './app/pages/administrator/usersmanagement/rolepermissions/edit.role.permission';
-import { SetRolePermission } from './app/pages/administrator/usersmanagement/rolepermissions/set.role.permission';
+import { UsersComponent } from './app/pages/administrator/UsersManagement/Users/user';
+import { AddUser } from './app/pages/administrator/UsersManagement/Users/adduser';
+import { EditUser } from './app/pages/administrator/UsersManagement/Users/edituser';
+import { RolePermissionsComponent } from './app/pages/administrator/UsersManagement/RolePermissions/role.permission';
+import { AddRolePermission } from './app/pages/administrator/UsersManagement/RolePermissions/add.role.permission';
+import { EditRolePermission } from './app/pages/administrator/UsersManagement/RolePermissions/edit.role.permission';
+import { SetRolePermission } from './app/pages/administrator/UsersManagement/RolePermissions/set.role.permission';
 import { AuthGuard} from './app/pages/authentication/AuthGuard';
-import { GlobalSystemParameterComponent } from './app/pages/administrator/system/globalsystemparameter/global.system.parameter';
-import { AddGlobalSystemParameter } from './app/pages/administrator/system/globalsystemparameter/add.global.system.parameter';
-import { EditGlobalSystemParameter } from './app/pages/administrator/system/globalsystemparameter/edit.global.system.parameter';
-import { CurrencyComponent } from './app/pages/administrator/system/currency/currency';
-import { AddCurrency } from './app/pages/administrator/system/currency/add.currency';
-import { EditCurrency } from './app/pages/administrator/system/currency/edit.currency';
-import { CountryComponent } from './app/pages/administrator/system/country/country';
-import { AddCountry } from './app/pages/administrator/system/country/add.country';
-import { EditCountry } from './app/pages/administrator/system/country/edit.country';
+import { GlobalSystemParameterComponent } from './app/pages/administrator/System/GlobalSystemParameter/global.system.parameter';
+import { AddGlobalSystemParameter } from './app/pages/administrator/System/GlobalSystemParameter/add.global.system.parameter';
+import { EditGlobalSystemParameter } from './app/pages/administrator/System/GlobalSystemParameter/edit.global.system.parameter';
+import { CurrencyComponent } from './app/pages/administrator/System/Currency/currency';
+import { AddCurrency } from './app/pages/administrator/System/Currency/add.currency';
+import { EditCurrency } from './app/pages/administrator/System/Currency/edit.currency';
+import { CountryComponent } from './app/pages/administrator/System/Country/country';
+import { AddCountry } from './app/pages/administrator/System/Country/add.country';
+import { EditCountry } from './app/pages/administrator/System/Country/edit.country';
+import { SystemParameterComponent } from './app/pages/administrator/System/SystemParameter/system.parameter';
+import { AddSystemParameter } from './app/pages/administrator/System/SystemParameter/add.system.parameter';
+import { EditSystemParameter } from './app/pages/administrator/System/SystemParameter/edit.system.parameter';
 
 export const appRoutes: Routes = [
 
@@ -57,19 +60,24 @@ export const appRoutes: Routes = [
             { path: 'set-role-permission/:id', component: SetRolePermission },
 
             // Global System Parameter routes
-            { path: 'global-system-parameter', component: GlobalSystemParameterComponent },
-            { path: 'add-global-system-parameter', component: AddGlobalSystemParameter },
-            { path: 'edit-global-system-parameter', component: EditGlobalSystemParameter },
+            { path: 'global-System-parameter', component: GlobalSystemParameterComponent },
+            { path: 'add-global-System-parameter', component: AddGlobalSystemParameter },
+            { path: 'edit-global-System-parameter', component: EditGlobalSystemParameter },
 
             // Currency routes
             { path: 'currency', component: CurrencyComponent },
-            { path: 'add-currency', component: AddCurrency },
-            { path: 'edit-currency', component: EditCurrency },
+            { path: 'add-Currency', component: AddCurrency },
+            { path: 'edit-Currency', component: EditCurrency },
 
             // Country routes
             { path: 'country', component: CountryComponent },
-            { path: 'add-country', component: AddCountry },
-            { path: 'edit-country', component: EditCountry },
+            { path: 'add-Country', component: AddCountry },
+            { path: 'edit-Country', component: EditCountry },
+
+            // System Parameter routes
+            { path: 'system-parameter', component: SystemParameterComponent },
+            { path: 'add-system-parameter', component: AddSystemParameter },
+            { path: 'edit-system-parameter', component: EditSystemParameter },
 
             // Lazy loaded modules - make sure these modules exist and export NgModule classes
             { path: 'uikit', loadChildren: () => import('./app/UI/uikit/uikit.routes') },

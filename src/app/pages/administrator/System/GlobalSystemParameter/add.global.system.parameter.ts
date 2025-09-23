@@ -24,7 +24,7 @@ import {
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 
 @Component({
-    selector: 'app-add-global-system-parameter',
+    selector: 'app-add-global-System-parameter',
     standalone: true,
     imports: [
         CommonModule,

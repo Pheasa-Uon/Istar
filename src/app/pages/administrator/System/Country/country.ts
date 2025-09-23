@@ -23,7 +23,7 @@ import { CountryService } from '../../../service/administrator/system/country.se
 import { CountryDropdownItemService } from '../../../service/administrator/system/country.dropdown.item.service';
 
 @Component({
-    selector: 'app-country',
+    selector: 'app-Country',
     standalone: true,
     imports: [
         CommonModule,

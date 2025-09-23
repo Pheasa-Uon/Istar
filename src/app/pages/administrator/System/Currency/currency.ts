@@ -25,7 +25,7 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
 import { CurrencyDropdownItemService } from '../../../service/administrator/system/currency.dropdown.item.service';
 
 @Component({
-    selector: 'app-currency',
+    selector: 'app-Currency',
     standalone: true,
     imports: [
         CommonModule,

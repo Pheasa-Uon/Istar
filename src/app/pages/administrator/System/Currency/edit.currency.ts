@@ -16,7 +16,7 @@ import { Currency } from '../../../model/administrator/system/Currency';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
 
 @Component({
-    selector: 'app-edit-currency',
+    selector: 'app-edit-Currency',
     standalone: true,
     imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, Message, HasPermissionDirective],
     template: `

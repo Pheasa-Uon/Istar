@@ -21,7 +21,7 @@ import {
 } from '../../../service/administrator/system/country.dropdown.item.service';
 
 @Component({
-    selector: 'app-add-country',
+    selector: 'app-add-Country',
     standalone: true,
     imports: [
         CommonModule,
@@ -222,7 +222,7 @@ export class AddCountry implements OnInit {
                 setTimeout(() => this.goBack(), 1000);
             },
             error: (error) => {
-                console.error('Error creating country:', error);
+                console.error('Error creating Country:', error);
                 this.messageService.show({
                     severity: 'error',
                     summary: 'Error',
