@@ -18,7 +18,9 @@ export class GlobalPolicyService {
     }
 
     getGlobalPolicyById(id: number): Observable<GlobalPolicy> {
-        return this.http.get<GlobalPolicy>(`${this.apiUrl}/${id}`);
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.get<GlobalPolicy>(`${this.apiUrl}/${id}`, { headers });
     }
 
     addGlobalPolicy(param: GlobalPolicy): Observable<GlobalPolicy> {
