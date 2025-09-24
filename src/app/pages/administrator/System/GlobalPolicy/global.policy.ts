@@ -232,7 +232,7 @@ export class GlobalPolicyComponent {
     }
 
     addGlobalPolicy() {
-        this.router.navigate(['/add-global_policy']);
+        this.router.navigate(['/add-global-policy']);
     }
 
     editGlobalPolicy(globalPolicy: GlobalPolicy) {

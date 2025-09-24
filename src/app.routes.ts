@@ -27,6 +27,7 @@ import { AddSystemParameter } from './app/pages/administrator/System/SystemParam
 import { EditSystemParameter } from './app/pages/administrator/System/SystemParameter/edit.system.parameter';
 import { GlobalPolicyComponent } from './app/pages/administrator/System/GlobalPolicy/global.policy';
 import { AddGlobalPolicy } from './app/pages/administrator/System/GlobalPolicy/add.global.policy';
+import { EditGlobalPolicy } from './app/pages/administrator/System/GlobalPolicy/edit.global.policy';
 
 export const appRoutes: Routes = [
 
@@ -62,19 +63,19 @@ export const appRoutes: Routes = [
             { path: 'set-role-permission/:id', component: SetRolePermission },
 
             // Global System Parameter routes
-            { path: 'global-System-parameter', component: GlobalSystemParameterComponent },
-            { path: 'add-global-System-parameter', component: AddGlobalSystemParameter },
-            { path: 'edit-global-System-parameter', component: EditGlobalSystemParameter },
+            { path: 'global-system-parameter', component: GlobalSystemParameterComponent },
+            { path: 'add-global-system-parameter', component: AddGlobalSystemParameter },
+            { path: 'edit-global-system-parameter', component: EditGlobalSystemParameter },
 
             // Currency routes
             { path: 'currency', component: CurrencyComponent },
-            { path: 'add-Currency', component: AddCurrency },
-            { path: 'edit-Currency', component: EditCurrency },
+            { path: 'add-currency', component: AddCurrency },
+            { path: 'edit-currency', component: EditCurrency },
 
             // Country routes
             { path: 'country', component: CountryComponent },
-            { path: 'add-Country', component: AddCountry },
-            { path: 'edit-Country', component: EditCountry },
+            { path: 'add-country', component: AddCountry },
+            { path: 'edit-country', component: EditCountry },
 
             // System Parameter routes
             { path: 'system-parameter', component: SystemParameterComponent },
@@ -82,9 +83,9 @@ export const appRoutes: Routes = [
             { path: 'edit-system-parameter', component: EditSystemParameter },
 
             // Global Policy routes
-            { path: 'global_policy', component: GlobalPolicyComponent },
-            { path: 'add-global_policy', component: AddGlobalPolicy },
-            { path: 'edit-global_policy', component: EditSystemParameter },
+            { path: 'global-policy', component: GlobalPolicyComponent },
+            { path: 'add-global-policy', component: AddGlobalPolicy },
+            { path: 'edit-global-policy', component: EditGlobalPolicy },
 
             // Lazy loaded modules - make sure these modules exist and export NgModule classes
             { path: 'uikit', loadChildren: () => import('./app/UI/uikit/uikit.routes') },

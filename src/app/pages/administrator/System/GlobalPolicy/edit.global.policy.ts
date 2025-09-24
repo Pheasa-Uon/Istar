@@ -19,7 +19,7 @@ import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message';
 
 @Component({
-    selector: 'app-add-global-policy',
+    selector: 'app-edit-global-policy',
     standalone: true,
     imports: [
         CommonModule,
@@ -34,13 +34,13 @@ import { Message } from '../../../message/message';
         HasPermissionDirective
     ],
     template: `
-        <form #form="ngForm" (ngSubmit)="saveGlobalPolicy()" novalidate>
+        <form #Form="ngForm" (ngSubmit)="saveGlobalPolicy()" novalidate>
             <div class="fixed top-3/1 right-4 z-50 w-[500px]">
                 <app-messages></app-messages>
             </div>
 
             <div class="card flex flex-col gap-6 w-full">
-                <div class="font-semibold text-xl">Add New Global Policy</div>
+                <div class="font-semibold text-xl">Edit Global Policy</div>
                 <div class="border-t border-gray-200 my-4"></div>
 
                 <div class="flex flex-col md:flex-row gap-6">
@@ -145,7 +145,7 @@ import { Message } from '../../../message/message';
 
                 <div class="flex gap-2 w-full justify-end">
                     <p-buttongroup>
-                        <p-button *hasFeaturePermission="['SYP', 'save']" type="submit" label="Create New" icon="pi pi-plus-circle" [disabled]="form.invalid"></p-button>
+                        <p-button *hasFeaturePermission="['SYP','save']" type="submit" label="Save" icon="pi pi-check" [disabled]="Form.invalid" />
                         <p-button *hasFeaturePermission="['SYP', 'cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
                     </p-buttongroup>
                 </div>
@@ -153,7 +153,7 @@ import { Message } from '../../../message/message';
         </form>
     `
 })
-export class AddGlobalPolicy {
+export class EditGlobalPolicy {
     submitted = false;
 
     globalPolicy: GlobalPolicy = {
@@ -186,6 +186,10 @@ export class AddGlobalPolicy {
         private messageService: MessageService,
         private permissionService: FeaturePermissionService
     ) {
+        const navigation = this.router.getCurrentNavigation();
+        if (navigation?.extras.state?.['globalPolicy']) {
+            this.globalPolicy = { ...navigation.extras.state['globalPolicy'] };
+        };
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();
     }
@@ -203,7 +207,7 @@ export class AddGlobalPolicy {
 
         const payload = this.preparePayload();
 
-        this.globalPolicyService.addGlobalPolicy(payload).subscribe({
+        this.globalPolicyService.updateGlobalPolicy(payload).subscribe({
             next: () => {
                 this.messageService.show({
                     severity: 'success',
