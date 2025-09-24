@@ -225,7 +225,8 @@ export class AddGlobalSystemParameter implements OnInit {
             !this.globalSystemParameter.valueName ||
             !this.globalSystemParameter.localValueName ||
             this.globalSystemParameter.displayOrder === null ||
-            this.globalSystemParameter.displayOrder === undefined) {
+            this.globalSystemParameter.displayOrder === undefined)
+        {
             return; // don't proceed if required fields are missing
         }
 

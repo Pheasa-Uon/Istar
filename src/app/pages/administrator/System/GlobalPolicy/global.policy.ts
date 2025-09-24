@@ -18,6 +18,8 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { GlobalPolicyService } from '../../../service/administrator/system/global.policy.service';
 import { GlobalPolicy } from '../../../model/administrator/system/GlobalPolicy';
+import { DateFormatPipe } from '../../../utils/date-format.pipe';
+import { Time12HourPipe } from '../../../utils/time12-hour.pipe';
 
 @Component({
     selector: 'app-global-policy',
@@ -34,7 +36,9 @@ import { GlobalPolicy } from '../../../model/administrator/system/GlobalPolicy';
         FluidModule,
         DividerModule,
         ConfirmDialogModule,
-        HasPermissionDirective
+        HasPermissionDirective,
+        DateFormatPipe,
+        Time12HourPipe
     ],
     providers: [ConfirmationService, MessageService],
     template: `
@@ -137,12 +141,12 @@ import { GlobalPolicy } from '../../../model/administrator/system/GlobalPolicy';
                 <!-- Values Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
                     <div>{{ selectedRow?.policyCode }}</div>
-                    <div>{{ selectedRow?.validFrom }}</div>
+                    <div>{{ selectedRow?.validFrom | formatDate }}</div>
                     <div>{{ selectedRow?.numberDuplicatedPassword }}</div>
                     <div>{{ selectedRow?.minimumPasswordLength }}</div>
-                    <div>{{ selectedRow?.includedLowerCaseLetter }}</div>
-                    <div>{{ selectedRow?.includedSymbolCharacter }}</div>
-                    <div>{{ selectedRow?.canLoginFrom }}</div>
+                    <div>{{ selectedRow?.includedLowerCaseLetter?.name }}</div>
+                    <div>{{ selectedRow?.includedSymbolCharacter?.name }}</div>
+                    <div>{{ selectedRow?.canLoginFrom | time12Hour }}</div>
                     <div>{{ selectedRow?.numberFailedLoginAttempts }}</div>
                 </div>
 
@@ -161,12 +165,12 @@ import { GlobalPolicy } from '../../../model/administrator/system/GlobalPolicy';
                 <!-- Values Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
                     <div>{{ selectedRow?.policyName }}</div>
-                    <div>{{ selectedRow?.validTo }}</div>
+                    <div>{{ selectedRow?.validTo | formatDate }}</div>
                     <div>{{ selectedRow?.dayPasswordExpired }}</div>
-                    <div>{{ selectedRow?.complexedPassword }}</div>
-                    <div>{{ selectedRow?.includedUpperCaseLetter }}</div>
-                    <div>{{ selectedRow?.includedNumber }}</div>
-                    <div>{{ selectedRow?.canLoginTo }}</div>
+                    <div>{{ selectedRow?.complexedPassword?.name }}</div>
+                    <div>{{ selectedRow?.includedUpperCaseLetter?.name }}</div>
+                    <div>{{ selectedRow?.includedNumber?.name }}</div>
+                    <div>{{ selectedRow?.canLoginTo | time12Hour }}</div>
                     <div>{{ selectedRow?.description }}</div>
                 </div>
             </div>
