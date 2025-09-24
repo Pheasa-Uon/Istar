@@ -272,8 +272,4 @@ export class GlobalPolicyComponent {
             }
         });
     }
-
-    getGSPStatus(code: string): string {
-        return this.statusMap[code] || code;
-    }
 }

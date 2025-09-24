@@ -12,8 +12,8 @@ export interface GlobalPolicy {
     includedUpperCaseLetter?: boolean;
     includedSymbolCharacter?: boolean;
     includedNumber?: boolean;
-    canLoginFrom?: any; // e.g., "09:00", "09:00:00"
-    canLoginTo?: any;   // e.g., "17:00", "17:00:00"
+    canLoginFrom?: any;
+    canLoginTo?: any;
     numberFailedLoginAttempts?: number;
     description?: string;
 }
