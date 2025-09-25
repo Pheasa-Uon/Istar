@@ -221,8 +221,8 @@ export class GlobalSystemParameterComponent {
         this.router.navigate(['/edit-global-system-parameter'], { state: { globalSystemParameter } });
     }
 
-    viewGlobalSystemParameter(gsp: GlobalSystemParameter) {
-        this.selectedGSP = gsp;
+    viewGlobalSystemParameter(globalSystemParameter: GlobalSystemParameter) {
+        this.selectedGSP = globalSystemParameter;
         this.displayDetails = true;
     }
 

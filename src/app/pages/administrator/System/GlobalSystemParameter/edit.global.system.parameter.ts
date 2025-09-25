@@ -161,12 +161,14 @@ export class EditGlobalSystemParameter {
         private moduleService: GspDropdownItemService
     ) {
         const navigation = this.router.getCurrentNavigation();
-        if (navigation?.extras.state?.['gsp']) {
-            const globalSystemParameter = { ...navigation.extras.state['gsp'] };
-
-            globalSystemParameter.sysParStatus = globalSystemParameter.sysParStatus ? { name: globalSystemParameter.sysParStatus.name, code: globalSystemParameter.sysParStatus.code } : undefined;
-            this.globalSystemParameter = globalSystemParameter;
-
+        if (navigation?.extras.state?.['globalSystemParameter']) {
+            const globalSystemParameter = { ...navigation.extras.state['globalSystemParameter'] };
+            this.globalSystemParameter = {
+                ...globalSystemParameter,
+                moduleName: globalSystemParameter.moduleName?.value || '', // string
+                fieldName: globalSystemParameter.fieldName?.value || '',   // string
+                sysParStatus: globalSystemParameter.sysParStatus?.value || ''
+            };
         }
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();
@@ -195,22 +197,40 @@ export class EditGlobalSystemParameter {
         });
     }
 
+    // loadFieldsForModule(moduleCode: string) {
+    //     this.moduleService.getModuleFields(moduleCode).subscribe({
+    //         next: (data) => {
+    //             this.dropdownFieldItems = data;
+    //
+    //             // Optional: keep the previously selected field value
+    //             if (this.globalSystemParameter.fieldName) {
+    //                 const exists = data.find(f => f.code === this.globalSystemParameter.fieldName?.value);
+    //                 if (!exists) {
+    //                     this.globalSystemParameter.fieldName = undefined; // or handle invalid field
+    //                 }
+    //             }
+    //         },
+    //         error: (err) => console.error('Error loading module fields', err)
+    //     });
+    // }
+
     loadFieldsForModule(moduleCode: string) {
         this.moduleService.getModuleFields(moduleCode).subscribe({
             next: (data) => {
                 this.dropdownFieldItems = data;
 
-                // Optional: keep the previously selected field value
+                // Keep previously selected field if exists
                 if (this.globalSystemParameter.fieldName) {
                     const exists = data.find(f => f.code === this.globalSystemParameter.fieldName?.value);
                     if (!exists) {
-                        this.globalSystemParameter.fieldName = undefined; // or handle invalid field
+                        this.globalSystemParameter.fieldName.value = ''; // reset invalid field
                     }
                 }
             },
             error: (err) => console.error('Error loading module fields', err)
         });
     }
+
 
     onModuleChange(event: any) {
         const selectedModule = event.value;
