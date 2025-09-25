@@ -171,7 +171,7 @@ export class EditGlobalSystemParameter {
             };
 
         }
-        this.permissionService.loadPerminsions();
+        this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
     }
 
@@ -214,24 +214,6 @@ export class EditGlobalSystemParameter {
             error: (err) => console.error('Error loading module fields', err)
         });
     }
-
-    // loadFieldsForModule(moduleCode: string) {
-    //     this.moduleService.getModuleFields(moduleCode).subscribe({
-    //         next: (data) => {
-    //             this.dropdownFieldItems = data;
-    //
-    //             // Keep previously selected field if exists
-    //             if (this.globalSystemParameter.fieldName) {
-    //                 const exists = data.find(f => f.code === this.globalSystemParameter.fieldName?.value);
-    //                 if (!exists) {
-    //                     this.globalSystemParameter.fieldName.value = ''; // reset invalid field
-    //                 }
-    //             }
-    //         },
-    //         error: (err) => console.error('Error loading module fields', err)
-    //     });
-    // }
-
 
     onModuleChange(event: any) {
         const selectedModule = event.value;

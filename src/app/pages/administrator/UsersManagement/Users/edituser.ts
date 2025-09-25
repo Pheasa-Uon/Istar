@@ -149,7 +149,7 @@ export class EditUser {
             this.originalUser = { ...this.user };
         }
 
-        this.permissionService.loadPerminsions();
+        this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
     }
 

@@ -173,7 +173,7 @@ export class GlobalSystemParameterComponent {
         private permissionService: FeaturePermissionService,
         private confirmationService: ConfirmationService
     ) {
-        this.permissionService.loadPerminsions();
+        this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
     }
 

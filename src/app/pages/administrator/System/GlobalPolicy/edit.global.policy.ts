@@ -281,7 +281,7 @@ export class EditGlobalPolicy {
             this.globalPolicy = policy;
         }
 
-        this.permissionService.loadPerminsions();
+        this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
     }
 

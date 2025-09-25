@@ -232,7 +232,7 @@ export class SetRolePermission implements OnInit {
         private router: Router,
         private permissionService: FeaturePermissionService
     ) {
-        this.permissionService.loadPerminsions();
+        this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
     }
 

@@ -182,7 +182,7 @@ export class EditCountry {
         if (navigation?.extras.state?.['country']) {
             this.country = { ...navigation.extras.state['country'] };
         };
-        this.permissionService.loadPerminsions();
+        this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
     }
 

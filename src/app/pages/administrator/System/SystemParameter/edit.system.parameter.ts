@@ -112,7 +112,7 @@ export class EditSystemParameter {
         if (navigation?.extras.state?.['sp']) {
             this.systemParameter = { ...navigation.extras.state['sp'] };
         }
-        this.permissionService.loadPerminsions();
+        this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
     }
 
