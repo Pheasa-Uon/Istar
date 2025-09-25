@@ -165,12 +165,10 @@ export class GlobalSystemParameterComponent {
     searchText = '';
     displayDetails = false;
     selectedGSP: GlobalSystemParameter | null = null;
-    statusMap: Record<string, string> = {}
 
     constructor(
         private gspService: GlobalSystemParameterService,
         private messageService: MessageService,
-        private statusService: GspDropdownItemService,
         private router: Router,
         private permissionService: FeaturePermissionService,
         private confirmationService: ConfirmationService
@@ -219,8 +217,8 @@ export class GlobalSystemParameterComponent {
         this.router.navigate(['/add-global-system-parameter']);
     }
 
-    editGlobalSystemParameter(gsp: GlobalSystemParameter) {
-        this.router.navigate(['/edit-global-system-parameter'], { state: { gsp } });
+    editGlobalSystemParameter(globalSystemParameter: GlobalSystemParameter) {
+        this.router.navigate(['/edit-global-system-parameter'], { state: { globalSystemParameter } });
     }
 
     viewGlobalSystemParameter(gsp: GlobalSystemParameter) {
