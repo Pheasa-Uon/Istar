@@ -2,21 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { RolePermission } from '../../../../model/administrator/usermanagement/RolePermission';
-
-export interface User {
-    id?: number;
-    userCode?: string;
-    username?: string;
-    name?: string;
-    email?: string;
-    password?: string;
-    userStatus: string; // ✅ add this line
-    description?: string;
-    lastLoginAt?: Date;
-
-}
+import { User } from '../../../../model/administrator/usermanagement/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -25,28 +12,20 @@ export class UserService {
 
     constructor(private http: HttpClient) {}
 
-    getAllUsers(): Observable<User[]> {
-        return this.http.get<User[]>(this.userUrl).pipe(
-            map(users =>
-                users.map(user => ({
-                    ...user,
-                    lastLoginAt: user.lastLoginAt ? new Date(user.lastLoginAt) : undefined
-                }))
-            )
-        );
-    }
-
-    getUserById(userId: number): Observable<User> {
-        return this.http.get<User>(`${this.userUrl}/${userId}`).pipe(
-            map(user => ({
-                ...user,
-                lastLoginAt: user.lastLoginAt ? new Date(user.lastLoginAt) : undefined
-            }))
-        );
-    }
-
     addUser(user: User): Observable<User> {
         return this.http.post<User>(this.userUrl, user);
+    }
+
+    getAllUsers(): Observable<User[]> {
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.get<User[]>(`${this.userUrl}`, { headers });
+    }
+
+    getUserById(id: number): Observable<User> {
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.get<User>(`${this.userUrl}/${id}`, { headers });
     }
 
     updateUser(user: Partial<User> & { id: number }): Observable<User> {

@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable, of, throwError } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../../../environments/environment';
-import { User } from '../users/user.service';
 
 export interface RolePermission {
     id?: number | undefined;

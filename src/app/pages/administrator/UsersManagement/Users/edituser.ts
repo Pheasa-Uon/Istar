@@ -8,7 +8,8 @@ import { Select } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
 import { Fluid } from 'primeng/fluid';
 import { ButtonGroup } from 'primeng/buttongroup';
-import { UserService, User } from '../../../service/administrator/usersmanagement/users/user.service';
+import { UserService } from '../../../service/administrator/usersmanagement/users/user.service';
+import { User } from '../../../model/administrator/usermanagement/user.model';
 import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
@@ -113,7 +114,7 @@ export class EditUser {
         name: '',
         password: '',
         email: '',
-        userStatus: '',
+        userStatus: undefined,
         description: ''
     };
 
@@ -135,13 +136,23 @@ export class EditUser {
         private permissionService: FeaturePermissionService
     ) {
         const navigation = this.router.getCurrentNavigation();
-        if (navigation?.extras.state?.['user']) {
-            this.user = { ...navigation.extras.state['user'] };
+        const navUser = navigation?.extras.state?.['user'];
+
+        if (navUser) {
+            // Assign the user from navigation state directly to this.user
+            this.user = {
+                ...navUser,
+                userStatus: navUser.userStatus?.value || 'I' // ensure default code if undefined
+            };
+
+            // Keep a copy of the original user for comparison
             this.originalUser = { ...this.user };
         }
+
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();
     }
+
 
     goBack() {
         this.router.navigate(['/user']);
