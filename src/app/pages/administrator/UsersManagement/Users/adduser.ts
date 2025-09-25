@@ -73,7 +73,7 @@ import { StringOption } from '../../../model/administrator/usermanagement/role.p
 
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="status">Status</label>
-                            <p-select id="status" name="status" [(ngModel)]="user.userStatus" [options]="dropdownItems" optionLabel="name" placeholder="Select One" class="w-full"></p-select>
+                            <p-select id="status" name="status" [(ngModel)]="user.userStatus" [options]="dropdownItems" optionLabel="label" placeholder="Select One" class="w-full"></p-select>
                         </div>
                     </div>
 
@@ -108,10 +108,10 @@ export class AddUser {
     };
 
     dropdownItems: StringOption[] = [
-        { name: 'Active', value: 'A' },
-        { name: 'Blocked', value: 'B' },
-        { name: 'Pending', value: 'P' },
-        { name: 'Inactive', value: 'I' }
+        { label: 'Active', value: 'A' },
+        { label: 'Blocked', value: 'B' },
+        { label: 'Pending', value: 'P' },
+        { label: 'Inactive', value: 'I' }
     ];
 
     showPassword = false;

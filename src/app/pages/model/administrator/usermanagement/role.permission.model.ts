@@ -1,5 +1,5 @@
 export interface StringOption {
-    name: string;
+    label: string;
     value: string;
 }
 

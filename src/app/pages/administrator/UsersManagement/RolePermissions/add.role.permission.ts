@@ -138,8 +138,8 @@ export class AddRolePermission {
     };
 
     dropdownItems: StringOption[] = [
-        { name: 'Active', value: 'A' },
-        { name: 'Inactive', value: 'I' }
+        { label: 'Active', value: 'A' },
+        { label: 'Inactive', value: 'I' }
     ];
 
     constructor(

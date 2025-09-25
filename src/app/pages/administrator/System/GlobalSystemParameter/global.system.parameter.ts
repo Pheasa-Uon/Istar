@@ -92,15 +92,15 @@ import { GlobalSystemParameter } from '../../../model/administrator/system/globa
                 <ng-template pTemplate="body" let-gsp>
                     <tr>
                         <td>{{ gsp.sysParCode }}</td>
-                        <td>{{ gsp.fieldName?.name }}</td>
+                        <td>{{ gsp.fieldName?.label }}</td>
                         <td>{{ gsp.valueName }}</td>
                         <td>{{ gsp.localValueName }}</td>
-                        <td>{{ gsp.moduleName?.name}}</td>
+                        <td>{{ gsp.moduleName?.label}}</td>
                         <td
                             [ngStyle]="{
                                 'color': gsp.sysParStatus?.value === 'A' ? 'Green' :
                                          gsp.sysParStatus?.value === 'I' ? 'Gray' : 'black'
-                        }">{{ gsp.sysParStatus?.name }}</td>
+                        }">{{ gsp.sysParStatus?.label }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button *hasFeaturePermission="['GSP','view']" icon="pi pi-eye" text raised rounded (click)="viewGlobalSystemParameter(gsp)"></p-button>
@@ -132,9 +132,9 @@ import { GlobalSystemParameter } from '../../../model/administrator/system/globa
                 <!-- Values Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
                     <div>{{ selectedGSP?.sysParCode }}</div>
-                    <div>{{ selectedGSP?.fieldName?.name }}</div>
+                    <div>{{ selectedGSP?.fieldName?.label }}</div>
                     <div>{{ selectedGSP?.localValueName }}</div>
-                    <div>{{ selectedGSP?.sysParStatus?.name}}</div>
+                    <div>{{ selectedGSP?.sysParStatus?.label}}</div>
                 </div>
 
                 <!-- Labels Column 2 -->
@@ -147,7 +147,7 @@ import { GlobalSystemParameter } from '../../../model/administrator/system/globa
 
                 <!-- Values Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-5 py-5">
-                    <div>{{ selectedGSP?.moduleName?.name}}</div>
+                    <div>{{ selectedGSP?.moduleName?.label}}</div>
                     <div>{{ selectedGSP?.valueName }}</div>
                     <div>{{ selectedGSP?.displayOrder }}</div>
                     <div>{{ selectedGSP?.description }}</div>

@@ -105,7 +105,7 @@ import { RolePermissionModel } from '../../../model/administrator/usermanagement
                                 'color': user.userStatus === 'A' ? 'Green' :
                                          user.userStatus === 'I' ? 'Gray' :
                                          user.userStatus === 'B' ? 'Orange' : 'black'
-                        }">{{ user.userStatus?.name }}</td>
+                        }">{{ user.userStatus?.label }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button *hasFeaturePermission="['USR','view']" icon="pi pi-eye" text raised rounded (click)="viewUser(user)"></p-button>
@@ -154,7 +154,7 @@ import { RolePermissionModel } from '../../../model/administrator/usermanagement
                         <!--                            (click)="showPassword = !showPassword"-->
                         <!--                        ></p-button>-->
                     </div>
-                    <div>{{ selectedUser?.userStatus?.name }}</div>
+                    <div>{{ selectedUser?.userStatus?.label }}</div>
                 </div>
             </div>
             <p-divider></p-divider>
@@ -182,7 +182,7 @@ import { RolePermissionModel } from '../../../model/administrator/usermanagement
                         </td>
                         <td>{{ rolePermissions.roleCode }}</td>
                         <td>{{ rolePermissions.roleName }}</td>
-                        <td>{{ rolePermissions.roleStatus?.name }}</td>
+                        <td>{{ rolePermissions.roleStatus?.label }}</td>
                         <td>{{ rolePermissions.description }}</td>
                     </tr>
                 </ng-template>

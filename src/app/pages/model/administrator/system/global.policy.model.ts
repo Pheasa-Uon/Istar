@@ -21,7 +21,7 @@
 
 export interface BooleanOption {
     value: boolean;
-    name: string;
+    label: string;
 }
 
 export interface GlobalPolicyModel {

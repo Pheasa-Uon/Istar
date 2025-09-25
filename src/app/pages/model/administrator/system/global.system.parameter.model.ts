@@ -1,6 +1,6 @@
 export interface StringOption {
     value: string;
-    name: string;
+    label: string;
 }
 
 export interface GlobalSystemParameter {

@@ -107,7 +107,7 @@ import { RolePermissionModel } from '../../../model/administrator/usermanagement
                             [ngStyle]="{
                                 'color': rolePermissions.roleStatus?.value === 'A' ? 'Green' :
                                          rolePermissions.roleStatus?.value === 'I' ? 'Gray' : 'black'
-                        }">{{ rolePermissions.roleStatus?.name }}</td>
+                        }">{{ rolePermissions.roleStatus?.label }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button *hasFeaturePermission="['RLP','view']"
@@ -180,7 +180,7 @@ import { RolePermissionModel } from '../../../model/administrator/usermanagement
                 <!-- Values Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-5 py-5">
                     <div>{{ selectedRole?.roleName }}</div>
-                    <div>{{ selectedRole?.roleStatus?.name }}</div>
+                    <div>{{ selectedRole?.roleStatus?.label }}</div>
                 </div>
             </div>
         </p-dialog>
