@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 
-// Currency dropdown model
+// CurrencyModel dropdown model
 export interface DropdownItemCurrency {
     id: number;
     code: string;

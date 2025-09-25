@@ -1,4 +1,4 @@
-export interface SystemParameter{
+export interface SystemParameterModel {
     id?: number | undefined;
     parameterModule: string;
     parameterName: string;

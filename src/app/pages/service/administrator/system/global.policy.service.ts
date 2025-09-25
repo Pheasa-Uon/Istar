@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-import { SystemParameter } from '../../../model/administrator/system/SystemParameter';
-import { GlobalPolicy } from '../../../model/administrator/system/GlobalPolicy';
+import { SystemParameterModel } from '../../../model/administrator/system/system.parameter.model';
+import { GlobalPolicyModel } from '../../../model/administrator/system/global.policy.model';
 
 @Injectable({ providedIn: 'root' })
 export class GlobalPolicyService {
@@ -11,34 +11,34 @@ export class GlobalPolicyService {
 
     constructor(private http: HttpClient) {}
 
-    getAllGlobalPolicy(): Observable<GlobalPolicy[]> {
+    getAllGlobalPolicy(): Observable<GlobalPolicyModel[]> {
         const token = localStorage.getItem('authToken');
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.get<GlobalPolicy[]>(`${this.apiUrl}`, { headers });
+        return this.http.get<GlobalPolicyModel[]>(`${this.apiUrl}`, { headers });
     }
 
-    getGlobalPolicyById(id: number): Observable<GlobalPolicy> {
+    getGlobalPolicyById(id: number): Observable<GlobalPolicyModel> {
         const token = localStorage.getItem('authToken');
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.get<GlobalPolicy>(`${this.apiUrl}/${id}`, { headers });
+        return this.http.get<GlobalPolicyModel>(`${this.apiUrl}/${id}`, { headers });
     }
 
-    addGlobalPolicy(param: GlobalPolicy): Observable<GlobalPolicy> {
-        return this.http.post<GlobalPolicy>(this.apiUrl, param);
+    addGlobalPolicy(param: GlobalPolicyModel): Observable<GlobalPolicyModel> {
+        return this.http.post<GlobalPolicyModel>(this.apiUrl, param);
     }
 
-    updateGlobalPolicy(param: GlobalPolicy): Observable<GlobalPolicy> {
-        return this.http.put<GlobalPolicy>(`${this.apiUrl}/${param.id}`, param);
+    updateGlobalPolicy(param: GlobalPolicyModel): Observable<GlobalPolicyModel> {
+        return this.http.put<GlobalPolicyModel>(`${this.apiUrl}/${param.id}`, param);
     }
 
     deleteGlobalPolicy(id: number): Observable<void> {
         return this.http.delete<void>(`${this.apiUrl}/${id}`);
     }
 
-    searchGlobalPolicy(keyword: string): Observable<GlobalPolicy[]> {
+    searchGlobalPolicy(keyword: string): Observable<GlobalPolicyModel[]> {
         const token = localStorage.getItem('authToken');
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token || ''}`);
         const url = `${this.apiUrl}/search?keyword=${encodeURIComponent(keyword)}`;
-        return this.http.get<GlobalPolicy[]>(url, { headers });
+        return this.http.get<GlobalPolicyModel[]>(url, { headers });
     }
 }

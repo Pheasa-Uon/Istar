@@ -19,7 +19,7 @@ import { Fluid } from 'primeng/fluid';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { RolePermissionService } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
-import { RolePermission } from '../../../model/administrator/usermanagement/RolePermission';
+import { RolePermissionModel } from '../../../model/administrator/usermanagement/role.permission.model';
 
 @Component({
     selector: 'app-role-permission',
@@ -190,11 +190,11 @@ import { RolePermission } from '../../../model/administrator/usermanagement/Role
     `
 })
 export class RolePermissionsComponent {
-    roleList: RolePermission[] = [];
+    roleList: RolePermissionModel[] = [];
     loading = [false];
     searchText = '';
     displayDetails = false;
-    selectedRole: RolePermission | null = null;
+    selectedRole: RolePermissionModel | null = null;
 
     constructor(
         private rolePermissionService: RolePermissionService,
@@ -247,20 +247,20 @@ export class RolePermissionsComponent {
         this.router.navigate(['/add-role-permission']);
     }
 
-    editRolePermission(rolePermissions: RolePermission) {
+    editRolePermission(rolePermissions: RolePermissionModel) {
         this.router.navigate(['/edit-role-permission'], { state: { rolePermissions } });
     }
 
-    setRolePermission(rolePermissions: RolePermission) {
+    setRolePermission(rolePermissions: RolePermissionModel) {
         this.router.navigate(['/set-role-permission', rolePermissions.id]);
     }
 
-    viewRole(rolePermissions: RolePermission) {
+    viewRole(rolePermissions: RolePermissionModel) {
         this.selectedRole = rolePermissions;
         this.displayDetails = true;
     }
 
-    deleteRole(rolePermissions: RolePermission) {
+    deleteRole(rolePermissions: RolePermissionModel) {
         this.confirmationService.confirm({
             message: `Are you sure you want to delete role "${rolePermissions.roleName}"?`,
             header: 'Confirm',

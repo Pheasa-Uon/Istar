@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-import { Currency } from '../../../model/administrator/system/Currency';
+import { CurrencyModel } from '../../../model/administrator/system/currency.model';
 
 
 @Injectable({ providedIn: 'root' })
@@ -12,25 +12,25 @@ export class CurrencyService {
     constructor(private http: HttpClient) {}
 
     // ✅ Get all roles
-    getAllCurrency(): Observable<Currency[]> {
+    getAllCurrency(): Observable<CurrencyModel[]> {
         const token = localStorage.getItem('authToken'); // your login token
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.get<Currency[]>(this.apiUrl, { headers });
+        return this.http.get<CurrencyModel[]>(this.apiUrl, { headers });
     }
 
     // ✅ Get a single role
-    getCurrencyById(id: number): Observable<Currency> {
-        return this.http.get<Currency>(`${this.apiUrl}/${id}`);
+    getCurrencyById(id: number): Observable<CurrencyModel> {
+        return this.http.get<CurrencyModel>(`${this.apiUrl}/${id}`);
     }
 
     // ✅ Create new role
-    addCurrency(role: Currency): Observable<Currency> {
-        return this.http.post<Currency>(this.apiUrl, role);
+    addCurrency(role: CurrencyModel): Observable<CurrencyModel> {
+        return this.http.post<CurrencyModel>(this.apiUrl, role);
     }
 
     // ✅ Update existing role
-    updateCurrency(role: Currency): Observable<Currency> {
-        return this.http.put<Currency>(`${this.apiUrl}/${role.id}`, role);
+    updateCurrency(role: CurrencyModel): Observable<CurrencyModel> {
+        return this.http.put<CurrencyModel>(`${this.apiUrl}/${role.id}`, role);
     }
 
     // ✅ Delete role
@@ -38,7 +38,7 @@ export class CurrencyService {
         return this.http.delete<void>(`${this.apiUrl}/${roleId}`);
     }
 
-    searchCurrency(keyword: string): Observable<Currency[]> {
+    searchCurrency(keyword: string): Observable<CurrencyModel[]> {
         const token = localStorage.getItem('authToken'); // or wherever you store your token
 
         const headers = new HttpHeaders({
@@ -47,6 +47,6 @@ export class CurrencyService {
 
         const url = `${this.apiUrl}/search?keyword=${encodeURIComponent(keyword)}`;
 
-        return this.http.get<Currency[]>(url, { headers });
+        return this.http.get<CurrencyModel[]>(url, { headers });
     }
 }

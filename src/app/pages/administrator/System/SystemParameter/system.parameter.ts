@@ -17,7 +17,7 @@ import { Fluid } from 'primeng/fluid';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { SystemParameterService } from '../../../service/administrator/system/system.parameter.service';
-import { SystemParameter } from '../../../model/administrator/system/SystemParameter';
+import { SystemParameterModel } from '../../../model/administrator/system/system.parameter.model';
 import { SPDropdownItemService } from '../../../service/administrator/system/system.parameter.dropdown.item.service';
 
 @Component({
@@ -144,11 +144,11 @@ import { SPDropdownItemService } from '../../../service/administrator/system/sys
     `
 })
 export class SystemParameterComponent {
-    SPList: SystemParameter[] = [];
+    SPList: SystemParameterModel[] = [];
     loading = [false];
     searchText = '';
     displayDetails = false;
-    selectedSP: SystemParameter | null = null;
+    selectedSP: SystemParameterModel | null = null;
     statusMap: Record<string, string> = {};
     moduleNameMap: Record<string, string> = {};
     fieldNameMap: Record<string, string> = {};
@@ -207,16 +207,16 @@ export class SystemParameterComponent {
         this.router.navigate(['/add-system-parameter']);
     }
 
-    editSystemParameter(sp: SystemParameter) {
+    editSystemParameter(sp: SystemParameterModel) {
         this.router.navigate(['/edit-system-parameter'], { state: { sp } });
     }
 
-    viewSystemParameter(sp: SystemParameter) {
+    viewSystemParameter(sp: SystemParameterModel) {
         this.selectedSP = sp;
         this.displayDetails = true;
     }
 
-    deleteSystemParameter(sp: SystemParameter) {
+    deleteSystemParameter(sp: SystemParameterModel) {
         this.confirmationService.confirm({
             message: `Are you sure you want to delete "${sp.parameterName}"?`,
             header: 'Confirm',

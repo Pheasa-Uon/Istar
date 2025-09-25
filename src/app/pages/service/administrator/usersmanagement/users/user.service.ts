@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { RolePermission } from '../../../../model/administrator/usermanagement/RolePermission';
+import { RolePermissionModel } from '../../../../model/administrator/usermanagement/role.permission.model';
 import { User } from '../../../../model/administrator/usermanagement/user.model';
 
 @Injectable({ providedIn: 'root' })
@@ -60,7 +60,7 @@ export class UserService {
         return this.http.post(`${this.roleUrl}/remove`, data);
     }
 
-    getUserRoles(userId: number): Observable<RolePermission[]> {
-        return this.http.get<RolePermission[]>(`${this.roleUrl}/${userId}`);
+    getUserRoles(userId: number): Observable<RolePermissionModel[]> {
+        return this.http.get<RolePermissionModel[]>(`${this.roleUrl}/${userId}`);
     }
 }

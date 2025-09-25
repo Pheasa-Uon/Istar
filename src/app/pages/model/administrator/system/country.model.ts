@@ -1,4 +1,4 @@
-export interface Country {
+export interface CountryModel {
     id?: number | undefined;
     iso2Alpha?: string;
     iso3Alpha?: string;

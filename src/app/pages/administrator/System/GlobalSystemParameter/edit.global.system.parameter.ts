@@ -13,13 +13,13 @@ import { Message } from '../../../message/message'; // adjust path if needed
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import {
-    GlobalSystemParameter,
     GlobalSystemParameterService
 } from '../../../service/administrator/system/global.system.parameter.service';
 import {
     DropdownItemFieldName,
     DropdownItemModuleName, GspDropdownItemService
 } from '../../../service/administrator/system/gsp.dropdown.item.service';
+import { GlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 
 @Component({
     selector: 'app-edit-global-System-parameter',
@@ -135,12 +135,12 @@ export class EditGlobalSystemParameter {
     globalSystemParameter: GlobalSystemParameter = {
         id: undefined,
         sysParCode: '',
-        moduleName: '',
-        fieldName: '',
+        moduleName: undefined,
+        fieldName: undefined,
         valueName: '',
         localValueName: '',
         displayOrder: undefined,
-        sysParStatus: 'A',
+        sysParStatus: undefined,
         description: ''
     };
 
@@ -162,8 +162,13 @@ export class EditGlobalSystemParameter {
     ) {
         const navigation = this.router.getCurrentNavigation();
         if (navigation?.extras.state?.['gsp']) {
-            this.globalSystemParameter = { ...navigation.extras.state['gsp'] };
-        };
+            const globalSystemParameter = { ...navigation.extras.state['gsp'] };
+
+            globalSystemParameter.moduleName = globalSystemParameter.moduleName ? { code: globalSystemParameter.moduleName, name: globalSystemParameter.moduleName } : undefined;
+
+            this.globalSystemParameter = globalSystemParameter;
+
+        }
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();
     }
@@ -184,7 +189,7 @@ export class EditGlobalSystemParameter {
 
                 // If editing, load fields for the already selected module
                 if (this.globalSystemParameter.moduleName) {
-                    this.loadFieldsForModule(this.globalSystemParameter.moduleName);
+                    this.loadFieldsForModule(this.globalSystemParameter.moduleName.value);
                 }
             },
             error: (err) => console.error('Error loading module names', err)
@@ -198,7 +203,7 @@ export class EditGlobalSystemParameter {
 
                 // Optional: keep the previously selected field value
                 if (this.globalSystemParameter.fieldName) {
-                    const exists = data.find(f => f.code === this.globalSystemParameter.fieldName);
+                    const exists = data.find(f => f.code === this.globalSystemParameter.fieldName?.value);
                     if (!exists) {
                         this.globalSystemParameter.fieldName = undefined; // or handle invalid field
                     }

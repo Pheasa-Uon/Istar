@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-import { Country } from '../../../model/administrator/system/Country';
+import { CountryModel } from '../../../model/administrator/system/country.model';
 
 
 @Injectable({ providedIn: 'root' })
@@ -12,25 +12,25 @@ export class CountryService {
     constructor(private http: HttpClient) {}
 
     // ✅ Get all roles
-    getAllCountry(): Observable<Country[]> {
+    getAllCountry(): Observable<CountryModel[]> {
         const token = localStorage.getItem('authToken'); // your login token
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.get<Country[]>(this.apiUrl, { headers });
+        return this.http.get<CountryModel[]>(this.apiUrl, { headers });
     }
 
     // ✅ Get a single role
-    getCountryById(id: number): Observable<Country> {
-        return this.http.get<Country>(`${this.apiUrl}/${id}`);
+    getCountryById(id: number): Observable<CountryModel> {
+        return this.http.get<CountryModel>(`${this.apiUrl}/${id}`);
     }
 
     // ✅ Create new role
-    addCountry(role: Country): Observable<Country> {
-        return this.http.post<Country>(this.apiUrl, role);
+    addCountry(role: CountryModel): Observable<CountryModel> {
+        return this.http.post<CountryModel>(this.apiUrl, role);
     }
 
     // ✅ Update existing role
-    updateCountry(role: Country): Observable<Country> {
-        return this.http.put<Country>(`${this.apiUrl}/${role.id}`, role);
+    updateCountry(role: CountryModel): Observable<CountryModel> {
+        return this.http.put<CountryModel>(`${this.apiUrl}/${role.id}`, role);
     }
 
     // ✅ Delete role
@@ -38,7 +38,7 @@ export class CountryService {
         return this.http.delete<void>(`${this.apiUrl}/${roleId}`);
     }
 
-    searchCountry(keyword: string): Observable<Country[]> {
+    searchCountry(keyword: string): Observable<CountryModel[]> {
         const token = localStorage.getItem('authToken'); // or wherever you store your token
 
         const headers = new HttpHeaders({
@@ -47,6 +47,6 @@ export class CountryService {
 
         const url = `${this.apiUrl}/search?keyword=${encodeURIComponent(keyword)}`;
 
-        return this.http.get<Country[]>(url, { headers });
+        return this.http.get<CountryModel[]>(url, { headers });
     }
 }

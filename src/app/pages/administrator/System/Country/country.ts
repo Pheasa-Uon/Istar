@@ -18,12 +18,12 @@ import { forkJoin } from 'rxjs';
 import { Fluid } from 'primeng/fluid';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
-import { Country } from '../../../model/administrator/system/Country';
+import { CountryModel } from '../../../model/administrator/system/country.model';
 import { CountryService } from '../../../service/administrator/system/country.service';
 import { CountryDropdownItemService } from '../../../service/administrator/system/country.dropdown.item.service';
 
 @Component({
-    selector: 'app-Country',
+    selector: 'app-CountryModel',
     standalone: true,
     imports: [
         CommonModule,
@@ -201,11 +201,11 @@ import { CountryDropdownItemService } from '../../../service/administrator/syste
     `
 })
 export class CountryComponent {
-    countryList: Country[] = [];
+    countryList: CountryModel[] = [];
     loading = [false];
     searchText = '';
     displayDetails = false;
-    selectedCountry: Country | null = null;
+    selectedCountry: CountryModel | null = null;
     statusMap: Record<string, string> = {};
     languageMap: Record<string, string> = {};
     currencyMap: Record<string, string> = {};
@@ -274,16 +274,16 @@ export class CountryComponent {
         this.router.navigate(['/add-country']);
     }
 
-    edit(country: Country) {
+    edit(country: CountryModel) {
         this.router.navigate(['/edit-country'], { state: { country } });
     }
 
-    view(country: Country) {
+    view(country: CountryModel) {
         this.selectedCountry = country;
         this.displayDetails = true;
     }
 
-    delete(country: Country) {
+    delete(country: CountryModel) {
         this.confirmationService.confirm({
             message: `Are you sure you want to delete role "${country.countryName}"?`,
             header: 'Confirm',

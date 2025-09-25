@@ -3,7 +3,7 @@ export interface StringOption {
     value: string;
 }
 
-export interface RolePermission {
+export interface RolePermissionModel {
     id?: number | undefined;
     roleCode?: string;
     roleName?: string;

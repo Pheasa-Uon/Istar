@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../../../environments/environment';
-import { RolePermission } from '../../../../model/administrator/usermanagement/RolePermission';
+import { RolePermissionModel } from '../../../../model/administrator/usermanagement/role.permission.model';
 
 @Injectable({ providedIn: 'root' })
 export class RolePermissionService {
@@ -11,25 +11,25 @@ export class RolePermissionService {
     constructor(private http: HttpClient) {}
 
     // ✅ Get all roles
-    getAllRolePermission(): Observable<RolePermission[]> {
+    getAllRolePermission(): Observable<RolePermissionModel[]> {
         const token = localStorage.getItem('authToken'); // your login token
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.get<RolePermission[]>(this.apiUrl, { headers });
+        return this.http.get<RolePermissionModel[]>(this.apiUrl, { headers });
     }
 
     // ✅ Get a single role
-    getRoleById(id: number): Observable<RolePermission> {
-        return this.http.get<RolePermission>(`${this.apiUrl}/${id}`);
+    getRoleById(id: number): Observable<RolePermissionModel> {
+        return this.http.get<RolePermissionModel>(`${this.apiUrl}/${id}`);
     }
 
     // ✅ Create new role
-    addRolePermission(role: RolePermission): Observable<RolePermission> {
-        return this.http.post<RolePermission>(this.apiUrl, role);
+    addRolePermission(role: RolePermissionModel): Observable<RolePermissionModel> {
+        return this.http.post<RolePermissionModel>(this.apiUrl, role);
     }
 
     // ✅ Update existing role
-    updateRolePermission(role: RolePermission): Observable<RolePermission> {
-        return this.http.put<RolePermission>(`${this.apiUrl}/${role.id}`, role);
+    updateRolePermission(role: RolePermissionModel): Observable<RolePermissionModel> {
+        return this.http.put<RolePermissionModel>(`${this.apiUrl}/${role.id}`, role);
     }
 
     // ✅ Delete role
@@ -42,7 +42,7 @@ export class RolePermissionService {
         return this.http.post<any>(`${this.apiUrl}/permissions/save`, payload);
     }
 
-    searchRoles(keyword: string): Observable<RolePermission[]> {
+    searchRoles(keyword: string): Observable<RolePermissionModel[]> {
         const token = localStorage.getItem('authToken'); // or wherever you store your token
 
         const headers = new HttpHeaders({
@@ -51,6 +51,6 @@ export class RolePermissionService {
 
         const url = `${this.apiUrl}/search?keyword=${encodeURIComponent(keyword)}`;
 
-        return this.http.get<RolePermission[]>(url, { headers });
+        return this.http.get<RolePermissionModel[]>(url, { headers });
     }
 }

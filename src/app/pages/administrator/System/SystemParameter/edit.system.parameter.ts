@@ -13,14 +13,13 @@ import { Message } from '../../../message/message'; // adjust path if needed
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import {
-    GlobalSystemParameter,
     GlobalSystemParameterService
 } from '../../../service/administrator/system/global.system.parameter.service';
 import {
     DropdownItemFieldName,
     DropdownItemModuleName, GspDropdownItemService
 } from '../../../service/administrator/system/gsp.dropdown.item.service';
-import { SystemParameter } from '../../../model/administrator/system/SystemParameter';
+import { SystemParameterModel } from '../../../model/administrator/system/system.parameter.model';
 import { SystemParameterService } from '../../../service/administrator/system/system.parameter.service';
 import { SPDropdownItemService } from '../../../service/administrator/system/system.parameter.dropdown.item.service';
 
@@ -92,7 +91,7 @@ import { SPDropdownItemService } from '../../../service/administrator/system/sys
     `
 })
 export class EditSystemParameter {
-    systemParameter: SystemParameter = {
+    systemParameter: SystemParameterModel = {
         id: undefined,
         parameterModule: '',
         parameterName: '',
@@ -112,7 +111,7 @@ export class EditSystemParameter {
         const navigation = this.router.getCurrentNavigation();
         if (navigation?.extras.state?.['sp']) {
             this.systemParameter = { ...navigation.extras.state['sp'] };
-        };
+        }
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();
     }

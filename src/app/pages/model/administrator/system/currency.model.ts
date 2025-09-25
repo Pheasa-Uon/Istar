@@ -1,4 +1,4 @@
-export interface Currency {
+export interface CurrencyModel {
     id?: number | undefined;
     currencyCode?: string;
     currencyChar?: string;

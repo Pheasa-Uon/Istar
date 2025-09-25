@@ -14,7 +14,7 @@ import { Fluid } from 'primeng/fluid';
 import { Select } from 'primeng/select';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
-import { RolePermission, StringOption } from '../../../model/administrator/usermanagement/RolePermission';
+import { RolePermissionModel, StringOption } from '../../../model/administrator/usermanagement/role.permission.model';
 
 @Component({
     selector: 'app-add-role-permission',
@@ -68,7 +68,7 @@ import { RolePermission, StringOption } from '../../../model/administrator/userm
 })
 export class AddRolePermission {
     submitted = false; // Added submitted flag
-    rolepermission: RolePermission = {
+    rolepermission: RolePermissionModel = {
         id: undefined,
         roleCode: '',
         roleName: '',

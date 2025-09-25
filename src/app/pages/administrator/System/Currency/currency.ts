@@ -18,12 +18,12 @@ import { forkJoin } from 'rxjs';
 import { Fluid } from 'primeng/fluid';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
-import { Currency } from '../../../model/administrator/system/Currency';
+import { CurrencyModel } from '../../../model/administrator/system/currency.model';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
 import { CurrencyDropdownItemService } from '../../../service/administrator/system/currency.dropdown.item.service';
 
 @Component({
-    selector: 'app-Currency',
+    selector: 'app-CurrencyModel',
     standalone: true,
     imports: [
         CommonModule,
@@ -196,11 +196,11 @@ import { CurrencyDropdownItemService } from '../../../service/administrator/syst
     `
 })
 export class CurrencyComponent {
-    currencyList: Currency[] = [];
+    currencyList: CurrencyModel[] = [];
     loading = [false];
     searchText = '';
     displayDetails = false;
-    selectedCurrency: Currency | null = null;
+    selectedCurrency: CurrencyModel | null = null;
     statusMap: Record<string, string> = {};
 
     constructor(
@@ -257,16 +257,16 @@ export class CurrencyComponent {
         this.router.navigate(['/add-currency']);
     }
 
-    edit(currency: Currency) {
+    edit(currency: CurrencyModel) {
         this.router.navigate(['/edit-currency'], { state: { currency } });
     }
 
-    view(currency: Currency) {
+    view(currency: CurrencyModel) {
         this.selectedCurrency = currency;
         this.displayDetails = true;
     }
 
-    delete(currency: Currency) {
+    delete(currency: CurrencyModel) {
         this.confirmationService.confirm({
             message: `Are you sure you want to delete role "${currency.currencyName}"?`,
             header: 'Confirm',

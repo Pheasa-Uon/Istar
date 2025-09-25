@@ -13,18 +13,15 @@ import { Fluid } from 'primeng/fluid';
 import { Select } from 'primeng/select';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import {
-    GlobalSystemParameter,
     GlobalSystemParameterService
 } from '../../../service/administrator/system/global.system.parameter.service';
 import {
-    DropdownItemModuleName,
-    GspDropdownItemService,
-    DropdownItemFieldName
+    DropdownItemModuleName
 } from '../../../service/administrator/system/gsp.dropdown.item.service';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { SystemParameterService } from '../../../service/administrator/system/system.parameter.service';
 import { SPDropdownItemService } from '../../../service/administrator/system/system.parameter.dropdown.item.service';
-import { SystemParameter } from '../../../model/administrator/system/SystemParameter';
+import { SystemParameterModel } from '../../../model/administrator/system/system.parameter.model';
 
 @Component({
     selector: 'app-add-System-parameter',
@@ -114,7 +111,7 @@ import { SystemParameter } from '../../../model/administrator/system/SystemParam
 })
 export class AddSystemParameter implements OnInit {
     submitted = false; // Added submitted flag like in AddUser
-    systemParameter: SystemParameter = {
+    systemParameter: SystemParameterModel = {
         id: undefined,
         parameterModule: '',
         parameterName: '',

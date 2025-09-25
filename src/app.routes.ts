@@ -67,12 +67,12 @@ export const appRoutes: Routes = [
             { path: 'add-global-system-parameter', component: AddGlobalSystemParameter },
             { path: 'edit-global-system-parameter', component: EditGlobalSystemParameter },
 
-            // Currency routes
+            // CurrencyModel routes
             { path: 'currency', component: CurrencyComponent },
             { path: 'add-currency', component: AddCurrency },
             { path: 'edit-currency', component: EditCurrency },
 
-            // Country routes
+            // CountryModel routes
             { path: 'country', component: CountryComponent },
             { path: 'add-country', component: AddCountry },
             { path: 'edit-country', component: EditCountry },

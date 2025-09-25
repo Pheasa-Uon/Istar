@@ -14,7 +14,7 @@ import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
-import { StringOption } from '../../../model/administrator/usermanagement/RolePermission';
+import { StringOption } from '../../../model/administrator/usermanagement/role.permission.model';
 
 @Component({
     selector: 'app-add-user',

@@ -12,7 +12,7 @@ import { Message } from '../../../message/message'; // adjust path if needed
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { CountryService } from '../../../service/administrator/system/country.service';
-import { Country } from '../../../model/administrator/system/Country';
+import { CountryModel } from '../../../model/administrator/system/country.model';
 import {
     CountryDropdownItemService,
     DropdownItemBlacklist,
@@ -21,7 +21,7 @@ import {
 } from '../../../service/administrator/system/country.dropdown.item.service';
 
 @Component({
-    selector: 'app-edit-Country',
+    selector: 'app-edit-CountryModel',
     standalone: true,
     imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, ButtonGroup, Message, HasPermissionDirective],
     template: `
@@ -147,7 +147,7 @@ import {
 })
 export class EditCountry {
     submitted = false; // Added submitted flag
-    country: Country = {
+    country: CountryModel = {
         id: undefined,
         iso2Alpha: '',
         iso3Alpha: '',

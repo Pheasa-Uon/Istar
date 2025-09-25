@@ -12,11 +12,11 @@ import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message'; // adjust path if needed
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
-import { Currency } from '../../../model/administrator/system/Currency';
+import { CurrencyModel } from '../../../model/administrator/system/currency.model';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
 
 @Component({
-    selector: 'app-edit-Currency',
+    selector: 'app-edit-CurrencyModel',
     standalone: true,
     imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, Message, HasPermissionDirective],
     template: `
@@ -112,7 +112,7 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
 })
 export class EditCurrency {
     submitted = false; // Added submitted flag
-    currency: Currency = {
+    currency: CurrencyModel = {
         id: undefined,
         currencyCode: '',
         currencyChar: '',

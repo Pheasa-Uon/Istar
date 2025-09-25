@@ -2,18 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-
-export interface GlobalSystemParameter {
-    id?: number;
-    sysParCode?: string;
-    moduleName?: string;
-    fieldName?: string;
-    valueName?: string;
-    localValueName?: string;
-    displayOrder?: boolean;
-    sysParStatus?: string;
-    description?: string;
-}
+import { GlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 
 @Injectable({ providedIn: 'root' })
 export class GlobalSystemParameterService {
@@ -28,7 +17,9 @@ export class GlobalSystemParameterService {
     }
 
     getGlobalSystemParameterById(id: number): Observable<GlobalSystemParameter> {
-        return this.http.get<GlobalSystemParameter>(`${this.apiGSP}/${id}`);
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.get<GlobalSystemParameter>(`${this.apiGSP}/${id}`, { headers });
     }
 
     addGlobalSystemParameter(param: GlobalSystemParameter): Observable<GlobalSystemParameter> {

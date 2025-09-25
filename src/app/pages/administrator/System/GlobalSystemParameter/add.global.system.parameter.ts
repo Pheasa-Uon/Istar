@@ -13,7 +13,6 @@ import { Fluid } from 'primeng/fluid';
 import { Select } from 'primeng/select';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import {
-    GlobalSystemParameter,
     GlobalSystemParameterService
 } from '../../../service/administrator/system/global.system.parameter.service';
 import {
@@ -22,6 +21,7 @@ import {
     DropdownItemFieldName
 } from '../../../service/administrator/system/gsp.dropdown.item.service';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { GlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 
 @Component({
     selector: 'app-add-global-System-parameter',
@@ -161,12 +161,12 @@ export class AddGlobalSystemParameter implements OnInit {
     globalSystemParameter: GlobalSystemParameter = {
         id: undefined,
         sysParCode: '',
-        moduleName: '',
-        fieldName: '',
+        moduleName: undefined,
+        fieldName: undefined,
         valueName: '',
         localValueName: '',
         displayOrder: undefined,
-        sysParStatus: 'A',
+        sysParStatus: undefined,
         description: ''
     };
 

@@ -15,7 +15,7 @@ import { DatePicker } from 'primeng/datepicker';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { GlobalPolicyService } from '../../../service/administrator/system/global.policy.service';
-import { GlobalPolicy } from '../../../model/administrator/system/GlobalPolicy';
+import { GlobalPolicyModel } from '../../../model/administrator/system/global.policy.model';
 import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message';
 
@@ -229,7 +229,7 @@ import { Message } from '../../../message/message';
 export class EditGlobalPolicy {
     submitted = false;
 
-    globalPolicy: GlobalPolicy = {
+    globalPolicy: GlobalPolicyModel = {
         policyCode: '',
         policyName: '',
         validFrom: undefined,

@@ -10,7 +10,7 @@ import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message';
 import { Select } from 'primeng/select';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
-import { Country } from '../../../model/administrator/system/Country';
+import { CountryModel } from '../../../model/administrator/system/country.model';
 import { CountryService } from '../../../service/administrator/system/country.service';
 import {
     CountryDropdownItemService,
@@ -21,7 +21,7 @@ import {
 } from '../../../service/administrator/system/country.dropdown.item.service';
 
 @Component({
-    selector: 'app-add-Country',
+    selector: 'app-add-CountryModel',
     standalone: true,
     imports: [
         CommonModule,
@@ -157,7 +157,7 @@ import {
 })
 export class AddCountry implements OnInit {
     submitted = false;
-    country: Country = {
+    country: CountryModel = {
         id: undefined,
         iso2Alpha: '',
         iso3Alpha: '',
@@ -217,16 +217,16 @@ export class AddCountry implements OnInit {
                 this.messageService.show({
                     severity: 'success',
                     summary: 'Success',
-                    detail: 'Country created successfully!'
+                    detail: 'CountryModel created successfully!'
                 });
                 setTimeout(() => this.goBack(), 1000);
             },
             error: (error) => {
-                console.error('Error creating Country:', error);
+                console.error('Error creating CountryModel:', error);
                 this.messageService.show({
                     severity: 'error',
                     summary: 'Error',
-                    detail: 'Country creation failed. Please try again.'
+                    detail: 'CountryModel creation failed. Please try again.'
                 });
             }
         });

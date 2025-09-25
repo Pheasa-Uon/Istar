@@ -16,8 +16,9 @@ import { forkJoin } from 'rxjs';
 import { Fluid } from 'primeng/fluid';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
-import { GlobalSystemParameterService, GlobalSystemParameter } from '../../../service/administrator/system/global.system.parameter.service';
+import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
 import { GspDropdownItemService } from '../../../service/administrator/system/gsp.dropdown.item.service';
+import { GlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 
 @Component({
     selector: 'app-global-System-parameter',
@@ -91,15 +92,15 @@ import { GspDropdownItemService } from '../../../service/administrator/system/gs
                 <ng-template pTemplate="body" let-gsp>
                     <tr>
                         <td>{{ gsp.sysParCode }}</td>
-                        <td>{{ getModuleFieldNames(gsp.fieldName || '') }}</td>
+                        <td>{{ gsp.fieldName?.name }}</td>
                         <td>{{ gsp.valueName }}</td>
                         <td>{{ gsp.localValueName }}</td>
-                        <td>{{ getModuleNames(gsp.moduleName || '') }}</td>
+                        <td>{{ gsp.moduleName?.name}}</td>
                         <td
                             [ngStyle]="{
-                                'color': gsp.sysParStatus === 'A' ? 'Green' :
-                                         gsp.sysParStatus === 'I' ? 'Gray' : 'black'
-                        }">{{ getGSPStatus(gsp.sysParStatus || '') }}</td>
+                                'color': gsp.sysParStatus?.value === 'A' ? 'Green' :
+                                         gsp.sysParStatus?.value === 'I' ? 'Gray' : 'black'
+                        }">{{ gsp.sysParStatus?.name }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button *hasFeaturePermission="['GSP','view']" icon="pi pi-eye" text raised rounded (click)="viewGlobalSystemParameter(gsp)"></p-button>
@@ -131,9 +132,9 @@ import { GspDropdownItemService } from '../../../service/administrator/system/gs
                 <!-- Values Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
                     <div>{{ selectedGSP?.sysParCode }}</div>
-                    <div>{{ selectedGSP?.fieldName }}</div>
+                    <div>{{ selectedGSP?.fieldName?.name }}</div>
                     <div>{{ selectedGSP?.localValueName }}</div>
-                    <div>{{ getGSPStatus(selectedGSP?.sysParStatus || '') }}</div>
+                    <div>{{ selectedGSP?.sysParStatus?.name}}</div>
                 </div>
 
                 <!-- Labels Column 2 -->
@@ -146,7 +147,7 @@ import { GspDropdownItemService } from '../../../service/administrator/system/gs
 
                 <!-- Values Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-5 py-5">
-                    <div>{{ getModuleNames(selectedGSP?.moduleName || '') }}</div>
+                    <div>{{ selectedGSP?.moduleName?.name}}</div>
                     <div>{{ selectedGSP?.valueName }}</div>
                     <div>{{ selectedGSP?.displayOrder }}</div>
                     <div>{{ selectedGSP?.description }}</div>
@@ -164,9 +165,7 @@ export class GlobalSystemParameterComponent {
     searchText = '';
     displayDetails = false;
     selectedGSP: GlobalSystemParameter | null = null;
-    statusMap: Record<string, string> = {};
-    moduleNameMap: Record<string, string> = {};
-    fieldNameMap: Record<string, string> = {};
+    statusMap: Record<string, string> = {}
 
     constructor(
         private gspService: GlobalSystemParameterService,
@@ -182,15 +181,9 @@ export class GlobalSystemParameterComponent {
 
     ngOnInit() {
         forkJoin({
-            statusMap: this.statusService.getGSPStatus(),
-            fieldNameMap: this.statusService.getModuleFieldNames(),
-            moduleNameMap: this.statusService.getModuleNames(),
-
             gspList: this.gspService.getAllGlobalSystemParameter()
         }).subscribe({
-            next: ({ statusMap, moduleNameMap, gspList }) => {
-                this.statusMap = statusMap;
-                this.moduleNameMap = moduleNameMap;
+            next: ({ gspList }) => {
                 this.gspList = gspList;
             },
             error: (err) => {
@@ -262,17 +255,5 @@ export class GlobalSystemParameterComponent {
                 });
             }
         });
-    }
-
-    getGSPStatus(code: string): string {
-        return this.statusMap[code] || code;
-    }
-
-    getModuleFieldNames(code: string): string {
-        return this.statusMap[code] || code;
-    }
-
-    getModuleNames(code: string): string {
-        return this.moduleNameMap[code] || code;
     }
 }

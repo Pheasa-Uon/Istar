@@ -17,7 +17,7 @@ import { FluidModule } from 'primeng/fluid';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { GlobalPolicyService } from '../../../service/administrator/system/global.policy.service';
-import { GlobalPolicy } from '../../../model/administrator/system/GlobalPolicy';
+import { GlobalPolicyModel } from '../../../model/administrator/system/global.policy.model';
 import { DateFormatPipe } from '../../../utils/date-format.pipe';
 import { Time12HourPipe } from '../../../utils/time12-hour.pipe';
 
@@ -181,11 +181,11 @@ import { Time12HourPipe } from '../../../utils/time12-hour.pipe';
     `
 })
 export class GlobalPolicyComponent {
-    allDataList: GlobalPolicy[] = [];
+    allDataList: GlobalPolicyModel[] = [];
     loading = [false];
     searchText = '';
     displayDetails = false;
-    selectedRow: GlobalPolicy | null = null;
+    selectedRow: GlobalPolicyModel | null = null;
     statusMap: Record<string, string> = {};
 
     constructor(
@@ -239,16 +239,16 @@ export class GlobalPolicyComponent {
         this.router.navigate(['/add-global-policy']);
     }
 
-    editGlobalPolicy(globalPolicy: GlobalPolicy) {
+    editGlobalPolicy(globalPolicy: GlobalPolicyModel) {
         this.router.navigate(['/edit-global-policy'], { state: { globalPolicy } });
     }
 
-    viewGlobalPolicy(globalPolicy: GlobalPolicy) {
+    viewGlobalPolicy(globalPolicy: GlobalPolicyModel) {
         this.selectedRow = globalPolicy;
         this.displayDetails = true;
     }
 
-    deleteGlobalPolicy(globalPolicy: GlobalPolicy) {
+    deleteGlobalPolicy(globalPolicy: GlobalPolicyModel) {
         this.confirmationService.confirm({
             message: `Are you sure you want to delete "${globalPolicy.policyName}"?`,
             header: 'Confirm',

@@ -55,7 +55,7 @@ interface expandedRows {
             [rowHover]="true"
             [showGridlines]="true"
             [paginator]="true"
-            [globalFilterFields]="['name', 'Country.name', 'representative.name', 'status']"
+            [globalFilterFields]="['name', 'CountryModel.name', 'representative.name', 'status']"
             responsiveLayout="scroll"
         >
             <ng-template #caption>

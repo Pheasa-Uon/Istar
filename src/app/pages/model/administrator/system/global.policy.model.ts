@@ -1,4 +1,4 @@
-// export interface GlobalPolicy {
+// export interface GlobalPolicyModel {
 //     id?: number;
 //     policyCode?: string;
 //     policyName?: string;
@@ -24,7 +24,7 @@ export interface BooleanOption {
     name: string;
 }
 
-export interface GlobalPolicy {
+export interface GlobalPolicyModel {
     id?: number;
     policyCode?: string;
     policyName?: string;

@@ -14,10 +14,10 @@ import { Select } from 'primeng/select';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
-import { Currency } from '../../../model/administrator/system/Currency';
+import { CurrencyModel } from '../../../model/administrator/system/currency.model';
 
 @Component({
-    selector: 'app-add-Currency',
+    selector: 'app-add-CurrencyModel',
     standalone: true,
     imports: [
         CommonModule,
@@ -125,7 +125,7 @@ import { Currency } from '../../../model/administrator/system/Currency';
 })
 export class AddCurrency {
     submitted = false; // Added submitted flag
-    currency: Currency = {
+    currency: CurrencyModel = {
         id: undefined,
         currencyCode: '',
         currencyChar: '',

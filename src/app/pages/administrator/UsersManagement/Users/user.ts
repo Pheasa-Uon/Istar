@@ -24,7 +24,7 @@ import { RolesDropdownItemService } from '../../../service/administrator/usersma
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { User } from '../../../model/administrator/usermanagement/user.model';
-import { RolePermission } from '../../../model/administrator/usermanagement/RolePermission';
+import { RolePermissionModel } from '../../../model/administrator/usermanagement/role.permission.model';
 
 @Component({
     selector: 'app-users',
@@ -197,7 +197,7 @@ import { RolePermission } from '../../../model/administrator/usermanagement/Role
 })
 export class UsersComponent {
     usersList: User[] = [];
-    roleList: RolePermission[] = [];
+    roleList: RolePermissionModel[] = [];
     loading = [false];
     searchText = '';
     displayDetails = false;
@@ -308,7 +308,7 @@ export class UsersComponent {
         return this.roleStatusMap[code] || code;
     }
 
-    onRoleCheckboxChange(role: RolePermission) {
+    onRoleCheckboxChange(role: RolePermissionModel) {
         if (!this.selectedUser?.id || !role.id) return;
 
         const request = { userId: this.selectedUser.id, roleId: role.id };
