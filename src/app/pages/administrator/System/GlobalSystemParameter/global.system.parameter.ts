@@ -219,6 +219,7 @@ export class GlobalSystemParameterComponent {
 
     editGlobalSystemParameter(globalSystemParameter: GlobalSystemParameter) {
         this.router.navigate(['/edit-global-system-parameter'], { state: { globalSystemParameter } });
+        console.log(globalSystemParameter);
     }
 
     viewGlobalSystemParameter(globalSystemParameter: GlobalSystemParameter) {
