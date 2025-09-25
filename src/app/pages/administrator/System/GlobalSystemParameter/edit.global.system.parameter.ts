@@ -165,10 +165,11 @@ export class EditGlobalSystemParameter {
             const globalSystemParameter = { ...navigation.extras.state['globalSystemParameter'] };
             this.globalSystemParameter = {
                 ...globalSystemParameter,
-                moduleName: globalSystemParameter.moduleName?.value || '', // string
-                fieldName: globalSystemParameter.fieldName?.value || '',   // string
-                sysParStatus: globalSystemParameter.sysParStatus?.value || ''
+                moduleName: globalSystemParameter.moduleName.value,   // full object
+                fieldName: globalSystemParameter.fieldName.value,     // full object
+                sysParStatus: globalSystemParameter.sysParStatus.value
             };
+
         }
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();
