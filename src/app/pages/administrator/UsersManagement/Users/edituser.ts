@@ -123,7 +123,7 @@ export class EditUser {
     dropdownItems = [
         { name: 'Active', code: 'A' },
         { name: 'Block', code: 'B' },
-        //{ name: 'Close', code: 'C' },
+        { name: 'Pending', code: 'P' },
         { name: 'Inactive', code: 'I' }
     ];
 
@@ -207,5 +207,7 @@ export class EditUser {
                 });
             }
         });
+
+        console.log(fullUser);
     }
 }

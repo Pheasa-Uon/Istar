@@ -10,9 +10,10 @@ import { Fluid } from 'primeng/fluid';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message'; // adjust path if needed
-import { RolePermissionService, RolePermission } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
+import { RolePermissionService } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { RolePermission } from '../../../model/administrator/usermanagement/RolePermission';
 
 @Component({
     selector: 'app-edit-role-permission',
@@ -30,18 +31,18 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="roleid">Role Id</label>
-                        <input pInputText id="roleid" type="text" [(ngModel)]="role.rolesCode" [readOnly]="true" />
+                        <input pInputText id="roleid" type="text" [(ngModel)]="role.roleCode" [readOnly]="true" />
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="name">Role Name <span class="text-red-500">*</span></label>
-                        <input pInputText id="name" type="text" [(ngModel)]="role.name" />
+                        <input pInputText id="name" type="text" [(ngModel)]="role.roleName" />
                     </div>
                 </div>
 
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="status">Status</label>
-                        <p-select id="status" [(ngModel)]="role.rolesStatus" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
+                        <p-select id="status" [(ngModel)]="role.roleStatus" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
                     </div>
                     <div class="flex flex-wrap gap-2 w-full"></div>
                 </div>
@@ -64,9 +65,9 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
 export class EditRolePermission {
     role: RolePermission = {
         id: undefined,
-        rolesCode: '',
-        name: '',
-        rolesStatus: '',
+        roleCode: '',
+        roleName: '',
+        roleStatus: undefined,
         description: ''
     };
 
@@ -85,8 +86,20 @@ export class EditRolePermission {
     ) {
         const navigation = this.router.getCurrentNavigation();
         if (navigation?.extras.state?.['rolePermissions']) {
-            this.role = { ...navigation.extras.state['rolePermissions'] };
-        };
+            const role = { ...navigation.extras.state['rolePermissions'] };
+
+            // Normalize roleStatus for dropdown
+            if (role.roleStatus) {
+                // if backend gives object { value: 'A', name: 'Active' }
+                role.roleStatus = role.roleStatus.value || role.roleStatus;
+            } else {
+                role.roleStatus = undefined;
+            }
+
+            this.role = role;
+
+
+        }
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();
     }

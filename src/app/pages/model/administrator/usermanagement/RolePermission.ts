@@ -1,7 +1,13 @@
-export interface RolePermission {
-    id: number; // roleId
+export interface StringOption {
     name: string;
-    description?: string;
-    rolesStatus?: string;
-    checked?: boolean; // bound to checkbox
+    value: string;
+}
+
+export interface RolePermission {
+    id?: number | undefined;
+    roleCode?: string;
+    roleName?: string;
+    roleStatus?: StringOption;
+    description: string;
+    checked?: boolean;
 }

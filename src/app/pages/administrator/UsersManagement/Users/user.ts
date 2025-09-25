@@ -18,12 +18,13 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { UserService } from '../../../service/administrator/usersmanagement/users/user.service';
-import { RolePermissionService, RolePermission } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
+import { RolePermissionService } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
 import { UsersStatusService } from '../../../service/administrator/usersmanagement/users/user.dropdown.item.service';
 import { RolesDropdownItemService } from '../../../service/administrator/usersmanagement/rolepermissions/roles.dropdown.item.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { User } from '../../../model/administrator/usermanagement/user.model';
+import { RolePermission } from '../../../model/administrator/usermanagement/RolePermission';
 
 @Component({
     selector: 'app-users',
@@ -303,10 +304,6 @@ export class UsersComponent {
         });
     }
 
-    getUserStatus(code: string): string {
-        return this.userStatusMap[code] || code;
-    }
-
     getRolesStatus(code: string): string {
         return this.roleStatusMap[code] || code;
     }
@@ -323,7 +320,7 @@ export class UsersComponent {
                 this.messageService.add({
                     severity: 'success',
                     summary: role.checked ? 'Role Assigned' : 'Role Removed',
-                    detail: `${role.name} ${role.checked ? 'assigned to' : 'removed from'} ${this.selectedUser?.name || this.selectedUser?.username || 'user'}`
+                    detail: `${role.roleName} ${role.checked ? 'assigned to' : 'removed from'} ${this.selectedUser?.name || this.selectedUser?.username || 'user'}`
                 });
             },
             error: () => {

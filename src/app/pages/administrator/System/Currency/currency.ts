@@ -17,8 +17,6 @@ import { forkJoin } from 'rxjs';
 
 import { Fluid } from 'primeng/fluid';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
-import { RolePermissionService, RolePermission } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
-import { RolesDropdownItemService } from '../../../service/administrator/usersmanagement/rolepermissions/roles.dropdown.item.service';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { Currency } from '../../../model/administrator/system/Currency';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';

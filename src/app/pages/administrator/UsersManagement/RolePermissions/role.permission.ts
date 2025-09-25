@@ -17,9 +17,9 @@ import { forkJoin } from 'rxjs';
 
 import { Fluid } from 'primeng/fluid';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
-import { RolePermissionService, RolePermission } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
-import { RolesDropdownItemService } from '../../../service/administrator/usersmanagement/rolepermissions/roles.dropdown.item.service';
+import { RolePermissionService } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { RolePermission } from '../../../model/administrator/usermanagement/RolePermission';
 
 @Component({
     selector: 'app-role-permission',
@@ -100,14 +100,14 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
                 </ng-template>
                 <ng-template pTemplate="body" let-rolePermissions>
                     <tr>
-                        <td>{{ rolePermissions.rolesCode }}</td>
-                        <td>{{ rolePermissions.name }}</td>
+                        <td>{{ rolePermissions.roleCode }}</td>
+                        <td>{{ rolePermissions.roleName }}</td>
                         <td>{{ rolePermissions.description }}</td>
                         <td
                             [ngStyle]="{
-                                'color': rolePermissions.rolesStatus === 'A' ? 'Green' :
-                                         rolePermissions.rolesStatus === 'I' ? 'Gray' : 'black'
-                        }">{{ getRolesStatus(rolePermissions.rolesStatus || '') }}</td>
+                                'color': rolePermissions.roleStatus?.value === 'A' ? 'Green' :
+                                         rolePermissions.roleStatus?.value === 'I' ? 'Gray' : 'black'
+                        }">{{ rolePermissions.roleStatus?.name }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button *hasFeaturePermission="['RLP','view']"
@@ -167,7 +167,7 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
 
                 <!-- Values Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedRole?.rolesCode }}</div>
+                    <div>{{ selectedRole?.roleCode }}</div>
                     <div>{{ selectedRole?.description }}</div>
                 </div>
 
@@ -179,8 +179,8 @@ import { FeaturePermissionService } from '../../../service/administrator/usersma
 
                 <!-- Values Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-5 py-5">
-                    <div>{{ selectedRole?.name }}</div>
-                    <div>{{ getRolesStatus(selectedRole?.rolesStatus || '') }}</div>
+                    <div>{{ selectedRole?.roleName }}</div>
+                    <div>{{ selectedRole?.roleStatus?.name }}</div>
                 </div>
             </div>
         </p-dialog>
@@ -195,12 +195,10 @@ export class RolePermissionsComponent {
     searchText = '';
     displayDetails = false;
     selectedRole: RolePermission | null = null;
-    statusMap: Record<string, string> = {};
 
     constructor(
         private rolePermissionService: RolePermissionService,
         private messageService: MessageService,
-        private statusService: RolesDropdownItemService,
         private router: Router,
         private permissionService: FeaturePermissionService,
         private confirmationService: ConfirmationService
@@ -211,11 +209,9 @@ export class RolePermissionsComponent {
 
     ngOnInit() {
         forkJoin({
-            statusMap: this.statusService.getRolesStatus(),
             roles: this.rolePermissionService.getAllRolePermission()
         }).subscribe({
-            next: ({ statusMap, roles }) => {
-                this.statusMap = statusMap;
+            next: ({ roles }) => {
                 this.roleList = roles;
             },
             error: (err) => {
@@ -266,7 +262,7 @@ export class RolePermissionsComponent {
 
     deleteRole(rolePermissions: RolePermission) {
         this.confirmationService.confirm({
-            message: `Are you sure you want to delete role "${rolePermissions.name}"?`,
+            message: `Are you sure you want to delete role "${rolePermissions.roleName}"?`,
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
@@ -275,7 +271,7 @@ export class RolePermissionsComponent {
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Deleted',
-                            detail: `Role "${rolePermissions.name}" deleted successfully.`,
+                            detail: `Role "${rolePermissions.roleName}" deleted successfully.`,
                             life: 3000
                         });
                         // remove from UI list
@@ -292,10 +288,6 @@ export class RolePermissionsComponent {
                 });
             }
         });
-    }
-
-    getRolesStatus(code: string): string {
-        return this.statusMap[code] || code;
     }
 }
 

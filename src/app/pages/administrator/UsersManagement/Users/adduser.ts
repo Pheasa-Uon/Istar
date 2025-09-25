@@ -14,6 +14,7 @@ import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
+import { StringOption } from '../../../model/administrator/usermanagement/RolePermission';
 
 @Component({
     selector: 'app-add-user',
@@ -72,7 +73,7 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
 
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="status">Status</label>
-                            <p-select id="status" name="status" [(ngModel)]="user.userStatus" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
+                            <p-select id="status" name="status" [(ngModel)]="user.userStatus" [options]="dropdownItems" optionLabel="name" placeholder="Select One" class="w-full"></p-select>
                         </div>
                     </div>
 
@@ -107,11 +108,11 @@ export class AddUser {
         description: ''
     };
 
-    dropdownItems = [
-        { name: 'Active', code: 'A' },
-        { name: 'Blocked', code: 'B' },
-        //{ name: 'Closed', code: 'C' },
-        { name: 'Inactive', code: 'I' }
+    dropdownItems: StringOption[] = [
+        { name: 'Active', value: 'A' },
+        { name: 'Blocked', value: 'B' },
+        { name: 'Pending', value: 'P' },
+        { name: 'Inactive', value: 'I' }
     ];
 
     showPassword = false;
@@ -124,6 +125,9 @@ export class AddUser {
     ) {
         this.permissionService.loadFromCache();
         this.permissionService.loadFromCache();
+
+        // set default after dropdownItems is initialized
+        this.user.userStatus = this.dropdownItems[0]; // default to Active
     }
 
     goBack() {
