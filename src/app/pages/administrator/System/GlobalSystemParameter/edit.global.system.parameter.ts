@@ -45,6 +45,7 @@ import { GlobalSystemParameter } from '../../../model/administrator/system/globa
                             [options]="dropdownModuleNameItems"
                             optionLabel="name" optionValue="code"
                             placeholder="Select One" class="w-full"
+                            [readonly]="true"
                             (onChange)="onModuleChange($event)">
                         </p-select>
                         <!--
@@ -59,6 +60,7 @@ import { GlobalSystemParameter } from '../../../model/administrator/system/globa
                             [(ngModel)]="globalSystemParameter.fieldName"
                             [options]="dropdownFieldItems"
                             optionLabel="name" optionValue="code"
+                            [readonly]="true"
                             placeholder="Select One" class="w-full">
                         </p-select>
                         <!--
@@ -191,7 +193,7 @@ export class EditGlobalSystemParameter {
 
                 // If editing, load fields for the already selected module
                 if (this.globalSystemParameter.moduleName) {
-                    this.loadFieldsForModule(this.globalSystemParameter.moduleName.value);
+                    this.loadFieldsForModule('');
                 }
             },
             error: (err) => console.error('Error loading module names', err)
