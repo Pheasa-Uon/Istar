@@ -123,8 +123,8 @@ import { GlobalSystemParameter } from '../../../model/administrator/system/globa
 
                 <div class="card flex flex-wrap gap-0 w-full justify-end">
                     <p-buttongroup>
-                        <p-button *hasFeaturePermission="['RLP', 'save']" label="Save" icon="pi pi-check" (click)="saveGlobalSystemParameter()" />
-                        <p-button *hasFeaturePermission="['RLP', 'cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
+                        <p-button *hasFeaturePermission="['GSP', 'save']" label="Save" icon="pi pi-check" (click)="saveGlobalSystemParameter()" />
+                        <p-button *hasFeaturePermission="['GSP', 'cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
                     </p-buttongroup>
                 </div>
             </div>
@@ -164,8 +164,7 @@ export class EditGlobalSystemParameter {
         if (navigation?.extras.state?.['gsp']) {
             const globalSystemParameter = { ...navigation.extras.state['gsp'] };
 
-            globalSystemParameter.moduleName = globalSystemParameter.moduleName ? { code: globalSystemParameter.moduleName, name: globalSystemParameter.moduleName } : undefined;
-
+            globalSystemParameter.sysParStatus = globalSystemParameter.sysParStatus ? { name: globalSystemParameter.sysParStatus.name, code: globalSystemParameter.sysParStatus.code } : undefined;
             this.globalSystemParameter = globalSystemParameter;
 
         }
