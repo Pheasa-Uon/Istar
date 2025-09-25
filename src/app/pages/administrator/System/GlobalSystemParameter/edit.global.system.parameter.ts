@@ -197,39 +197,39 @@ export class EditGlobalSystemParameter {
         });
     }
 
-    // loadFieldsForModule(moduleCode: string) {
-    //     this.moduleService.getModuleFields(moduleCode).subscribe({
-    //         next: (data) => {
-    //             this.dropdownFieldItems = data;
-    //
-    //             // Optional: keep the previously selected field value
-    //             if (this.globalSystemParameter.fieldName) {
-    //                 const exists = data.find(f => f.code === this.globalSystemParameter.fieldName?.value);
-    //                 if (!exists) {
-    //                     this.globalSystemParameter.fieldName = undefined; // or handle invalid field
-    //                 }
-    //             }
-    //         },
-    //         error: (err) => console.error('Error loading module fields', err)
-    //     });
-    // }
-
     loadFieldsForModule(moduleCode: string) {
         this.moduleService.getModuleFields(moduleCode).subscribe({
             next: (data) => {
                 this.dropdownFieldItems = data;
 
-                // Keep previously selected field if exists
-                if (this.globalSystemParameter.fieldName) {
+                // Optional: keep the previously selected field value
+                if (this.globalSystemParameter.fieldName?.value) {
                     const exists = data.find(f => f.code === this.globalSystemParameter.fieldName?.value);
                     if (!exists) {
-                        this.globalSystemParameter.fieldName.value = ''; // reset invalid field
+                        this.globalSystemParameter.fieldName = undefined; // or handle invalid field
                     }
                 }
             },
             error: (err) => console.error('Error loading module fields', err)
         });
     }
+
+    // loadFieldsForModule(moduleCode: string) {
+    //     this.moduleService.getModuleFields(moduleCode).subscribe({
+    //         next: (data) => {
+    //             this.dropdownFieldItems = data;
+    //
+    //             // Keep previously selected field if exists
+    //             if (this.globalSystemParameter.fieldName) {
+    //                 const exists = data.find(f => f.code === this.globalSystemParameter.fieldName?.value);
+    //                 if (!exists) {
+    //                     this.globalSystemParameter.fieldName.value = ''; // reset invalid field
+    //                 }
+    //             }
+    //         },
+    //         error: (err) => console.error('Error loading module fields', err)
+    //     });
+    // }
 
 
     onModuleChange(event: any) {
