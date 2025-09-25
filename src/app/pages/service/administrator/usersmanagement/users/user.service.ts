@@ -12,7 +12,7 @@ export class UserService {
 
     constructor(private http: HttpClient) {}
 
-    addUser(user: User): Observable<User> {
+    addUser(user: { id: undefined; userCode: string; username: string; name: string; password: string; email: string; userStatus: string; description: string; lastLoginAt?: string | Date }): Observable<User> {
         return this.http.post<User>(this.userUrl, user);
     }
 
@@ -44,7 +44,7 @@ export class UserService {
         const token = localStorage.getItem('authToken');
 
         const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token || ''}`
+            Authorization: `Bearer ${token || ''}`
         });
 
         const url = `${this.userUrl}/search?keyword=${encodeURIComponent(keyword)}`;

@@ -174,8 +174,6 @@ export class AddGlobalSystemParameter implements OnInit {
     dropdownFieldItems: DropdownItemFieldName[] = [];
     dropdownStatusItems = [
         { name: 'Active', code: 'A' },
-        //{ name: 'Blocked', code: 'B' },
-        //{ name: 'Closed', code: 'C' },
         { name: 'Inactive', code: 'I' }
     ];
 
@@ -229,6 +227,13 @@ export class AddGlobalSystemParameter implements OnInit {
         {
             return; // don't proceed if required fields are missing
         }
+
+        const payload = {
+            ...this.globalSystemParameter,
+            moduleName: this.globalSystemParameter.moduleName?.value,
+            fieldName: this.globalSystemParameter.fieldName?.value,
+            sysParStatus: this.globalSystemParameter.sysParStatus?.value // already just 'A' or 'I'
+        };
 
         this.globalSystemParameterService.addGlobalSystemParameter(this.globalSystemParameter).subscribe({
             next: () => {

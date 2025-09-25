@@ -19,7 +19,19 @@ import { RolePermissionModel, StringOption } from '../../../model/administrator/
 @Component({
     selector: 'app-add-role-permission',
     standalone: true,
-    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, DropdownModule, TextareaModule, Message, ButtonGroup, Fluid, Select, HasPermissionDirective],
+    imports: [
+        CommonModule,
+        FormsModule,
+        InputTextModule,
+        ButtonModule,
+        DropdownModule,
+        TextareaModule,
+        Message,
+        ButtonGroup,
+        Fluid,
+        Select,
+        HasPermissionDirective
+    ],
     template: `
         <form #roleForm="ngForm" (ngSubmit)="saveRolePermission()" novalidate>
             <div class="fixed top-3/1 right-4 z-50 w-[500px]">
@@ -30,35 +42,82 @@ import { RolePermissionModel, StringOption } from '../../../model/administrator/
                 <div class="card flex flex-col gap-6 w-full">
                     <div class="font-semibold text-xl">Add New Role Permission</div>
                     <div class="border-t border-gray-200 my-4"></div>
+
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full">
-                            <label for="roleid">Role Id</label>
-                            <input pInputText id="roleid" name="rolesCode" type="text" placeholder="Auto" [readOnly]="true" [(ngModel)]="rolepermission.roleCode" class="w-full" />
+                            <label for="rolesCode">Role Id</label>
+                            <input
+                                pInputText
+                                id="rolesCode"
+                                name="rolesCode"
+                                type="text"
+                                placeholder="Auto"
+                                [readOnly]="true"
+                                [(ngModel)]="rolepermission.roleCode"
+                                class="w-full"
+                            />
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
-                            <label for="name">Role Name <span class="text-red-500">*</span></label>
-                            <input pInputText id="name" name="name" type="text" [(ngModel)]="rolepermission.roleName" required class="w-full" [ngClass]="{ 'p-invalid': submitted && !rolepermission.roleName }" />
-                            <small *ngIf="submitted && !rolepermission.roleName" class="text-red-500">Role Name is required.</small>
+                            <label for="roleName">Role Name <span class="text-red-500">*</span></label>
+                            <input
+                                pInputText
+                                id="roleName"
+                                name="roleName"
+                                type="text"
+                                [(ngModel)]="rolepermission.roleName"
+                                required
+                                class="w-full"
+                                [ngClass]="{ 'p-invalid': submitted && !rolepermission.roleName }"
+                            />
+                            <small *ngIf="submitted && !rolepermission.roleName" class="text-red-500">
+                                Role Name is required.
+                            </small>
                         </div>
                     </div>
 
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full">
-                            <label for="status">Status</label>
-                            <p-select id="status" name="status" [(ngModel)]="rolepermission.roleStatus" [options]="dropdownItems" optionLabel="name" placeholder="Select One" class="w-full"></p-select>
+                            <label for="roleStatus">Status</label>
+                            <p-select
+                                id="roleStatus"
+                                name="roleStatus"
+                                [(ngModel)]="rolepermission.roleStatus"
+                                [options]="dropdownItems"
+                                optionLabel="name"
+                                placeholder="Select One"
+                                class="w-full"
+                            ></p-select>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full"></div>
                     </div>
 
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="description">Description</label>
-                        <textarea pTextarea id="description" name="description" rows="4" [(ngModel)]="rolepermission.description" class="w-full"></textarea>
+                        <textarea
+                            pTextarea
+                            id="description"
+                            name="description"
+                            rows="4"
+                            [(ngModel)]="rolepermission.description"
+                            class="w-full"
+                        ></textarea>
                     </div>
 
                     <div class="card flex flex-wrap gap-0 w-full justify-end">
                         <p-buttongroup>
-                            <p-button *hasFeaturePermission="['RLP','save']" type="submit" label="Create New" icon="pi pi-plus-circle" [disabled]="roleForm.invalid" />
-                            <p-button *hasFeaturePermission="['RLP','cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
+                            <p-button
+                                *hasFeaturePermission="['RLP','save']"
+                                type="submit"
+                                label="Create New"
+                                icon="pi pi-plus-circle"
+                                [disabled]="roleForm.invalid"
+                            />
+                            <p-button
+                                *hasFeaturePermission="['RLP','cancel']"
+                                label="Cancel"
+                                icon="pi pi-times"
+                                (click)="goBack()"
+                            ></p-button>
                         </p-buttongroup>
                     </div>
                 </div>
@@ -67,12 +126,14 @@ import { RolePermissionModel, StringOption } from '../../../model/administrator/
     `
 })
 export class AddRolePermission {
-    submitted = false; // Added submitted flag
+    submitted = false;
+
+    // roleStatus will hold just the string value ('A' or 'I')
     rolepermission: RolePermissionModel = {
         id: undefined,
         roleCode: '',
         roleName: '',
-        roleStatus: undefined,
+        roleStatus: undefined, // default Active
         description: ''
     };
 
@@ -89,9 +150,6 @@ export class AddRolePermission {
     ) {
         this.permissionService.loadPerminsions();
         this.permissionService.loadFromCache();
-
-        // set default after dropdownItems is initialized
-        this.rolepermission.roleStatus = this.dropdownItems[0]; // default to Active
     }
 
     goBack() {
@@ -99,13 +157,18 @@ export class AddRolePermission {
     }
 
     saveRolePermission() {
-        this.submitted = true; // Set submitted flag
+        this.submitted = true;
 
         if (!this.rolepermission.roleName) {
-            return; // don't proceed if required field is missing
+            return;
         }
 
-        this.rolePermissionService.addRolePermission(this.rolepermission).subscribe({
+        const payload = {
+            ...this.rolepermission,
+            roleStatus: this.rolepermission.roleStatus?.value // already just 'A' or 'I'
+        };
+
+        this.rolePermissionService.addRolePermission(payload).subscribe({
             next: () => {
                 this.messageService.show({
                     severity: 'success',
@@ -122,5 +185,6 @@ export class AddRolePermission {
                 });
             }
         });
+        console.log(payload);
     }
 }

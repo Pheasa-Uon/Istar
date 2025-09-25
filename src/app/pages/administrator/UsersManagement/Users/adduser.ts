@@ -98,7 +98,6 @@ import { StringOption } from '../../../model/administrator/usermanagement/role.p
 export class AddUser {
     submitted = false;
     user: User = {
-        id: undefined,
         userCode: '',
         name: '',
         username: '',
@@ -137,11 +136,19 @@ export class AddUser {
     saveUser() {
         this.submitted = true;
 
-        if (!this.user.name || !this.user.userStatus) {
+        if (!this.user.name || !this.user.userStatus?.value
+            || !this.user.username || !this.user.password || !this.user.email
+        ) {
             return; // don't proceed if required fields missing
         }
 
-        this.userService.addUser(this.user).subscribe({
+        const payload = {
+            ...this.user,
+            id: undefined,
+            userStatus: this.user.userStatus.value // send only the value
+        };
+
+        this.userService.addUser(payload).subscribe({
             next: () => {
                 this.messageService.show({
                     severity: 'success',
@@ -159,24 +166,4 @@ export class AddUser {
             }
         });
     }
-
-    // saveUser() {
-    //     this.userService.addUser(this.user).subscribe({
-    //         next: () => {
-    //             this.messageService.show({
-    //                 severity: 'success',
-    //                 summary: 'Success',
-    //                 detail: 'User created successfully!'
-    //             });
-    //             setTimeout(() => this.goBack(), 1000);
-    //         },
-    //         error: () => {
-    //             this.messageService.show({
-    //                 severity: 'error',
-    //                 summary: 'Error',
-    //                 detail: 'User creation failed.'
-    //             });
-    //         }
-    //     });
-    // }
 }

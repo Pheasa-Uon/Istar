@@ -23,7 +23,7 @@ export class RolePermissionService {
     }
 
     // ✅ Create new role
-    addRolePermission(role: RolePermissionModel): Observable<RolePermissionModel> {
+    addRolePermission(role: { id?: number | undefined; roleCode?: string; roleName?: string; roleStatus: string | undefined; description: string; checked?: boolean }): Observable<RolePermissionModel> {
         return this.http.post<RolePermissionModel>(this.apiUrl, role);
     }
 
@@ -46,7 +46,7 @@ export class RolePermissionService {
         const token = localStorage.getItem('authToken'); // or wherever you store your token
 
         const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token || ''}`
+            Authorization: `Bearer ${token || ''}`
         });
 
         const url = `${this.apiUrl}/search?keyword=${encodeURIComponent(keyword)}`;

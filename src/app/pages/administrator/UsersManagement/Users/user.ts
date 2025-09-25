@@ -19,8 +19,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { UserService } from '../../../service/administrator/usersmanagement/users/user.service';
 import { RolePermissionService } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
-import { UsersStatusService } from '../../../service/administrator/usersmanagement/users/user.dropdown.item.service';
-import { RolesDropdownItemService } from '../../../service/administrator/usersmanagement/rolepermissions/roles.dropdown.item.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { User } from '../../../model/administrator/usermanagement/user.model';
@@ -88,7 +86,7 @@ import { RolePermissionModel } from '../../../model/administrator/usermanagement
                     <tr>
                         <th style="min-width:100px">User Id</th>
                         <th style="min-width:200px">UserName</th>
-                        <th style="min-width:200px">Login Name</th>
+                        <th style="min-width:200px">Name</th>
                         <th style="min-width:200px">Last Login Date</th>
                         <th style="min-width:245px">Email</th>
                         <th style="min-width:100px">Status</th>
@@ -139,7 +137,7 @@ import { RolePermissionModel } from '../../../model/administrator/usermanagement
                 </div>
 
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div><strong>Login Name:</strong></div>
+                    <div><strong>Name:</strong></div>
                     <div><strong>Password:</strong></div>
                     <div><strong>Status:</strong></div>
                 </div>
@@ -182,9 +180,9 @@ import { RolePermissionModel } from '../../../model/administrator/usermanagement
                                 <p-checkbox [binary]="true" [(ngModel)]="rolePermissions.checked" inputId="checkRolePermission{{ rolePermissions.id }}" (ngModelChange)="onRoleCheckboxChange(rolePermissions)"></p-checkbox>
                             </div>
                         </td>
-                        <td>{{ rolePermissions.rolesCode }}</td>
-                        <td>{{ rolePermissions.name }}</td>
-                        <td>{{ getRolesStatus(rolePermissions.rolesStatus || '') }}</td>
+                        <td>{{ rolePermissions.roleCode }}</td>
+                        <td>{{ rolePermissions.roleName }}</td>
+                        <td>{{ rolePermissions.roleStatus?.name }}</td>
                         <td>{{ rolePermissions.description }}</td>
                     </tr>
                 </ng-template>
@@ -203,15 +201,11 @@ export class UsersComponent {
     displayDetails = false;
     selectedUser: User | null = null;
     showPassword = false;
-    userStatusMap: Record<string, string> = {};
-    roleStatusMap: Record<string, string> = {};
 
     constructor(
         private userService: UserService,
         private rolePermissionService: RolePermissionService,
         private messageService: MessageService,
-        private userStatusService: UsersStatusService,
-        private rolesStatusService: RolesDropdownItemService,
         private router: Router,
         private permissionService: FeaturePermissionService,
         private confirmationService: ConfirmationService
@@ -222,14 +216,10 @@ export class UsersComponent {
 
     ngOnInit() {
         forkJoin({
-            userStatusMap: this.userStatusService.getUserStatus(),
-            roleStatusMap: this.rolesStatusService.getRolesStatus(),
             users: this.userService.getAllUsers(),
             roles: this.rolePermissionService.getAllRolePermission()
         }).subscribe({
-            next: ({ userStatusMap, roleStatusMap, users, roles }) => {
-                this.userStatusMap = userStatusMap;
-                this.roleStatusMap = roleStatusMap;
+            next: ({ users, roles }) => {
                 this.usersList = users;
                 this.roleList = roles;
             },
@@ -302,10 +292,6 @@ export class UsersComponent {
                 this.loading[0] = false;
             }
         });
-    }
-
-    getRolesStatus(code: string): string {
-        return this.roleStatusMap[code] || code;
     }
 
     onRoleCheckboxChange(role: RolePermissionModel) {

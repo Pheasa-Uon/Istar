@@ -12,5 +12,5 @@ export interface User {
     email: string;
     userStatus?: StringOption;   // 👈 optional, can be undefined
     description: string;
-    lastLoginAt?: undefined;
+    lastLoginAt?: string | Date;
 }
