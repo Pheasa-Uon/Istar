@@ -184,7 +184,7 @@ export class AddGlobalSystemParameter implements OnInit {
         private permissionService: FeaturePermissionService,
         private moduleService: GspDropdownItemService
     ) {
-        this.permissionService.loadPerminsions();
+        this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
     }
 

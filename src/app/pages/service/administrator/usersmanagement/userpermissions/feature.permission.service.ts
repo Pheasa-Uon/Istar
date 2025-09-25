@@ -30,7 +30,7 @@ export class FeaturePermissionService {
     private permissions: FeaturePermissionMap = {};
     constructor(private http: HttpClient) {}
 
-    loadPerminsions(){
+    loadPermissions(){
         return this.http.get<FeaturePermissionMap>(`${this.Url}/feature/me`).subscribe((permissions) => {
 
             this.permissions = permissions;

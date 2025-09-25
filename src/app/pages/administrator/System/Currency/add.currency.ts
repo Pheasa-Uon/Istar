@@ -151,7 +151,7 @@ export class AddCurrency {
         private messageService: MessageService,
         private permissionService: FeaturePermissionService
     ) {
-        this.permissionService.loadPerminsions();
+        this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
     }
 

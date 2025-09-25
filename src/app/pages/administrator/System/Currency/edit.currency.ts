@@ -142,7 +142,7 @@ export class EditCurrency {
         if (navigation?.extras.state?.['currency']) {
             this.currency = { ...navigation.extras.state['currency'] };
         };
-        this.permissionService.loadPerminsions();
+        this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
     }
 

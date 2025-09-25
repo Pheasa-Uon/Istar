@@ -128,7 +128,7 @@ export class AddSystemParameter implements OnInit {
         private permissionService: FeaturePermissionService,
         private moduleService: SPDropdownItemService
     ) {
-        this.permissionService.loadPerminsions();
+        this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
     }
 

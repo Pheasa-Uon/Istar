@@ -100,7 +100,7 @@ export class EditRolePermission {
 
 
         }
-        this.permissionService.loadPerminsions();
+        this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
     }
 
