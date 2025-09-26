@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 export interface AppMessage {
-    severity: 'success' | 'info' | 'warn' | 'error' | 'secondary' | 'contrast';
+    severity: 'success' | 'info' | 'warn' | 'error';
     summary: string;
     detail: string;
 }
@@ -18,7 +18,7 @@ export class MessageService {
 
         setTimeout(() => {
             this._messages.next(this._messages.getValue().filter(m => m !== msg));
-        }, 3000); // Auto dismiss
+        }, 3000);
     }
 
     clear() {

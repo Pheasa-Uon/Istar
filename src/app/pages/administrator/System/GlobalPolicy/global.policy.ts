@@ -144,8 +144,8 @@ import { Time12HourPipe } from '../../../utils/time12-hour.pipe';
                     <div>{{ selectedRow?.validFrom | formatDate }}</div>
                     <div>{{ selectedRow?.numberDuplicatedPassword }}</div>
                     <div>{{ selectedRow?.minimumPasswordLength }}</div>
-                    <div>{{ selectedRow?.includedLowerCaseLetter?.name }}</div>
-                    <div>{{ selectedRow?.includedSymbolCharacter?.name }}</div>
+                    <div>{{ selectedRow?.includedLowerCaseLetter?.label }}</div>
+                    <div>{{ selectedRow?.includedSymbolCharacter?.label }}</div>
                     <div>{{ selectedRow?.canLoginFrom | time12Hour }}</div>
                     <div>{{ selectedRow?.numberFailedLoginAttempts }}</div>
                 </div>
@@ -167,9 +167,9 @@ import { Time12HourPipe } from '../../../utils/time12-hour.pipe';
                     <div>{{ selectedRow?.policyName }}</div>
                     <div>{{ selectedRow?.validTo | formatDate }}</div>
                     <div>{{ selectedRow?.dayPasswordExpired }}</div>
-                    <div>{{ selectedRow?.complexedPassword?.name }}</div>
-                    <div>{{ selectedRow?.includedUpperCaseLetter?.name }}</div>
-                    <div>{{ selectedRow?.includedNumber?.name }}</div>
+                    <div>{{ selectedRow?.complexedPassword?.label }}</div>
+                    <div>{{ selectedRow?.includedUpperCaseLetter?.label }}</div>
+                    <div>{{ selectedRow?.includedNumber?.label }}</div>
                     <div>{{ selectedRow?.canLoginTo | time12Hour }}</div>
                     <div>{{ selectedRow?.description }}</div>
                 </div>

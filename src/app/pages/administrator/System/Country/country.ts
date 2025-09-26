@@ -20,7 +20,6 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { CountryModel } from '../../../model/administrator/system/country.model';
 import { CountryService } from '../../../service/administrator/system/country.service';
-import { CountryDropdownItemService } from '../../../service/administrator/system/country.dropdown.item.service';
 
 @Component({
     selector: 'app-CountryModel',
@@ -105,13 +104,13 @@ import { CountryDropdownItemService } from '../../../service/administrator/syste
                         <td>{{ country.iso2Alpha }}</td>
                         <td>{{ country.iso3Alpha }}</td>
                         <td>{{ country.countryName }}</td>
-                        <td>{{ getLanguages(country.language || '') }}</td>
+                        <td>{{ country.language?.label }}</td>
                         <td
                             [ngStyle]="{
-                                'color': country.countryStatus === 'A' ? 'Green' :
-                                         country.countryStatus === 'I' ? 'Gray' : 'black'
+                                'color': country.countryStatus?.value === 'A' ? 'Green' :
+                                         country.countryStatus?.value === 'I' ? 'Gray' : 'black'
                         }">
-                            {{ getStatus(country.countryStatus || '') }}
+                            {{ country.countryStatus?.label }}
                         </td>
 
                         <td>
@@ -170,9 +169,9 @@ import { CountryDropdownItemService } from '../../../service/administrator/syste
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
                     <div>{{ selectedCountry?.iso2Alpha }}</div>
                     <div>{{ selectedCountry?.countryName }}</div>
-                    <div>{{ getCurrency(selectedCountry?.currencyId || '')}}</div>
-                    <div>{{ getRegion(selectedCountry?.region || '') }}</div>
-                    <div>{{ getStatus(selectedCountry?.countryStatus || '') }}</div>
+                    <div>{{ selectedCountry?.currencyId?.label }}</div>
+                    <div>{{ selectedCountry?.region?.label }}</div>
+                    <div>{{ selectedCountry?.countryStatus?.label }}</div>
                     <div>{{ selectedCountry?.description }}</div>
                 </div>
 
@@ -189,8 +188,8 @@ import { CountryDropdownItemService } from '../../../service/administrator/syste
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
                     <div>{{ selectedCountry?.iso3Alpha }}</div>
                     <div>{{ selectedCountry?.localCountryName }}</div>
-                    <div>{{ getLanguages(selectedCountry?.language || '') }}</div>
-                    <div>{{ getBlacklist(selectedCountry?.blacklist || '') }}</div>
+                    <div>{{ selectedCountry?.language?.label }}</div>
+                    <div>{{ selectedCountry?.blacklist?.label }}</div>
                     <div>{{ selectedCountry?.displayOrder }}</div>
                 </div>
             </div>
@@ -206,16 +205,10 @@ export class CountryComponent {
     searchText = '';
     displayDetails = false;
     selectedCountry: CountryModel | null = null;
-    statusMap: Record<string, string> = {};
-    languageMap: Record<string, string> = {};
-    currencyMap: Record<string, string> = {};
-    regionMap: Record<string, string> = {};
-    blacklistMap: Record<string, string> = {};
 
     constructor(
         private countryService: CountryService,
         private messageService: MessageService,
-        private statusService: CountryDropdownItemService,
         private router: Router,
         private permissionService: FeaturePermissionService,
         private confirmationService: ConfirmationService
@@ -226,19 +219,9 @@ export class CountryComponent {
 
     ngOnInit() {
         forkJoin({
-            statusMap: this.statusService.getCountryStatus(),
-            languageMap: this.statusService.getLanguageName(),
-            currencyMap: this.statusService.getCurrencyName(),
-            regionMap: this.statusService.getRegionName(),
-            blacklistMap: this.statusService.getBlacklistName(),
             country: this.countryService.getAllCountry()
         }).subscribe({
-            next: ({ statusMap, currencyMap, languageMap, regionMap, blacklistMap, country }) => {
-                this.statusMap = statusMap;
-                this.languageMap = languageMap;
-                this.currencyMap = currencyMap;
-                this.regionMap = regionMap;
-                this.blacklistMap = blacklistMap;
+            next: ({ country }) => {
                 this.countryList = country;
             },
             error: (err) => {
@@ -311,26 +294,6 @@ export class CountryComponent {
                 });
             }
         });
-    }
-
-    getStatus(code: string): string {
-        return this.statusMap[code] || code;
-    }
-
-    getLanguages(code: string): string {
-        return this.languageMap[code] || code;
-    }
-
-    getCurrency(code: string): string {
-        return this.currencyMap[code] || code;
-    }
-
-    getRegion(code: string): string {
-        return this.regionMap[code] || code;
-    }
-
-    getBlacklist(code: string): string {
-        return this.blacklistMap[code] || code;
     }
 }
 

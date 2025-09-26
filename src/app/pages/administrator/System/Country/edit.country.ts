@@ -12,13 +12,11 @@ import { Message } from '../../../message/message'; // adjust path if needed
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { CountryService } from '../../../service/administrator/system/country.service';
-import { CountryModel } from '../../../model/administrator/system/country.model';
 import {
-    CountryDropdownItemService,
-    DropdownItemBlacklist,
+    CountryModel, DropdownItemBlacklist,
     DropdownItemCurrency,
     DropdownItemLanguage, DropdownItemRegion
-} from '../../../service/administrator/system/country.dropdown.item.service';
+} from '../../../model/administrator/system/country.model';
 
 @Component({
     selector: 'app-edit-CountryModel',
@@ -154,11 +152,11 @@ export class EditCountry {
         countryName: '',
         localCountryName: '',
         currencyId: undefined,
-        language: '',
-        region: '',
-        blacklist: '',
+        language: undefined,
+        region: undefined,
+        blacklist: undefined,
         displayOrder: undefined,
-        countryStatus: 'A',
+        countryStatus: undefined,
         description: ''
     };
 
@@ -176,7 +174,6 @@ export class EditCountry {
         private countryService: CountryService,
         private messageService: MessageService,
         private permissionService: FeaturePermissionService,
-        private dropdownService: CountryDropdownItemService,
     ) {
         const navigation = this.router.getCurrentNavigation();
         if (navigation?.extras.state?.['country']) {
@@ -184,13 +181,6 @@ export class EditCountry {
         };
         this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
-    }
-
-    ngOnInit(): void {
-        this.dropdownService.getCurrencyDropdown().subscribe(data => this.dropdownCurrencyItems = data);
-        this.dropdownService.getLanguageDropdown().subscribe(data => this.dropdownLanguageItems = data);
-        this.dropdownService.getRegionDropdown().subscribe(data => this.dropdownRegionItems = data);
-        this.dropdownService.getBlacklistDropdown().subscribe(data => this.dropdownBlacklistItems = data);
     }
 
     goBack() {

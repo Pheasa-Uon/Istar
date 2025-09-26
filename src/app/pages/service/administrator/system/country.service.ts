@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
-import { firstValueFrom, Observable, of, throwError } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-import { CountryModel } from '../../../model/administrator/system/country.model';
-
+import {
+    CountryModel,
+    DropdownItemBlacklist,
+    DropdownItemCurrency,
+    DropdownItemLanguage,
+    DropdownItemRegion
+} from '../../../model/administrator/system/country.model';
 
 @Injectable({ providedIn: 'root' })
 export class CountryService {
@@ -11,42 +16,63 @@ export class CountryService {
 
     constructor(private http: HttpClient) {}
 
-    // ✅ Get all roles
+    // 🔹 Helper to build headers
+    private getAuthHeaders(): HttpHeaders {
+        const token = localStorage.getItem('authToken');
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+        if (token) {
+            headers = headers.set('Authorization', `Bearer ${token}`);
+        }
+
+        return headers;
+    }
+
+    // ✅ Get all country
     getAllCountry(): Observable<CountryModel[]> {
-        const token = localStorage.getItem('authToken'); // your login token
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.get<CountryModel[]>(this.apiUrl, { headers });
+        return this.http.get<CountryModel[]>(this.apiUrl, { headers: this.getAuthHeaders() });
     }
 
-    // ✅ Get a single role
+    // ✅ Get a single country
     getCountryById(id: number): Observable<CountryModel> {
-        return this.http.get<CountryModel>(`${this.apiUrl}/${id}`);
+        return this.http.get<CountryModel>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
     }
 
-    // ✅ Create new role
-    addCountry(role: CountryModel): Observable<CountryModel> {
-        return this.http.post<CountryModel>(this.apiUrl, role);
+    // ✅ Create new country
+    addCountry(country: CountryModel): Observable<CountryModel> {
+        return this.http.post<CountryModel>(this.apiUrl, country, { headers: this.getAuthHeaders() });
     }
 
-    // ✅ Update existing role
-    updateCountry(role: CountryModel): Observable<CountryModel> {
-        return this.http.put<CountryModel>(`${this.apiUrl}/${role.id}`, role);
+    // ✅ Update existing country
+    updateCountry(country: CountryModel): Observable<CountryModel> {
+        return this.http.put<CountryModel>(`${this.apiUrl}/${country.id}`, country, { headers: this.getAuthHeaders() });
     }
 
-    // ✅ Delete role
-    deleteCountry(roleId: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/${roleId}`);
+    // ✅ Delete country
+    deleteCountry(countryId: number): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/${countryId}`, { headers: this.getAuthHeaders() });
     }
 
+    // ✅ Search country
     searchCountry(keyword: string): Observable<CountryModel[]> {
-        const token = localStorage.getItem('authToken'); // or wherever you store your token
-
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token || ''}`
-        });
-
         const url = `${this.apiUrl}/search?keyword=${encodeURIComponent(keyword)}`;
+        return this.http.get<CountryModel[]>(url, { headers: this.getAuthHeaders() });
+    }
 
-        return this.http.get<CountryModel[]>(url, { headers });
+    // ✅ Dropdowns
+    getCurrencyDropdown(): Observable<DropdownItemCurrency[]> {
+        return this.http.get<DropdownItemCurrency[]>(`${this.apiUrl}/currency-dropdown`, { headers: this.getAuthHeaders() });
+    }
+
+    getLanguageDropdown(): Observable<DropdownItemLanguage[]> {
+        return this.http.get<DropdownItemLanguage[]>(`${this.apiUrl}/language-dropdown`, { headers: this.getAuthHeaders() });
+    }
+
+    getRegionDropdown(): Observable<DropdownItemRegion[]> {
+        return this.http.get<DropdownItemRegion[]>(`${this.apiUrl}/region-dropdown`, { headers: this.getAuthHeaders() });
+    }
+
+    getBlacklistDropdown(): Observable<DropdownItemBlacklist[]> {
+        return this.http.get<DropdownItemBlacklist[]>(`${this.apiUrl}/blacklist-dropdown`, { headers: this.getAuthHeaders() });
     }
 }

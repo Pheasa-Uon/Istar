@@ -10,15 +10,12 @@ import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message';
 import { Select } from 'primeng/select';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
-import { CountryModel } from '../../../model/administrator/system/country.model';
-import { CountryService } from '../../../service/administrator/system/country.service';
 import {
-    CountryDropdownItemService,
+    CountryModel, DropdownItemBlacklist,
     DropdownItemCurrency,
-    DropdownItemLanguage,
-    DropdownItemRegion,
-    DropdownItemBlacklist
-} from '../../../service/administrator/system/country.dropdown.item.service';
+    DropdownItemLanguage, DropdownItemRegion
+} from '../../../model/administrator/system/country.model';
+import { CountryService } from '../../../service/administrator/system/country.service';
 
 @Component({
     selector: 'app-add-CountryModel',
@@ -35,11 +32,10 @@ import {
         HasPermissionDirective
     ],
     template: `
+        <div class="fixed top-0 right-4 z-50 w-[500px]">
+            <app-messages></app-messages>
+        </div>
         <form #Form="ngForm" (ngSubmit)="save()" novalidate>
-            <div class="fixed top-0 right-4 z-50 w-[500px]">
-                <app-messages></app-messages>
-            </div>
-
             <div class="p-fluid">
                 <div class="card flex flex-col gap-6 w-full p-4">
                     <div class="font-semibold text-xl">Add New Country</div>
@@ -86,7 +82,7 @@ import {
                             <label for="currencyId">Currency </label>
                             <p-select id="currencyId" name="currencyId" class="w-full"
                                             [options]="dropdownCurrencyItems"
-                                            optionLabel="name"
+                                            optionLabel="label"
                                             optionValue="id"
                                             [(ngModel)]="country.currencyId"
                                             placeholder="Select Currency"></p-select>
@@ -164,11 +160,11 @@ export class AddCountry implements OnInit {
         countryName: '',
         localCountryName: '',
         currencyId: undefined,
-        language: '',
-        region: '',
-        blacklist: '',
+        language: undefined,
+        region: undefined,
+        blacklist: undefined,
         displayOrder: undefined,
-        countryStatus: 'A',
+        countryStatus: undefined,
         description: ''
     };
 
@@ -178,22 +174,20 @@ export class AddCountry implements OnInit {
     dropdownBlacklistItems: DropdownItemBlacklist[] = [];
     dropdownItems = [
         { name: 'Active', code: 'A' },
-        //{ name: 'Blocked', code: 'B' },
         { name: 'Inactive', code: 'I' }
     ];
 
     constructor(
         private router: Router,
         private countryService: CountryService,
-        private messageService: MessageService,
-        private dropdownService: CountryDropdownItemService
+        private messageService: MessageService
     ) {}
 
     ngOnInit(): void {
-        this.dropdownService.getCurrencyDropdown().subscribe(data => this.dropdownCurrencyItems = data);
-        this.dropdownService.getLanguageDropdown().subscribe(data => this.dropdownLanguageItems = data);
-        this.dropdownService.getRegionDropdown().subscribe(data => this.dropdownRegionItems = data);
-        this.dropdownService.getBlacklistDropdown().subscribe(data => this.dropdownBlacklistItems = data);
+        this.countryService.getCurrencyDropdown().subscribe(data => this.dropdownCurrencyItems = data);
+        this.countryService.getLanguageDropdown().subscribe(data => this.dropdownLanguageItems = data);
+        this.countryService.getRegionDropdown().subscribe(data => this.dropdownRegionItems = data);
+        this.countryService.getBlacklistDropdown().subscribe(data => this.dropdownBlacklistItems = data);
     }
 
     goBack() {
