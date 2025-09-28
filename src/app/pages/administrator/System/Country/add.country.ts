@@ -32,10 +32,10 @@ import { CountryService } from '../../../service/administrator/system/country.se
         HasPermissionDirective
     ],
     template: `
-        <div class="fixed top-0 right-4 z-50 w-[500px]">
-            <app-messages></app-messages>
-        </div>
         <form #Form="ngForm" (ngSubmit)="save()" novalidate>
+            <div class="fixed top-0 right-4 z-50 w-[500px]">
+                <app-messages></app-messages>
+            </div>
             <div class="p-fluid">
                 <div class="card flex flex-col gap-6 w-full p-4">
                     <div class="font-semibold text-xl">Add New Country</div>
@@ -197,12 +197,8 @@ export class AddCountry implements OnInit {
     save() {
         this.submitted = true;
 
-        if (!this.country.iso2Alpha || !this.country.iso3Alpha || !this.country.countryName || this.country.displayOrder === undefined) {
-            this.messageService.show({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Please fill all required fields.'
-            });
+        if (!this.country.iso2Alpha || !this.country.iso3Alpha || !this.country.countryName || this.country.displayOrder === undefined)
+        {
             return;
         }
 

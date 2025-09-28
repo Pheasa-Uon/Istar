@@ -1,5 +1,5 @@
-export interface BooleanOption {
-    value: boolean;
+export interface LongOption {
+    value: number;
     label: string;
 }
 
@@ -14,11 +14,11 @@ export interface CountryModel {
     iso3Alpha?: string;
     countryName?: string;
     localCountryName?: string;
-    currencyId?: BooleanOption;
+    currencyId?: LongOption;
     language?: StringOption;
     region?: StringOption;
     blacklist?: StringOption;
-    displayOrder?: boolean;
+    displayOrder?: number;
     countryStatus?: StringOption;
     description?: string;
 }

@@ -259,6 +259,7 @@ export class CountryComponent {
 
     edit(country: CountryModel) {
         this.router.navigate(['/edit-country'], { state: { country } });
+        console.log(country);
     }
 
     view(country: CountryModel) {

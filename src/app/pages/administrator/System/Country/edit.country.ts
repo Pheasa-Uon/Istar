@@ -21,7 +21,17 @@ import {
 @Component({
     selector: 'app-edit-CountryModel',
     standalone: true,
-    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, ButtonGroup, Message, HasPermissionDirective],
+    imports: [
+        CommonModule,
+        FormsModule,
+        InputTextModule,
+        ButtonModule,
+        Select,
+        Textarea,
+        ButtonGroup,
+        Message,
+        HasPermissionDirective
+    ],
     template: `
         <form #Form="ngForm" (ngSubmit)="save()" novalidate>
             <div class="fixed top-0 right-4 z-50 w-[500px]">
@@ -39,15 +49,17 @@ import {
                             <label for="iso2Alpha">ISO 2 Alpha <span class="text-red-500">*</span></label>
                             <input pInputText id="iso2Alpha" name="iso2Alpha" type="text"
                                    placeholder="ISO 2 Alpha" [(ngModel)]="country.iso2Alpha"
-                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.iso2Alpha }"/>
-                            <small *ngIf="submitted && !country.iso2Alpha" class="text-red-500">ISO 2 Alpha is required.</small>
+                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.iso2Alpha }" />
+                            <small *ngIf="submitted && !country.iso2Alpha" class="text-red-500">ISO 2 Alpha is
+                                required.</small>
                         </div>
                         <div class="flex flex-col gap-2 w-full">
                             <label for="iso3Alpha">ISO 3 Alpha <span class="text-red-500">*</span></label>
                             <input pInputText id="iso3Alpha" name="iso3Alpha" type="text"
                                    placeholder="ISO 3 Alpha" [(ngModel)]="country.iso3Alpha"
                                    class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.iso3Alpha }" />
-                            <small *ngIf="submitted && !country.iso3Alpha" class="text-red-500">ISO 3 Alpha is required.</small>
+                            <small *ngIf="submitted && !country.iso3Alpha" class="text-red-500">ISO 3 Alpha is
+                                required.</small>
                         </div>
                     </div>
 
@@ -57,14 +69,15 @@ import {
                             <label for="countryName">Country Name <span class="text-red-500">*</span></label>
                             <input pInputText id="countryName" name="countryName" type="text"
                                    placeholder="Country Name" [(ngModel)]="country.countryName"
-                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.countryName }"/>
-                            <small *ngIf="submitted && !country.countryName" class="text-red-500">Country name is required.</small>
+                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.countryName }" />
+                            <small *ngIf="submitted && !country.countryName" class="text-red-500">Country name is
+                                required.</small>
                         </div>
                         <div class="flex flex-col gap-2 w-full">
                             <label for="localCountryName">Local Country Name </label>
                             <input pInputText id="localCountryName" name="localCountryName" type="text"
                                    placeholder="Local Country Name" [(ngModel)]="country.localCountryName"
-                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.localCountryName }" />
+                                   class="w-full" />
                         </div>
                     </div>
 
@@ -74,7 +87,7 @@ import {
                             <label for="currencyId">Currency </label>
                             <p-select id="currencyId" name="currencyId" class="w-full"
                                       [options]="dropdownCurrencyItems"
-                                      optionLabel="name"
+                                      optionLabel="label"
                                       optionValue="id"
                                       [(ngModel)]="country.currencyId"
                                       placeholder="Select Currency"></p-select>
@@ -83,7 +96,8 @@ import {
                             <label for="language">Language </label>
                             <p-select id="language" name="language" class="w-full"
                                       [options]="dropdownLanguageItems"
-                                      optionLabel="valueName" optionValue="sysParCode"
+                                      optionLabel="valueName"
+                                      optionValue="sysParCode"
                                       [(ngModel)]="country.language"
                                       placeholder="Select Language"></p-select>
                         </div>
@@ -95,7 +109,8 @@ import {
                             <label for="region">Region </label>
                             <p-select id="region" name="region" class="w-full"
                                       [options]="dropdownRegionItems"
-                                      optionLabel="valueName" optionValue="sysParCode"
+                                      optionLabel="valueName"
+                                      optionValue="sysParCode"
                                       [(ngModel)]="country.region"
                                       placeholder="Select Region"></p-select>
                         </div>
@@ -103,7 +118,8 @@ import {
                             <label for="blacklist">Blacklist </label>
                             <p-select id="blacklist" name="blacklist" class="w-full"
                                       [options]="dropdownBlacklistItems"
-                                      optionLabel="valueName" optionValue="sysParCode"
+                                      optionLabel="valueName"
+                                      optionValue="sysParCode"
                                       [(ngModel)]="country.blacklist"
                                       placeholder="Select Blacklist"></p-select>
                         </div>
@@ -116,11 +132,17 @@ import {
                             <input pInputText id="displayOrder" name="displayOrder" type="number"
                                    placeholder="Order" [(ngModel)]="country.displayOrder"
                                    class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.displayOrder }" />
-                            <small *ngIf="submitted && !country.displayOrder" class="text-red-500">Order is required.</small>
+                            <small *ngIf="submitted && !country.displayOrder" class="text-red-500">Order is
+                                required.</small>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="status">Status</label>
-                            <p-select id="status" name="status" [(ngModel)]="country.countryStatus" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
+                            <p-select id="status" name="status" class="w-full"
+                                      [options]="dropdownItems"
+                                      optionLabel="name"
+                                      optionValue="code"
+                                      [(ngModel)]="country.countryStatus"
+                                      placeholder="Select One"></p-select>
                         </div>
                     </div>
 
@@ -134,8 +156,10 @@ import {
                     <!-- Buttons -->
                     <div class="card flex flex-wrap gap-0 w-full justify-end">
                         <p-buttongroup>
-                            <p-button *hasFeaturePermission="['COU','save']" type="submit" label="Save" icon="pi pi-check" [disabled]="Form.invalid" />
-                            <p-button *hasFeaturePermission="['COU','cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
+                            <p-button *hasFeaturePermission="['COU','save']" type="submit" label="Save"
+                                      icon="pi pi-check" [disabled]="Form.invalid" />
+                            <p-button *hasFeaturePermission="['COU','cancel']" label="Cancel" icon="pi pi-times"
+                                      (click)="goBack()"></p-button>
                         </p-buttongroup>
                     </div>
                 </div>
@@ -144,7 +168,7 @@ import {
     `
 })
 export class EditCountry {
-    submitted = false; // Added submitted flag
+    submitted = false;
     country: CountryModel = {
         id: undefined,
         iso2Alpha: '',
@@ -177,10 +201,27 @@ export class EditCountry {
     ) {
         const navigation = this.router.getCurrentNavigation();
         if (navigation?.extras.state?.['country']) {
-            this.country = { ...navigation.extras.state['country'] };
-        };
+            const country = { ...navigation.extras.state['country'] };
+
+            this.country = {
+                ...country,
+                currencyId: country.currencyId?.value,   // primitive id
+                language: country.language?.value,       // primitive code
+                region: country.region?.value,
+                blacklist: country.blacklist?.value,
+                countryStatus: country.countryStatus?.value,
+            };
+        }
+
         this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
+    }
+
+    ngOnInit(): void {
+        this.countryService.getCurrencyDropdown().subscribe(data => this.dropdownCurrencyItems = data);
+        this.countryService.getLanguageDropdown().subscribe(data => this.dropdownLanguageItems = data);
+        this.countryService.getRegionDropdown().subscribe(data => this.dropdownRegionItems = data);
+        this.countryService.getBlacklistDropdown().subscribe(data => this.dropdownBlacklistItems = data);
     }
 
     goBack() {
@@ -188,10 +229,10 @@ export class EditCountry {
     }
 
     save() {
-        this.submitted = true; // Set submitted flag
+        this.submitted = true;
 
-        if (!this.country.iso2Alpha || !this.country.iso3Alpha || !this.country.countryName || !this.country.region ||
-            !this.country.localCountryName || !this.country.currencyId || !this.country.language ||
+        if (!this.country.iso2Alpha || !this.country.iso3Alpha || !this.country.countryName ||
+            !this.country.currencyId || !this.country.language ||
             !this.country.region || !this.country.blacklist || this.country.displayOrder === undefined) {
             this.messageService.show({
                 severity: 'error',
@@ -206,7 +247,7 @@ export class EditCountry {
                 this.messageService.show({
                     severity: 'success',
                     summary: 'Success',
-                    detail: 'Role Permission updated successfully!'
+                    detail: 'Country updated successfully!'
                 });
                 setTimeout(() => this.goBack(), 1000);
             },
@@ -214,7 +255,7 @@ export class EditCountry {
                 this.messageService.show({
                     severity: 'error',
                     summary: 'Error',
-                    detail: 'Role Permission update failed.'
+                    detail: 'Country update failed.'
                 });
             }
         });
