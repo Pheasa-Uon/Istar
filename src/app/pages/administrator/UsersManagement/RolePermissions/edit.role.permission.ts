@@ -13,7 +13,7 @@ import { Message } from '../../../message/message'; // adjust path if needed
 import { RolePermissionService } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
-import { RolePermissionModel } from '../../../model/administrator/usermanagement/role.permission.model';
+import { RolePermissionModel } from '../../../model/administrator/userManagement/role.permission.model';
 
 @Component({
     selector: 'app-edit-role-permission',

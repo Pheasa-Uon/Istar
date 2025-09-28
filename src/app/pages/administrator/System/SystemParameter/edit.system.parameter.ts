@@ -93,7 +93,7 @@ import { SPDropdownItemService } from '../../../service/administrator/system/sys
 export class EditSystemParameter {
     systemParameter: SystemParameterModel = {
         id: undefined,
-        parameterModule: '',
+        parameterModule: undefined,
         parameterName: '',
         parameterValue: '',
         description: ''
@@ -110,7 +110,13 @@ export class EditSystemParameter {
     ) {
         const navigation = this.router.getCurrentNavigation();
         if (navigation?.extras.state?.['sp']) {
-            this.systemParameter = { ...navigation.extras.state['sp'] };
+            const systemParameter = { ...navigation.extras.state['sp'] };
+
+            this.systemParameter = {
+                ...systemParameter,
+               parameterModule: systemParameter.parameterModule?.value
+            };
+
         }
         this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();

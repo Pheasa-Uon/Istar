@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { tap, shareReplay } from 'rxjs/operators';
-import { FeaturePermissionMap, FeaturePermissionFlags } from '../../../../model/administrator/usermanagement/permission.model';
+import { FeaturePermissionMap, FeaturePermissionFlags } from '../../../../model/administrator/userManagement/permission.model';
 import { environment } from '../../../../../../environments/environment';
 
 @Injectable({

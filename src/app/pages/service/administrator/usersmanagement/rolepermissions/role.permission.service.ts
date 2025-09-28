@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../../../environments/environment';
-import { RolePermissionModel } from '../../../../model/administrator/usermanagement/role.permission.model';
+import { RolePermissionModel } from '../../../../model/administrator/userManagement/role.permission.model';
 
 @Injectable({ providedIn: 'root' })
 export class RolePermissionService {

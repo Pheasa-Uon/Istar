@@ -136,7 +136,7 @@ export class AddCurrency {
         decimalDigits: undefined,
         roundingDigits: undefined,
         displayOrder: undefined,
-        currencyStatus: 'A',
+        currencyStatus: undefined,
         description: ''
     };
 

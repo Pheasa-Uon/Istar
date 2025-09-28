@@ -113,7 +113,7 @@ export class AddSystemParameter implements OnInit {
     submitted = false; // Added submitted flag like in AddUser
     systemParameter: SystemParameterModel = {
         id: undefined,
-        parameterModule: '',
+        parameterModule: undefined,
         parameterName: '',
         parameterValue: '',
         description: ''

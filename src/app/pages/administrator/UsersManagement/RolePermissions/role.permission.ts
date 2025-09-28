@@ -19,7 +19,7 @@ import { Fluid } from 'primeng/fluid';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { RolePermissionService } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
-import { RolePermissionModel } from '../../../model/administrator/usermanagement/role.permission.model';
+import { RolePermissionModel } from '../../../model/administrator/userManagement/role.permission.model';
 
 @Component({
     selector: 'app-role-permission',

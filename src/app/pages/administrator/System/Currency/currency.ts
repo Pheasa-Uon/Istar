@@ -20,7 +20,6 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
 import { CurrencyModel } from '../../../model/administrator/system/currency.model';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
-import { CurrencyDropdownItemService } from '../../../service/administrator/system/currency.dropdown.item.service';
 
 @Component({
     selector: 'app-CurrencyModel',
@@ -106,9 +105,9 @@ import { CurrencyDropdownItemService } from '../../../service/administrator/syst
                         <td>{{ currency.currencyName }}</td>
                         <td
                             [ngStyle]="{
-                                'color': currency.currencyStatus === 'A' ? 'Green' :
-                                         currency.currencyStatus === 'I' ? 'Gray' : 'black'
-                        }">{{ getStatus(currency.currencyStatus || '') }}</td>
+                                'color': currency.currencyStatus?.value === 'A' ? 'Green' :
+                                         currency.currencyStatus?.value === 'I' ? 'Gray' : 'black'
+                        }">{{ currency.currencyStatus?.label }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button *hasFeaturePermission="['CUR','view']"
@@ -186,7 +185,7 @@ import { CurrencyDropdownItemService } from '../../../service/administrator/syst
                     <div>{{ selectedCurrency?.currencySymbol }}</div>
                     <div>{{ selectedCurrency?.localCurrencyName }}</div>
                     <div>{{ selectedCurrency?.roundingDigits != null ? selectedCurrency?.roundingDigits : '-' }}</div>
-                    <div>{{ getStatus(selectedCurrency?.currencyStatus || '') }}</div>
+                    <div>{{ selectedCurrency?.currencyStatus?.label }}</div>
                 </div>
             </div>
         </p-dialog>
@@ -201,12 +200,10 @@ export class CurrencyComponent {
     searchText = '';
     displayDetails = false;
     selectedCurrency: CurrencyModel | null = null;
-    statusMap: Record<string, string> = {};
 
     constructor(
         private currencyService: CurrencyService,
         private messageService: MessageService,
-        private statusService: CurrencyDropdownItemService,
         private router: Router,
         private permissionService: FeaturePermissionService,
         private confirmationService: ConfirmationService
@@ -217,11 +214,9 @@ export class CurrencyComponent {
 
     ngOnInit() {
         forkJoin({
-            statusMap: this.statusService.getCurrencyStatus(),
             roles: this.currencyService.getAllCurrency()
         }).subscribe({
-            next: ({ statusMap, roles }) => {
-                this.statusMap = statusMap;
+            next: ({ roles }) => {
                 this.currencyList = roles;
             },
             error: (err) => {
@@ -294,10 +289,6 @@ export class CurrencyComponent {
                 });
             }
         });
-    }
-
-    getStatus(code: string): string {
-        return this.statusMap[code] || code;
     }
 }
 

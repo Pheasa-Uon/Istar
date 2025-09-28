@@ -17,19 +17,27 @@ export class SystemParameterService {
     }
 
     getSystemParameterById(id: number): Observable<SystemParameterModel> {
-        return this.http.get<SystemParameterModel>(`${this.apiGSP}/${id}`);
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.get<SystemParameterModel>(`${this.apiGSP}/${id}`, { headers });
     }
 
     addSystemParameter(param: SystemParameterModel): Observable<SystemParameterModel> {
-        return this.http.post<SystemParameterModel>(this.apiGSP, param);
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.post<SystemParameterModel>(this.apiGSP, param, { headers });
     }
 
     updateSystemParameter(param: SystemParameterModel): Observable<SystemParameterModel> {
-        return this.http.put<SystemParameterModel>(`${this.apiGSP}/${param.id}`, param);
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.put<SystemParameterModel>(`${this.apiGSP}/${param.id}`, param, { headers });
     }
 
     deleteSystemParameter(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiGSP}/${id}`);
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.delete<void>(`${this.apiGSP}/${id}`, { headers });
     }
 
     searchSystemParameter(keyword: string): Observable<SystemParameterModel[]> {

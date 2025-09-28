@@ -21,7 +21,7 @@ export class HasPermissionDirective {
     // }
 
     private feature = ''
-    private action: keyof import('../model/administrator/usermanagement/permission.model').FeaturePermissionFlags = 'view';
+    private action: keyof import('../model/administrator/userManagement/permission.model').FeaturePermissionFlags = 'view';
 
     constructor(
         private templateRef: TemplateRef<any>,
@@ -30,7 +30,7 @@ export class HasPermissionDirective {
     ) { }
 
     @Input()
-    set hasFeaturePermission(value: [string, keyof import('../model/administrator/usermanagement/permission.model').FeaturePermissionFlags]) {
+    set hasFeaturePermission(value: [string, keyof import('../model/administrator/userManagement/permission.model').FeaturePermissionFlags]) {
         this.feature = value[0];
         this.action = value[1];
         this.updateView();

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { RolePermissionModel } from '../../../../model/administrator/usermanagement/role.permission.model';
-import { User } from '../../../../model/administrator/usermanagement/user.model';
+import { RolePermissionModel } from '../../../../model/administrator/userManagement/role.permission.model';
+import { User } from '../../../../model/administrator/userManagement/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {

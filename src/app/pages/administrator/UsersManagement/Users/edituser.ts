@@ -9,7 +9,7 @@ import { Textarea } from 'primeng/textarea';
 import { Fluid } from 'primeng/fluid';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { UserService } from '../../../service/administrator/usersmanagement/users/user.service';
-import { User } from '../../../model/administrator/usermanagement/user.model';
+import { User } from '../../../model/administrator/userManagement/user.model';
 import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message';
 import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';

@@ -1,3 +1,8 @@
+export interface StringOption {
+    value: string;
+    label: string;
+}
+
 export interface CurrencyModel {
     id?: number | undefined;
     currencyCode?: string;
@@ -9,6 +14,6 @@ export interface CurrencyModel {
     decimalDigits?: boolean;
     roundingDigits?: boolean;
     displayOrder?: boolean;
-    currencyStatus?: string;
+    currencyStatus?: StringOption;
     description: string;
 }

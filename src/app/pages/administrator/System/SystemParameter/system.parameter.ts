@@ -89,7 +89,7 @@ import { SPDropdownItemService } from '../../../service/administrator/system/sys
                 </ng-template>
                 <ng-template pTemplate="body" let-sp>
                     <tr>
-                        <td>{{ getModuleNames(sp.parameterModule || '') }}</td>
+                        <td>{{ sp.parameterModule?.label }}</td>
                         <td>{{ sp.parameterName }}</td>
                         <td>{{ sp.parameterValue }}</td>
                         <td>{{ sp.description }}</td>
@@ -121,7 +121,7 @@ import { SPDropdownItemService } from '../../../service/administrator/system/sys
 
                 <!-- Values Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ getModuleNames(selectedSP?.parameterModule || '') }}</div>
+                    <div>{{ selectedSP?.parameterModule?.label }}</div>
                     <div>{{ selectedSP?.parameterValue }}</div>
                 </div>
 
@@ -243,17 +243,5 @@ export class SystemParameterComponent {
                 });
             }
         });
-    }
-
-    getGSPStatus(code: string): string {
-        return this.statusMap[code] || code;
-    }
-
-    getModuleFieldNames(code: string): string {
-        return this.statusMap[code] || code;
-    }
-
-    getModuleNames(code: string): string {
-        return this.moduleNameMap[code] || code;
     }
 }

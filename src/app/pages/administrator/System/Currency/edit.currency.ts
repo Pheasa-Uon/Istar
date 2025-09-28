@@ -123,7 +123,7 @@ export class EditCurrency {
         decimalDigits: undefined,
         roundingDigits: undefined,
         displayOrder: undefined,
-        currencyStatus: 'A',
+        currencyStatus: undefined,
         description: ''
     };
 
@@ -140,7 +140,13 @@ export class EditCurrency {
     ) {
         const navigation = this.router.getCurrentNavigation();
         if (navigation?.extras.state?.['currency']) {
-            this.currency = { ...navigation.extras.state['currency'] };
+            const currency = { ...navigation.extras.state['currency'] };
+
+            this.currency = {
+                ...currency,
+                currencyStatus: currency.currencyStatus?.value
+            }
+
         };
         this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
