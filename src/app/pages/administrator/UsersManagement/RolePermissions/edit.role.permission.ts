@@ -10,9 +10,9 @@ import { Fluid } from 'primeng/fluid';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message'; // adjust path if needed
-import { RolePermissionService } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
+import { RolePermissionService } from '../../../service/administrator/usersManagement/rolepermissions/role.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
-import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { RolePermissionModel } from '../../../model/administrator/userManagement/role.permission.model';
 
 @Component({

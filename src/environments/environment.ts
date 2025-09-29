@@ -17,6 +17,9 @@ export const environment = {
             country: '/system/country',
             systemParameter: '/system/system-parameter',
             globalPolicy: '/system/global-policy',
+        },
+        systemAdmin: {
+            branch: '/system-admin/branch',
         }
     }
 };

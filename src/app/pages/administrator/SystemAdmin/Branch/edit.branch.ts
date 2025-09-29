@@ -17,9 +17,10 @@ import {
     DropdownItemCurrency,
     DropdownItemLanguage, DropdownItemRegion
 } from '../../../model/administrator/system/country.model';
+import { BranchModel } from '../../../model/administrator/systemAdmin/branch.model';
 
 @Component({
-    selector: 'app-edit-CountryModel',
+    selector: 'app-edit-branch',
     standalone: true,
     imports: [
         CommonModule,
@@ -167,20 +168,21 @@ import {
         </form>
     `
 })
-export class EditCountry {
+export class EditBranch {
     submitted = false;
-    country: CountryModel = {
+    branch: BranchModel = {
         id: undefined,
-        iso2Alpha: '',
-        iso3Alpha: '',
-        countryName: '',
-        localCountryName: '',
-        currencyId: undefined,
-        language: undefined,
-        region: undefined,
-        blacklist: undefined,
-        displayOrder: undefined,
-        countryStatus: undefined,
+        branchCode: '',
+        branchName: '',
+        localBranchName: '',
+        branchPrefix: '',
+        province: undefined,
+        phone: '',
+        email: '',
+        address: '',
+        isHq: undefined,
+        cloneGlFromBranch: undefined,
+        onlineStatus: undefined,
         description: ''
     };
 

@@ -28,6 +28,8 @@ import { EditSystemParameter } from './app/pages/administrator/System/SystemPara
 import { GlobalPolicyComponent } from './app/pages/administrator/System/GlobalPolicy/global.policy';
 import { AddGlobalPolicy } from './app/pages/administrator/System/GlobalPolicy/add.global.policy';
 import { EditGlobalPolicy } from './app/pages/administrator/System/GlobalPolicy/edit.global.policy';
+import { BranchComponent } from './app/pages/administrator/SystemAdmin/Branch/branch';
+import { AddBranch } from './app/pages/administrator/SystemAdmin/Branch/add.branch';
 
 export const appRoutes: Routes = [
 
@@ -86,6 +88,11 @@ export const appRoutes: Routes = [
             { path: 'global-policy', component: GlobalPolicyComponent },
             { path: 'add-global-policy', component: AddGlobalPolicy },
             { path: 'edit-global-policy', component: EditGlobalPolicy },
+
+            // Branch routes
+            { path: 'branch', component: BranchComponent },
+            { path: 'add-branch', component: AddBranch },
+            //{ path: 'edit-branch', component: EditBranch },
 
             // Lazy loaded modules - make sure these modules exist and export NgModule classes
             { path: 'uikit', loadChildren: () => import('./app/UI/uikit/uikit.routes') },

@@ -18,7 +18,7 @@ import {
 import {
     DropdownItemModuleName
 } from '../../../service/administrator/system/gsp.dropdown.item.service';
-import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { SystemParameterService } from '../../../service/administrator/system/system.parameter.service';
 import { SPDropdownItemService } from '../../../service/administrator/system/system.parameter.dropdown.item.service';
 import { SystemParameterModel } from '../../../model/administrator/system/system.parameter.model';

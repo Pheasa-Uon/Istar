@@ -11,7 +11,7 @@ import { ButtonGroup } from 'primeng/buttongroup';
 import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message'; // adjust path if needed
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
-import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { CurrencyModel } from '../../../model/administrator/system/currency.model';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
 

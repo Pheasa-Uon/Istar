@@ -17,7 +17,7 @@ import { forkJoin } from 'rxjs';
 
 import { Fluid } from 'primeng/fluid';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
-import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { CountryModel } from '../../../model/administrator/system/country.model';
 import { CountryService } from '../../../service/administrator/system/country.service';
 

@@ -11,7 +11,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextarea } from 'primeng/inputtextarea';
 import { CalendarModule } from 'primeng/calendar';
 
-import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { GlobalPolicyService } from '../../../service/administrator/system/global.policy.service';
 import { GlobalPolicyModel } from '../../../model/administrator/system/global.policy.model';

@@ -17,10 +17,10 @@ import { TreeTableModule } from 'primeng/treetable';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
-import { UserService } from '../../../service/administrator/usersmanagement/users/user.service';
-import { RolePermissionService } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
+import { UserService } from '../../../service/administrator/usersManagement/users/user.service';
+import { RolePermissionService } from '../../../service/administrator/usersManagement/rolepermissions/role.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
-import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { User } from '../../../model/administrator/userManagement/user.model';
 import { RolePermissionModel } from '../../../model/administrator/userManagement/role.permission.model';
 

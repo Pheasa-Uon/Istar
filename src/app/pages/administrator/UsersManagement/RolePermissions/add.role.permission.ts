@@ -6,13 +6,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { TextareaModule } from 'primeng/textarea';
-import { RolePermissionService } from '../../../service/administrator/usersmanagement/rolepermissions/role.permission.service';
+import { RolePermissionService } from '../../../service/administrator/usersManagement/rolepermissions/role.permission.service';
 import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { Fluid } from 'primeng/fluid';
 import { Select } from 'primeng/select';
-import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { RolePermissionModel, StringOption } from '../../../model/administrator/userManagement/role.permission.model';
 

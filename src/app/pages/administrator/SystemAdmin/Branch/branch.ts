@@ -18,11 +18,11 @@ import { forkJoin } from 'rxjs';
 import { Fluid } from 'primeng/fluid';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
-import { CurrencyModel } from '../../../model/administrator/system/currency.model';
-import { CurrencyService } from '../../../service/administrator/system/currency.service';
+import { BranchService } from '../../../service/administrator/systemAdmin/branch.service';
+import { BranchModel } from '../../../model/administrator/systemAdmin/branch.model';
 
 @Component({
-    selector: 'app-CurrencyModel',
+    selector: 'app-branch',
     standalone: true,
     imports: [
         CommonModule,
@@ -43,11 +43,11 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
     providers: [ConfirmationService, MessageService],
     template: `
         <div class="card">
-            <div class="font-semibold text-xl mb-4">Currency</div>
+            <div class="font-semibold text-xl mb-4">Branch</div>
 
             <p-fluid class="flex flex-col md:flex-row gap-2 justify-end items-center">
                 <div class="flex flex-wrap gap-2 md:w-1/2">
-                    <p-button *hasFeaturePermission="['CUR','add']"
+                    <p-button *hasFeaturePermission="['BRN','add']"
                               label="Add New"
                               icon="pi pi-plus"
                               (click)="addNew()">
@@ -63,7 +63,7 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
                 </div>
                 <div class="card flex flex-col gap-2">
                     <div class="flex flex-wrap gap-2 md:w-1/2 justify-end items-center">
-                        <p-button *hasFeaturePermission="['RLP','search']"
+                        <p-button *hasFeaturePermission="['BRN','search']"
                                   type="button"
                                   label="Search"
                                   icon="pi pi-search"
@@ -80,60 +80,67 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
              >
              -->
             <p-table
-                [value]="currencyList"
+                [value]="branchList"
                 [rows]="5"
                 [paginator]="true"
                 [rowHover]="true"
                 dataKey="id"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} currency"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} country"
                 [showCurrentPageReport]="true"
                 [rowsPerPageOptions]="[5, 10, 15, 20, 25, 30]"
             >
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="min-width:100px">Currency Code</th>
-                        <th style="min-width:250px">Currency Char</th>
-                        <th style="min-width:250px">Name</th>
-                        <th style="min-width:150px">Status</th>
+                        <th style="min-width:150px">Branch Code</th>
+                        <th style="min-width:150px">Branch Name</th>
+                        <th style="min-width:250px">Branch Prefix</th>
+                        <th style="min-width:250px">City/Province</th>
+                        <th style="min-width:150px">Phone</th>
+                        <th style="min-width:150px">Online</th>
                         <th style="min-width:200px">Actions</th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-currency>
+                <ng-template pTemplate="body" let-branch>
                     <tr>
-                        <td>{{ currency.currencyCode }}</td>
-                        <td>{{ currency.currencyChar }} ({{ currency.currencySymbol }})</td>
-                        <td>{{ currency.currencyName }}</td>
+                        <td>{{ branch.branchCode }}</td>
+                        <td>{{ branch.branchName }}</td>
+                        <td>{{ branch.branchPrefix }}</td>
+                        <td>{{ branch.province?.label }}</td>
+                        <td>{{ branch.phone }}</td>
                         <td
                             [ngStyle]="{
-                                'color': currency.currencyStatus?.value === 'A' ? 'Green' :
-                                         currency.currencyStatus?.value === 'I' ? 'Gray' : 'black'
-                        }">{{ currency.currencyStatus?.label }}</td>
+                                'color': branch.onlineStatus?.value === true ? 'Green' :
+                                         branch.onlineStatus?.value === false ? 'Gray' : 'black'
+                        }">
+                            {{ branch.onlineStatus?.label }}
+                        </td>
+
                         <td>
                             <div class="flex flex-wrap gap-1">
-                                <p-button *hasFeaturePermission="['CUR','view']"
+                                <p-button *hasFeaturePermission="['BRN','view']"
                                           icon="pi pi-eye"
                                           text
                                           raised
                                           rounded
-                                          (click)="view(currency)">
+                                          (click)="view(branch)">
                                 </p-button>
 
-                                <p-button *hasFeaturePermission="['CUR','edit']"
+                                <p-button *hasFeaturePermission="['BRN','edit']"
                                           icon="pi pi-pencil"
                                           severity="info"
                                           text
                                           raised
                                           rounded
-                                          (click)="edit(currency)">
+                                          (click)="edit(branch)">
                                 </p-button>
 
-                                <p-button *hasFeaturePermission="['CUR','deleted']"
+                                <p-button *hasFeaturePermission="['BRN','deleted']"
                                           icon="pi pi-trash"
                                           severity="danger"
                                           text
                                           raised
                                           rounded
-                                          (click)="delete(currency)">
+                                          (click)="delete(branch)">
                                 </p-button>
                             </div>
                         </td>
@@ -143,7 +150,7 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
         </div>
 
         <!-- View User Dialog -->
-        <p-dialog header="Currency Details"
+        <p-dialog header="View Branch Details"
                   [(visible)]="displayDetails"
                   [modal]="true"
                   [style]="{ width: '1100px' }"
@@ -152,40 +159,42 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
             <div class="flex flex-col md:flex-row">
                 <!-- Labels Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div><strong>Currency code:</strong></div>
-                    <div><strong>Currency Number:</strong></div>
-                    <div><strong>Currency Name:</strong></div>
-                    <div><strong>Decimal Digits:</strong></div>
-                    <div><strong>Order:</strong></div>
+                    <div><strong>Branch code:</strong></div>
+                    <div><strong>Branch prefix:</strong></div>
+                    <div><strong>City/Province:</strong></div>
+                    <div><strong>Email:</strong></div>
+                    <div><strong>Address:</strong></div>
+                    <div><strong>Clone GL from:</strong></div>
                     <div><strong>Description:</strong></div>
                 </div>
 
                 <!-- Values Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedCurrency?.currencyCode }}</div>
-                    <div>{{ selectedCurrency?.currencyNumber }}</div>
-                    <div>{{ selectedCurrency?.currencyName }}</div>
-                    <div>{{ selectedCurrency?.decimalDigits }}</div>
-                    <div>{{ selectedCurrency?.displayOrder }}</div>
-                    <div>{{ selectedCurrency?.description }}</div>
+                    <div>{{ selectedBranch?.branchCode }}</div>
+                    <div>{{ selectedBranch?.branchPrefix }}</div>
+                    <div>{{ selectedBranch?.province?.label }}</div>
+                    <div>{{ selectedBranch?.email }}</div>
+                    <div>{{ selectedBranch?.address }}</div>
+                    <div>{{ selectedBranch?.cloneGlFromBranch?.label || '-' }}</div>
+                    <div>{{ selectedBranch?.description }}</div>
                 </div>
 
                 <!-- Labels Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div><strong>Currency Char:</strong></div>
-                    <div><strong>Currency Symbol:</strong></div>
-                    <div><strong>Local Currency Name:</strong></div>
-                    <div><strong>Rounding Digits:</strong></div>
-                    <div><strong>Status:</strong></div>
+                    <div><strong>Branch name:</strong></div>
+                    <div><strong>Local Branch name :</strong></div>
+                    <div><strong>Phone:</strong></div>
+                    <div><strong>Is HQ:</strong></div>
+                    <div><strong>Online Status:</strong></div>
                 </div>
 
                 <!-- Values Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedCurrency?.currencyChar }}</div>
-                    <div>{{ selectedCurrency?.currencySymbol }}</div>
-                    <div>{{ selectedCurrency?.localCurrencyName }}</div>
-                    <div>{{ selectedCurrency?.roundingDigits != null ? selectedCurrency?.roundingDigits : '-' }}</div>
-                    <div>{{ selectedCurrency?.currencyStatus?.label }}</div>
+                    <div>{{ selectedBranch?.branchName }}</div>
+                    <div>{{ selectedBranch?.localBranchName }}</div>
+                    <div>{{ selectedBranch?.phone }}</div>
+                    <div>{{ selectedBranch?.isHq?.label }}</div>
+                    <div>{{ selectedBranch?.onlineStatus?.label }}</div>
                 </div>
             </div>
         </p-dialog>
@@ -194,15 +203,15 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
         <p-confirmDialog></p-confirmDialog>
     `
 })
-export class CurrencyComponent {
-    currencyList: CurrencyModel[] = [];
+export class BranchComponent {
+    branchList: BranchModel[] = [];
     loading = [false];
     searchText = '';
     displayDetails = false;
-    selectedCurrency: CurrencyModel | null = null;
+    selectedBranch: BranchModel | null = null;
 
     constructor(
-        private currencyService: CurrencyService,
+        private branchService: BranchService,
         private messageService: MessageService,
         private router: Router,
         private permissionService: FeaturePermissionService,
@@ -214,10 +223,10 @@ export class CurrencyComponent {
 
     ngOnInit() {
         forkJoin({
-            roles: this.currencyService.getAllCurrency()
+            branch: this.branchService.getAllBranch()
         }).subscribe({
-            next: ({ roles }) => {
-                this.currencyList = roles;
+            next: ({ branch }) => {
+                this.branchList = branch;
             },
             error: (err) => {
                 console.error('Initialization error:', err);
@@ -232,9 +241,9 @@ export class CurrencyComponent {
 
     search() {
         this.loading[0] = true;
-        this.currencyService.searchCurrency(this.searchText).subscribe({
-            next: (Currency) => {
-                this.currencyList = Currency;
+        this.branchService.searchBranch(this.searchText).subscribe({
+            next: (Branch) => {
+                this.branchList = Branch;
                 this.loading[0] = false;
             },
             error: () => {
@@ -249,34 +258,35 @@ export class CurrencyComponent {
     }
 
     addNew() {
-        this.router.navigate(['/add-currency']);
+        this.router.navigate(['/add-branch']);
     }
 
-    edit(currency: CurrencyModel) {
-        this.router.navigate(['/edit-currency'], { state: { currency } });
+    edit(branch: BranchModel) {
+        this.router.navigate(['/edit-branch'], { state: { branch } });
+        console.log(branch);
     }
 
-    view(currency: CurrencyModel) {
-        this.selectedCurrency = currency;
+    view(branch: BranchModel) {
+        this.selectedBranch = branch;
         this.displayDetails = true;
     }
 
-    delete(currency: CurrencyModel) {
+    delete(branch: BranchModel) {
         this.confirmationService.confirm({
-            message: `Are you sure you want to delete role "${currency.currencyName}"?`,
+            message: `Are you sure you want to delete role "${branch.branchName}"?`,
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.currencyService.deleteCurrency(currency.id!).subscribe({
+                this.branchService.deleteBranch(branch.id!).subscribe({
                     next: () => {
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Deleted',
-                            detail: `Role "${currency.currencyName}" deleted successfully.`,
+                            detail: `Role "${branch.branchName}" deleted successfully.`,
                             life: 3000
                         });
                         // remove from UI list
-                        this.currencyList = this.currencyList.filter(r => r.id !== currency.id);
+                        this.branchList = this.branchList.filter(r => r.id !== branch.id);
                     },
                     error: () => {
                         this.messageService.add({

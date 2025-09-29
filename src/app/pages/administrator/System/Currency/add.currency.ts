@@ -11,7 +11,7 @@ import { Message } from '../../../message/message';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { Fluid } from 'primeng/fluid';
 import { Select } from 'primeng/select';
-import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
 import { CurrencyModel } from '../../../model/administrator/system/currency.model';

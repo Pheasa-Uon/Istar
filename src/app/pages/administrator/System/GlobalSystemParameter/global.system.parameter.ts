@@ -15,7 +15,7 @@ import { forkJoin } from 'rxjs';
 
 import { Fluid } from 'primeng/fluid';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
-import { FeaturePermissionService } from '../../../service/administrator/usersmanagement/userpermissions/feature.permission.service';
+import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
 import { GspDropdownItemService } from '../../../service/administrator/system/gsp.dropdown.item.service';
 import { GlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
