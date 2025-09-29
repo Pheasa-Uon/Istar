@@ -85,7 +85,7 @@ import { BranchModel } from '../../../model/administrator/systemAdmin/branch.mod
                 [paginator]="true"
                 [rowHover]="true"
                 dataKey="id"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} country"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} branch"
                 [showCurrentPageReport]="true"
                 [rowsPerPageOptions]="[5, 10, 15, 20, 25, 30]"
             >
@@ -94,9 +94,9 @@ import { BranchModel } from '../../../model/administrator/systemAdmin/branch.mod
                         <th style="min-width:150px">Branch Code</th>
                         <th style="min-width:150px">Branch Name</th>
                         <th style="min-width:250px">Branch Prefix</th>
-                        <th style="min-width:250px">City/Province</th>
+                        <th style="min-width:200px">City/Province</th>
                         <th style="min-width:150px">Phone</th>
-                        <th style="min-width:150px">Online</th>
+                        <th style="min-width:100px">Online</th>
                         <th style="min-width:200px">Actions</th>
                     </tr>
                 </ng-template>

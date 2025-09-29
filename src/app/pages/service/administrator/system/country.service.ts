@@ -5,7 +5,6 @@ import { environment } from '../../../../../environments/environment';
 import {
     CountryModel,
     DropdownItemBlacklist,
-    DropdownItemCurrency,
     DropdownItemLanguage,
     DropdownItemRegion
 } from '../../../model/administrator/system/country.model';
@@ -57,11 +56,6 @@ export class CountryService {
     searchCountry(keyword: string): Observable<CountryModel[]> {
         const url = `${this.apiUrl}/search?keyword=${encodeURIComponent(keyword)}`;
         return this.http.get<CountryModel[]>(url, { headers: this.getAuthHeaders() });
-    }
-
-    // ✅ Dropdowns
-    getCurrencyDropdown(): Observable<DropdownItemCurrency[]> {
-        return this.http.get<DropdownItemCurrency[]>(`${this.apiUrl}/currency-dropdown`, { headers: this.getAuthHeaders() });
     }
 
     getLanguageDropdown(): Observable<DropdownItemLanguage[]> {

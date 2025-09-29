@@ -17,6 +17,7 @@ import {
     DropdownItemCurrency,
     DropdownItemLanguage, DropdownItemRegion
 } from '../../../model/administrator/system/country.model';
+import { CurrencyService } from '../../../service/administrator/system/currency.service';
 
 @Component({
     selector: 'app-edit-CountryModel',
@@ -196,6 +197,7 @@ export class EditCountry {
     constructor(
         private router: Router,
         private countryService: CountryService,
+        private currencyService: CurrencyService,
         private messageService: MessageService,
         private permissionService: FeaturePermissionService,
     ) {
@@ -218,7 +220,7 @@ export class EditCountry {
     }
 
     ngOnInit(): void {
-        this.countryService.getCurrencyDropdown().subscribe(data => this.dropdownCurrencyItems = data);
+        this.currencyService.getCurrencyDropdown().subscribe(data => this.dropdownCurrencyItems = data);
         this.countryService.getLanguageDropdown().subscribe(data => this.dropdownLanguageItems = data);
         this.countryService.getRegionDropdown().subscribe(data => this.dropdownRegionItems = data);
         this.countryService.getBlacklistDropdown().subscribe(data => this.dropdownBlacklistItems = data);

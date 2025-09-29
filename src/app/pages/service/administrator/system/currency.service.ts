@@ -3,6 +3,7 @@ import { firstValueFrom, Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { CurrencyModel } from '../../../model/administrator/system/currency.model';
+import { DropdownItemCurrency } from '../../../model/administrator/system/country.model';
 
 
 @Injectable({ providedIn: 'root' })
@@ -10,6 +11,18 @@ export class CurrencyService {
     private apiUrl = environment.apiBase + environment.apiEndpoints.system.currency;
 
     constructor(private http: HttpClient) {}
+
+    // 🔹 Helper to build headers
+    private getAuthHeaders(): HttpHeaders {
+        const token = localStorage.getItem('authToken');
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+        if (token) {
+            headers = headers.set('Authorization', `Bearer ${token}`);
+        }
+
+        return headers;
+    }
 
     // ✅ Get all roles
     getAllCurrency(): Observable<CurrencyModel[]> {
@@ -48,5 +61,10 @@ export class CurrencyService {
         const url = `${this.apiUrl}/search?keyword=${encodeURIComponent(keyword)}`;
 
         return this.http.get<CurrencyModel[]>(url, { headers });
+    }
+
+    // ✅ Dropdowns
+    getCurrencyDropdown(): Observable<DropdownItemCurrency[]> {
+        return this.http.get<DropdownItemCurrency[]>(`${this.apiUrl}/currency-dropdown`, { headers: this.getAuthHeaders() });
     }
 }

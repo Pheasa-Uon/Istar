@@ -29,7 +29,7 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
             </div>
             <div class="p-fluid">
                 <div class="card flex flex-col gap-6 w-full p-4">
-                    <div class="font-semibold text-xl">Add New Country</div>
+                    <div class="font-semibold text-xl">Add New Branch</div>
 
                     <div class="border-t border-gray-200 my-4"></div>
                     <!-- ISO Fields -->

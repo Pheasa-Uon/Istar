@@ -11,28 +11,18 @@ import { MessageService } from '../../../message/message.service';
 import { Message } from '../../../message/message'; // adjust path if needed
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
-import { CountryService } from '../../../service/administrator/system/country.service';
 import {
-    CountryModel, DropdownItemBlacklist,
-    DropdownItemCurrency,
-    DropdownItemLanguage, DropdownItemRegion
-} from '../../../model/administrator/system/country.model';
-import { BranchModel } from '../../../model/administrator/systemAdmin/branch.model';
+    BranchModel,
+    DropdownItemBranch,
+    DropdownItemProvince
+} from '../../../model/administrator/systemAdmin/branch.model';
+import { BranchService } from '../../../service/administrator/systemAdmin/branch.service';
+import { ToggleSwitch } from 'primeng/toggleswitch';
 
 @Component({
     selector: 'app-edit-branch',
     standalone: true,
-    imports: [
-        CommonModule,
-        FormsModule,
-        InputTextModule,
-        ButtonModule,
-        Select,
-        Textarea,
-        ButtonGroup,
-        Message,
-        HasPermissionDirective
-    ],
+    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, ButtonGroup, Message, HasPermissionDirective, ToggleSwitch],
     template: `
         <form #Form="ngForm" (ngSubmit)="save()" novalidate>
             <div class="fixed top-0 right-4 z-50 w-[500px]">
@@ -41,126 +31,107 @@ import { BranchModel } from '../../../model/administrator/systemAdmin/branch.mod
 
             <div class="p-fluid">
                 <div class="card flex flex-col gap-6 w-full p-4">
-                    <div class="font-semibold text-xl">Edit Country</div>
+                    <div class="font-semibold text-xl">Edit Branch</div>
                     <div class="border-t border-gray-200 my-4"></div>
 
-                    <!-- ISO Fields -->
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-col gap-2 w-full">
-                            <label for="iso2Alpha">ISO 2 Alpha <span class="text-red-500">*</span></label>
-                            <input pInputText id="iso2Alpha" name="iso2Alpha" type="text"
-                                   placeholder="ISO 2 Alpha" [(ngModel)]="country.iso2Alpha"
-                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.iso2Alpha }" />
-                            <small *ngIf="submitted && !country.iso2Alpha" class="text-red-500">ISO 2 Alpha is
-                                required.</small>
+                            <label for="branchCode">Branch code <span class="text-red-500">*</span></label>
+                            <input pInputText id="branchCode" name="branchCode" type="text" placeholder="Branch code" [readonly]="true" [(ngModel)]="branch.branchCode" maxlength="4" class="w-full" [ngClass]="{ 'p-invalid': submitted && !branch.branchCode }" />
+                            <small *ngIf="submitted && !branch.branchCode" class="text-red-500">Branch code is required.</small>
                         </div>
                         <div class="flex flex-col gap-2 w-full">
-                            <label for="iso3Alpha">ISO 3 Alpha <span class="text-red-500">*</span></label>
-                            <input pInputText id="iso3Alpha" name="iso3Alpha" type="text"
-                                   placeholder="ISO 3 Alpha" [(ngModel)]="country.iso3Alpha"
-                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.iso3Alpha }" />
-                            <small *ngIf="submitted && !country.iso3Alpha" class="text-red-500">ISO 3 Alpha is
-                                required.</small>
+                            <label for="branchName">Branch Name <span class="text-red-500">*</span></label>
+                            <input pInputText id="branchName" name="branchName" type="text" placeholder="Branch name" [(ngModel)]="branch.branchName" class="w-full" [ngClass]="{ 'p-invalid': submitted && !branch.branchCode }" />
                         </div>
+                        <small *ngIf="submitted && !branch.branchName" class="text-red-500">Branch name is required.</small>
                     </div>
 
                     <!-- Country Name -->
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-col gap-2 w-full">
-                            <label for="countryName">Country Name <span class="text-red-500">*</span></label>
-                            <input pInputText id="countryName" name="countryName" type="text"
-                                   placeholder="Country Name" [(ngModel)]="country.countryName"
-                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.countryName }" />
-                            <small *ngIf="submitted && !country.countryName" class="text-red-500">Country name is
-                                required.</small>
+                            <label for="branchPrefix">Branch Prefix </label>
+                            <input pInputText id="branchPrefix" name="branchPrefix" type="text" placeholder="Branch prefix" [(ngModel)]="branch.branchPrefix" class="w-full" [ngClass]="{ 'p-invalid': submitted && !branch.branchPrefix }" />
                         </div>
                         <div class="flex flex-col gap-2 w-full">
-                            <label for="localCountryName">Local Country Name </label>
-                            <input pInputText id="localCountryName" name="localCountryName" type="text"
-                                   placeholder="Local Country Name" [(ngModel)]="country.localCountryName"
-                                   class="w-full" />
+                            <label for="localBranchName">Local Branch Name <span class="text-red-500">*</span></label>
+                            <input
+                                pInputText
+                                id="localBranchName"
+                                name="localBranchName"
+                                type="text"
+                                placeholder="Local Branch Name"
+                                [(ngModel)]="branch.localBranchName"
+                                class="w-full"
+                                [ngClass]="{ 'p-invalid': submitted && !branch.localBranchName }"
+                            />
+                            <small *ngIf="submitted && !branch.localBranchName" class="text-red-500">Local branch name is required.</small>
                         </div>
                     </div>
 
-                    <!-- Selects: Currency, Language -->
+                    <!-- Selects: City/Province, Phone -->
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-col gap-2 w-full">
-                            <label for="currencyId">Currency </label>
-                            <p-select id="currencyId" name="currencyId" class="w-full"
-                                      [options]="dropdownCurrencyItems"
-                                      optionLabel="label"
-                                      optionValue="id"
-                                      [(ngModel)]="country.currencyId"
-                                      placeholder="Select Currency"></p-select>
+                            <label for="province">City/Province <span class="text-red-500">*</span></label>
+                            <p-select
+                                id="province"
+                                name="province"
+                                class="w-full"
+                                [options]="dropdownProvinceItems"
+                                optionLabel="valueName"
+                                optionValue="sysParCode"
+                                [(ngModel)]="branch.province"
+                                placeholder="Select City/Province"
+                                [ngClass]="{ 'p-invalid': submitted && !branch.province }"
+                            ></p-select>
+                            <small *ngIf="submitted && !branch.province" class="text-red-500">City/Province is required.</small>
                         </div>
                         <div class="flex flex-col gap-2 w-full">
-                            <label for="language">Language </label>
-                            <p-select id="language" name="language" class="w-full"
-                                      [options]="dropdownLanguageItems"
-                                      optionLabel="valueName"
-                                      optionValue="sysParCode"
-                                      [(ngModel)]="country.language"
-                                      placeholder="Select Language"></p-select>
+                            <label for="phone">Phone </label>
+                            <input pInputText id="phone" name="phone" type="text" placeholder="Phone" [(ngModel)]="branch.phone" class="w-full" />
                         </div>
                     </div>
 
-                    <!-- Selects: Region, Blacklist -->
+                    <!-- Selects: Email, Address -->
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-col gap-2 w-full">
-                            <label for="region">Region </label>
-                            <p-select id="region" name="region" class="w-full"
-                                      [options]="dropdownRegionItems"
-                                      optionLabel="valueName"
-                                      optionValue="sysParCode"
-                                      [(ngModel)]="country.region"
-                                      placeholder="Select Region"></p-select>
+                            <label for="email">Email </label>
+                            <input pInputText id="email" name="email" type="text" placeholder="Email" [(ngModel)]="branch.email" class="w-full" />
                         </div>
                         <div class="flex flex-col gap-2 w-full">
-                            <label for="blacklist">Blacklist </label>
-                            <p-select id="blacklist" name="blacklist" class="w-full"
-                                      [options]="dropdownBlacklistItems"
-                                      optionLabel="valueName"
-                                      optionValue="sysParCode"
-                                      [(ngModel)]="country.blacklist"
-                                      placeholder="Select Blacklist"></p-select>
+                            <label for="address">Address </label>
+                            <input pInputText id="address" name="address" type="text" placeholder="Address" [(ngModel)]="branch.address" class="w-full" />
                         </div>
                     </div>
 
-                    <!-- Order & Status -->
+                    <!-- Selects: Clone GL from Branch, Online -->
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-col gap-2 w-full">
-                            <label for="displayOrder">Order <span class="text-red-500">*</span></label>
-                            <input pInputText id="displayOrder" name="displayOrder" type="number"
-                                   placeholder="Order" [(ngModel)]="country.displayOrder"
-                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.displayOrder }" />
-                            <small *ngIf="submitted && !country.displayOrder" class="text-red-500">Order is
-                                required.</small>
+                            <label for="cloneGlFromBranch">Clone GL from </label>
+                            <p-select id="cloneGlFromBranch" name="cloneGlFromBranch" class="w-full" [options]="dropdownBranchItems" optionLabel="label" optionValue="id" [(ngModel)]="branch.cloneGlFromBranch" placeholder="Select Branch" [readonly]="true"></p-select>
                         </div>
-                        <div class="flex flex-wrap gap-2 w-full">
-                            <label for="status">Status</label>
-                            <p-select id="status" name="status" class="w-full"
-                                      [options]="dropdownItems"
-                                      optionLabel="name"
-                                      optionValue="code"
-                                      [(ngModel)]="country.countryStatus"
-                                      placeholder="Select One"></p-select>
+                        <div class="flex flex-col gap-2 w-full">
+                            <label for="phone">Online </label>
+                            <p-select id="onlineStatus" name="onlineStatus" class="w-full" [options]="dropdownItems" optionLabel="name" optionValue="value" [(ngModel)]="branch.onlineStatus" placeholder="Select online status"></p-select>
                         </div>
+                    </div>
+                    <!-- Description -->
+                    <div class="flex flex-col gap-2 w-full">
+                        <label for="isHq">Online</label>
+                        <p-toggleswitch name="isHq" [(ngModel)]="branch.isHq"></p-toggleswitch>
                     </div>
 
                     <!-- Description -->
                     <div class="flex flex-col gap-2 w-full">
                         <label for="description">Description</label>
-                        <textarea pTextarea id="description" name="description" rows="4"
-                                  [(ngModel)]="country.description" class="w-full"></textarea>
+                        <textarea pTextarea id="description" name="description" rows="4" [(ngModel)]="branch.description" class="w-full"></textarea>
                     </div>
 
                     <!-- Buttons -->
                     <div class="card flex flex-wrap gap-0 w-full justify-end">
                         <p-buttongroup>
-                            <p-button *hasFeaturePermission="['COU','save']" type="submit" label="Save"
-                                      icon="pi pi-check" [disabled]="Form.invalid" />
-                            <p-button *hasFeaturePermission="['COU','cancel']" label="Cancel" icon="pi pi-times"
-                                      (click)="goBack()"></p-button>
+                            <p-button *hasFeaturePermission="['COU', 'save']" type="submit" label="Save" icon="pi pi-check" [disabled]="Form.invalid" />
+                            <p-button *hasFeaturePermission="['COU', 'cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
                         </p-buttongroup>
                     </div>
                 </div>
@@ -186,32 +157,29 @@ export class EditBranch {
         description: ''
     };
 
-    dropdownCurrencyItems: DropdownItemCurrency[] = [];
-    dropdownLanguageItems: DropdownItemLanguage[] = [];
-    dropdownRegionItems: DropdownItemRegion[] = [];
-    dropdownBlacklistItems: DropdownItemBlacklist[] = [];
+    dropdownBranchItems: DropdownItemBranch[] = [];
+    dropdownProvinceItems: DropdownItemProvince[] = [];
     dropdownItems = [
-        { name: 'Active', code: 'A' },
-        { name: 'Inactive', code: 'I' }
+        { name: 'Yes', value: true },
+        { name: 'No', value: false }
     ];
 
     constructor(
         private router: Router,
-        private countryService: CountryService,
+        private branchService: BranchService,
         private messageService: MessageService,
-        private permissionService: FeaturePermissionService,
+        private permissionService: FeaturePermissionService
     ) {
         const navigation = this.router.getCurrentNavigation();
-        if (navigation?.extras.state?.['country']) {
-            const country = { ...navigation.extras.state['country'] };
+        if (navigation?.extras.state?.['branch']) {
+            const branch = { ...navigation.extras.state['branch'] };
 
-            this.country = {
-                ...country,
-                currencyId: country.currencyId?.value,   // primitive id
-                language: country.language?.value,       // primitive code
-                region: country.region?.value,
-                blacklist: country.blacklist?.value,
-                countryStatus: country.countryStatus?.value,
+            this.branch = {
+                ...branch,
+                province: branch.province?.value, // primitive id
+                isHq: branch.isHq?.value, // primitive code
+                cloneGlFromBranch: branch.cloneGlFromBranch?.value,
+                onlineStatus: branch.onlineStatus?.value
             };
         }
 
@@ -220,22 +188,18 @@ export class EditBranch {
     }
 
     ngOnInit(): void {
-        this.countryService.getCurrencyDropdown().subscribe(data => this.dropdownCurrencyItems = data);
-        this.countryService.getLanguageDropdown().subscribe(data => this.dropdownLanguageItems = data);
-        this.countryService.getRegionDropdown().subscribe(data => this.dropdownRegionItems = data);
-        this.countryService.getBlacklistDropdown().subscribe(data => this.dropdownBlacklistItems = data);
+        this.branchService.getBranchDropdown().subscribe((data) => (this.dropdownBranchItems = data));
+        this.branchService.getProvinceDropdown().subscribe((data) => (this.dropdownProvinceItems = data));
     }
 
     goBack() {
-        this.router.navigate(['/country']);
+        this.router.navigate(['/branch']);
     }
 
     save() {
         this.submitted = true;
 
-        if (!this.country.iso2Alpha || !this.country.iso3Alpha || !this.country.countryName ||
-            !this.country.currencyId || !this.country.language ||
-            !this.country.region || !this.country.blacklist || this.country.displayOrder === undefined) {
+        if (!this.branch.branchCode || !this.branch.branchName || !this.branch.localBranchName || this.branch.province === undefined) {
             this.messageService.show({
                 severity: 'error',
                 summary: 'Error',
@@ -244,7 +208,7 @@ export class EditBranch {
             return;
         }
 
-        this.countryService.updateCountry(this.country).subscribe({
+        this.branchService.updateBranch(this.branch).subscribe({
             next: () => {
                 this.messageService.show({
                     severity: 'success',

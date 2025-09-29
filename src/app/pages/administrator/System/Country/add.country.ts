@@ -16,6 +16,7 @@ import {
     DropdownItemLanguage, DropdownItemRegion
 } from '../../../model/administrator/system/country.model';
 import { CountryService } from '../../../service/administrator/system/country.service';
+import { CurrencyService } from '../../../service/administrator/system/currency.service';
 
 @Component({
     selector: 'app-add-CountryModel',
@@ -180,11 +181,12 @@ export class AddCountry implements OnInit {
     constructor(
         private router: Router,
         private countryService: CountryService,
+        private currencyService: CurrencyService,
         private messageService: MessageService
     ) {}
 
     ngOnInit(): void {
-        this.countryService.getCurrencyDropdown().subscribe(data => this.dropdownCurrencyItems = data);
+        this.currencyService.getCurrencyDropdown().subscribe(data => this.dropdownCurrencyItems = data);
         this.countryService.getLanguageDropdown().subscribe(data => this.dropdownLanguageItems = data);
         this.countryService.getRegionDropdown().subscribe(data => this.dropdownRegionItems = data);
         this.countryService.getBlacklistDropdown().subscribe(data => this.dropdownBlacklistItems = data);
@@ -220,5 +222,7 @@ export class AddCountry implements OnInit {
                 });
             }
         });
+
+        console.log(this.country);
     }
 }
