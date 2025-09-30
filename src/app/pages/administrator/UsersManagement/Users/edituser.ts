@@ -11,18 +11,17 @@ import { ButtonGroup } from 'primeng/buttongroup';
 import { UserService } from '../../../service/administrator/usersManagement/users/user.service';
 import { User } from '../../../model/administrator/userManagement/user.model';
 import { MessageService } from '../../../message/message.service';
-import { Message } from '../../../message/message';
+import { MessagesComponent } from '../../../message/message';
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 
 @Component({
     selector: 'app-edit-user',
     standalone: true,
-    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, Message, HasPermissionDirective],
+    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, MessagesComponent, HasPermissionDirective],
     template: `
-        <div class="fixed top-3/1 right-4 z-50 w-[300px] md:w-1/3">
-            <app-messages></app-messages>
-        </div>
+
+        <app-messages></app-messages>
 
         <p-fluid>
             <form class="card flex flex-col gap-6 w-full" (ngSubmit)="saveUser()">

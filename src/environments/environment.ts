@@ -20,6 +20,7 @@ export const environment = {
         },
         systemAdmin: {
             branch: '/system-admin/branch',
+            department: '/system-admin/department',
         }
     }
 };

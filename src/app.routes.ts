@@ -31,6 +31,9 @@ import { EditGlobalPolicy } from './app/pages/administrator/System/GlobalPolicy/
 import { BranchComponent } from './app/pages/administrator/SystemAdmin/Branch/branch';
 import { AddBranch } from './app/pages/administrator/SystemAdmin/Branch/add.branch';
 import { EditBranch } from './app/pages/administrator/SystemAdmin/Branch/edit.branch';
+import { DepartmentComponent } from './app/pages/administrator/SystemAdmin/Department/department';
+import { AddDepartment } from './app/pages/administrator/SystemAdmin/Department/add.department';
+import { EditDepartment } from './app/pages/administrator/SystemAdmin/Department/edit.department';
 
 export const appRoutes: Routes = [
 
@@ -94,6 +97,11 @@ export const appRoutes: Routes = [
             { path: 'branch', component: BranchComponent },
             { path: 'add-branch', component: AddBranch },
             { path: 'edit-branch', component: EditBranch },
+
+            // Department routes
+            { path: 'department', component: DepartmentComponent },
+            { path: 'add-department', component: AddDepartment },
+            { path: 'edit-department', component: EditDepartment },
 
             // Lazy loaded modules - make sure these modules exist and export NgModule classes
             { path: 'uikit', loadChildren: () => import('./app/UI/uikit/uikit.routes') },

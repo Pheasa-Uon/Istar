@@ -8,7 +8,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TextareaModule } from 'primeng/textarea';
 import { RolePermissionService } from '../../../service/administrator/usersManagement/rolepermissions/role.permission.service';
 import { MessageService } from '../../../message/message.service';
-import { Message } from '../../../message/message';
+import { MessagesComponent } from '../../../message/message';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { Fluid } from 'primeng/fluid';
 import { Select } from 'primeng/select';
@@ -26,17 +26,17 @@ import { RolePermissionModel, StringOption } from '../../../model/administrator/
         ButtonModule,
         DropdownModule,
         TextareaModule,
-        Message,
+        MessagesComponent,
         ButtonGroup,
         Fluid,
         Select,
         HasPermissionDirective
     ],
     template: `
+
+        <app-messages></app-messages>
+
         <form #roleForm="ngForm" (ngSubmit)="saveRolePermission()" novalidate>
-            <div class="fixed top-3/1 right-4 z-50 w-[500px]">
-                <app-messages></app-messages>
-            </div>
 
             <p-fluid>
                 <div class="card flex flex-col gap-6 w-full">

@@ -9,7 +9,7 @@ import { Textarea } from 'primeng/textarea';
 import { Fluid } from 'primeng/fluid';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { MessageService } from '../../../message/message.service';
-import { Message } from '../../../message/message'; // adjust path if needed
+import { MessagesComponent } from '../../../message/message'; // adjust path if needed
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import {
@@ -20,15 +20,16 @@ import {
     DropdownItemModuleName, GspDropdownItemService
 } from '../../../service/administrator/system/gsp.dropdown.item.service';
 import { GlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
+import { Messages } from 'primeng/messages';
 
 @Component({
     selector: 'app-edit-global-System-parameter',
     standalone: true,
-    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, Message, HasPermissionDirective],
+    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, MessagesComponent, HasPermissionDirective],
     template: `
-        <div class="fixed top-3/1 right-4 z-50 w-[300px] md:w-1/3">
-            <app-messages></app-messages>
-        </div>
+
+        <app-messages></app-messages>
+
 
         <p-fluid>
             <div class="card flex flex-col gap-6 w-full">

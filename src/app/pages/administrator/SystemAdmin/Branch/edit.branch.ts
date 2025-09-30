@@ -8,7 +8,7 @@ import { Select } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { MessageService } from '../../../message/message.service';
-import { Message } from '../../../message/message'; // adjust path if needed
+import { MessagesComponent } from '../../../message/message'; // adjust path if needed
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import {
@@ -22,7 +22,7 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
 @Component({
     selector: 'app-edit-branch',
     standalone: true,
-    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, ButtonGroup, Message, HasPermissionDirective, ToggleSwitch],
+    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, ButtonGroup, MessagesComponent, HasPermissionDirective, ToggleSwitch],
     template: `
         <form #Form="ngForm" (ngSubmit)="save()" novalidate>
             <div class="fixed top-0 right-4 z-50 w-[500px]">

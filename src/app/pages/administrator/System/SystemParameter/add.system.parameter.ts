@@ -7,14 +7,11 @@ import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { TextareaModule } from 'primeng/textarea';
 import { MessageService } from '../../../message/message.service';
-import { Message } from '../../../message/message';
+import { MessagesComponent } from '../../../message/message';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { Fluid } from 'primeng/fluid';
 import { Select } from 'primeng/select';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
-import {
-    GlobalSystemParameterService
-} from '../../../service/administrator/system/global.system.parameter.service';
 import {
     DropdownItemModuleName
 } from '../../../service/administrator/system/gsp.dropdown.item.service';
@@ -33,17 +30,16 @@ import { SystemParameterModel } from '../../../model/administrator/system/system
         ButtonModule,
         DropdownModule,
         TextareaModule,
-        Message,
+        MessagesComponent,
         ButtonGroup,
         Fluid,
         Select,
         HasPermissionDirective
     ],
     template: `
+        <app-messages></app-messages>
+
         <form #gspForm="ngForm" (ngSubmit)="saveSystemParameter()" novalidate>
-            <div class="fixed top-3/1 right-4 z-50 w-[500px]">
-                <app-messages></app-messages>
-            </div>
 
             <p-fluid>
                 <div class="card flex flex-col gap-6 w-full">

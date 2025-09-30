@@ -11,7 +11,7 @@ import { ButtonGroup } from 'primeng/buttongroup';
 import { UserService } from '../../../service/administrator/usersManagement/users/user.service';
 import { User } from '../../../model/administrator/userManagement/user.model';
 import { MessageService } from '../../../message/message.service';
-import { Message } from '../../../message/message';
+import { MessagesComponent } from '../../../message/message';
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { StringOption } from '../../../model/administrator/userManagement/role.permission.model';
@@ -19,12 +19,12 @@ import { StringOption } from '../../../model/administrator/userManagement/role.p
 @Component({
     selector: 'app-add-user',
     standalone: true,
-    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, Message, HasPermissionDirective],
+    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, MessagesComponent, HasPermissionDirective],
     template: `
+
+        <app-messages></app-messages>
+
         <form #userForm="ngForm" (ngSubmit)="saveUser()" novalidate>
-            <div class="fixed top-3/1 right-4 z-50 w-[500px]">
-                <app-messages></app-messages>
-            </div>
 
             <p-fluid>
                 <div class="card flex flex-col gap-6 w-full">

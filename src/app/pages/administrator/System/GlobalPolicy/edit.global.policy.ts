@@ -17,7 +17,7 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
 import { GlobalPolicyService } from '../../../service/administrator/system/global.policy.service';
 import { GlobalPolicyModel } from '../../../model/administrator/system/global.policy.model';
 import { MessageService } from '../../../message/message.service';
-import { Message } from '../../../message/message';
+import { MessagesComponent } from '../../../message/message';
 
 @Component({
     selector: 'app-edit-global-policy',
@@ -32,14 +32,14 @@ import { Message } from '../../../message/message';
         InputTextarea,
         CalendarModule,
         DatePicker,
-        Message,
+        MessagesComponent,
         HasPermissionDirective
     ],
     template: `
+
+        <app-messages></app-messages>
+
         <form #Form="ngForm" (ngSubmit)="saveGlobalPolicy()" novalidate>
-            <div class="fixed top-3/1 right-4 z-50 w-[500px]">
-                <app-messages></app-messages>
-            </div>
 
             <div class="card flex flex-col gap-6 w-full">
                 <div class="font-semibold text-xl">Edit Global Policy</div>

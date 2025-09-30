@@ -10,6 +10,7 @@ import { CountryComponent } from './administrator/System/Country/country';
 import { SystemParameterComponent } from './administrator/System/SystemParameter/system.parameter';
 import { GlobalPolicyComponent } from './administrator/System/GlobalPolicy/global.policy';
 import { BranchComponent } from './administrator/SystemAdmin/Branch/branch';
+import { DepartmentComponent } from './administrator/SystemAdmin/Department/department';
 
 export default [
     { path: 'documentation', component: Documentation },
@@ -23,6 +24,7 @@ export default [
     { path: 'system-parameter', component: SystemParameterComponent },
     { path: 'global-policy', component: GlobalPolicyComponent },
     { path: 'branch', component: BranchComponent },
+    { path: 'department', component: DepartmentComponent },
 
     //{ path: '', redirectTo: 'user', pathMatch: 'full' },
     { path: '**', redirectTo: '/notfound' }

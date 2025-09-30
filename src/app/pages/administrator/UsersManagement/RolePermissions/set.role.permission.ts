@@ -11,6 +11,7 @@ import { environment } from '../../../../../environments/environment';
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { TabViewModule } from 'primeng/tabview';
+import { MessagesComponent } from '../../../message/message';
 
 // ---- Interfaces ----
 interface FeaturePermission {
@@ -61,8 +62,11 @@ interface CustomTreeNode extends TreeNode {
 @Component({
     selector: 'app-set-role-permission',
     standalone: true,
-    imports: [CommonModule, FormsModule, TreeTableModule, ButtonModule, HasPermissionDirective, TabViewModule],
+    imports: [CommonModule, FormsModule, TreeTableModule, ButtonModule, HasPermissionDirective, TabViewModule, MessagesComponent],
     template: `
+
+        <app-messages></app-messages>
+
         <div class="card">
             <div class="font-semibold text-xl mb-4">Set Role Permission</div>
             <div class="border-t border-gray-200 my-4"></div>
@@ -72,13 +76,7 @@ interface CustomTreeNode extends TreeNode {
                 <p-tabView [(activeIndex)]="activeTab">
                     <!-- Menu Tab -->
                     <p-tabPanel header="Menu Application">
-                        <p-treetable
-                            [value]="treeTableValueMenu"
-                            [columns]="colsMenu"
-                            dataKey="key"
-                            [scrollable]="true"
-                            [tableStyle]="{ 'min-width': '450px' }">
-
+                        <p-treetable [value]="treeTableValueMenu" [columns]="colsMenu" dataKey="key" [scrollable]="true" [tableStyle]="{ 'min-width': '450px' }">
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
                                     <th *ngFor="let col of columns">{{ col.header }}</th>
@@ -90,9 +88,7 @@ interface CustomTreeNode extends TreeNode {
                                     <td *ngFor="let col of columns; let i = index" style="white-space: nowrap; padding: 5px 10px;">
                                         <ng-container *ngIf="i === 0">
                                             <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-                                            <input
-                                                type="checkbox"
-                                                [(ngModel)]="rowData.isVisible" style="margin-right: 10px;" />
+                                            <input type="checkbox" [(ngModel)]="rowData.isVisible" style="margin-right: 10px;" />
                                             <span *ngIf="rowData.icon" class="pi" [ngClass]="rowData.icon" style="margin-right: 5px;"></span>
                                             {{ rowData.name }}
                                         </ng-container>
@@ -103,17 +99,11 @@ interface CustomTreeNode extends TreeNode {
                                 </tr>
                             </ng-template>
                         </p-treetable>
-
                     </p-tabPanel>
 
                     <!-- Application Tab -->
                     <p-tabPanel header="Feature Application">
-                        <p-treetable
-                            [value]="treeTableValueFeature"
-                            [columns]="colsFeature"
-                            [scrollable]="true"
-                            scrollHeight="475px"
-                            [tableStyle]="{ 'min-width': '450px' }">
+                        <p-treetable [value]="treeTableValueFeature" [columns]="colsFeature" [scrollable]="true" scrollHeight="475px" [tableStyle]="{ 'min-width': '450px' }">
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
                                     <th *ngFor="let col of columns" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; text-align: left; white-space: nowrap;">
@@ -133,11 +123,7 @@ interface CustomTreeNode extends TreeNode {
                                         </ng-container>
                                         <ng-container *ngIf="i > 1">
                                             <!-- Hide checkbox for parent nodes with children -->
-                                            <input
-                                                *ngIf="!hasChildren(rowData); else emptyCell"
-                                                type="checkbox"
-                                                [(ngModel)]="rowData[col.field]"
-                                                [disabled]="rowData[col.field + 'Disabled']" />
+                                            <input *ngIf="!hasChildren(rowData); else emptyCell" type="checkbox" [(ngModel)]="rowData[col.field]" [disabled]="rowData[col.field + 'Disabled']" />
                                             <ng-template #emptyCell>
                                                 <span></span>
                                             </ng-template>
@@ -150,12 +136,7 @@ interface CustomTreeNode extends TreeNode {
 
                     <!-- Reporting Tab -->
                     <p-tabPanel header="Reporting">
-                        <p-treetable
-                            [value]="treeTableValueReport"
-                            [columns]="colsReport"
-                            [scrollable]="true"
-                            scrollHeight="475px"
-                            [tableStyle]="{ 'min-width': '450px' }">
+                        <p-treetable [value]="treeTableValueReport" [columns]="colsReport" [scrollable]="true" scrollHeight="475px" [tableStyle]="{ 'min-width': '450px' }">
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
                                     <th *ngFor="let col of columns" [style.minWidth.px]="col.minWidth" style="padding: 8px 25px; text-align: left; white-space: nowrap;">
@@ -223,7 +204,7 @@ export class SetRolePermission implements OnInit {
         { field: 'name', header: 'Report Name', minWidth: 500 },
         { field: 'description', header: 'Description', minWidth: 500 },
         { field: 'isViewed', header: 'View', minWidth: 25 },
-        { field: 'isExport', header: 'Export', minWidth: 25 },
+        { field: 'isExport', header: 'Export', minWidth: 25 }
     ];
 
     constructor(
@@ -272,7 +253,7 @@ export class SetRolePermission implements OnInit {
     }
 
     private convertToTreeNodesFeature(features: any[]): CustomTreeNode[] {
-        return features.map(feature => ({
+        return features.map((feature) => ({
             key: feature.id?.toString(),
             data: {
                 ...feature,
@@ -285,7 +266,7 @@ export class SetRolePermission implements OnInit {
     }
 
     private convertToTreeNodesMenu(mainmenus: any[]): CustomTreeNode[] {
-        return mainmenus.map(menu => ({
+        return mainmenus.map((menu) => ({
             key: menu.id?.toString(),
             data: {
                 id: menu.id,
@@ -301,7 +282,7 @@ export class SetRolePermission implements OnInit {
     }
 
     private convertToTreeNodesReports(reports: any[]): CustomTreeNode[] {
-        return reports.map(report => ({
+        return reports.map((report) => ({
             key: report.id?.toString(),
             data: {
                 ...report,
@@ -314,10 +295,10 @@ export class SetRolePermission implements OnInit {
 
     mapPermissionsFeature(features: CustomTreeNode[], featurePermissions: FeaturePermission[]): CustomTreeNode[] {
         const permissionMap = new Map<number, FeaturePermission>();
-        featurePermissions.forEach(p => p.featureId && permissionMap.set(p.featureId, p));
+        featurePermissions.forEach((p) => p.featureId && permissionMap.set(p.featureId, p));
 
         const mapNode = (nodes: CustomTreeNode[]): CustomTreeNode[] =>
-            nodes.map(node => {
+            nodes.map((node) => {
                 const perm = node?.data?.id ? permissionMap.get(node.data.id) : null;
                 return {
                     ...node,
@@ -348,10 +329,10 @@ export class SetRolePermission implements OnInit {
 
     mapPermissionsMenu(mainmenus: CustomTreeNode[], menuPermissions: MainMenuPermission[]): CustomTreeNode[] {
         const permissionMap = new Map<number, MainMenuPermission>();
-        menuPermissions.forEach(p => p.mainMenuId && permissionMap.set(p.mainMenuId, p));
+        menuPermissions.forEach((p) => p.mainMenuId && permissionMap.set(p.mainMenuId, p));
 
         const mapNode = (nodes: CustomTreeNode[]): CustomTreeNode[] =>
-            nodes.map(node => {
+            nodes.map((node) => {
                 const perm = node?.data?.id ? permissionMap.get(node.data.id) : null;
                 return {
                     ...node,
@@ -369,10 +350,10 @@ export class SetRolePermission implements OnInit {
 
     mapPermissionsReport(reports: CustomTreeNode[], reportPermissions: ReportPermission[]): CustomTreeNode[] {
         const permissionMap = new Map<number, ReportPermission>();
-        reportPermissions.forEach(p => p.reportId && permissionMap.set(p.reportId, p));
+        reportPermissions.forEach((p) => p.reportId && permissionMap.set(p.reportId, p));
 
         const mapNode = (nodes: CustomTreeNode[]): CustomTreeNode[] =>
-            nodes.map(node => {
+            nodes.map((node) => {
                 const perm = node?.data?.id ? permissionMap.get(node.data.id) : null;
                 return {
                     ...node,
@@ -400,7 +381,8 @@ export class SetRolePermission implements OnInit {
         const traverseFeatures = (nodes: CustomTreeNode[]) => {
             for (const node of nodes) {
                 const d = node.data;
-                if (d?.id && !d.isParent) { // Only collect permissions for non-parent nodes
+                if (d?.id && !d.isParent) {
+                    // Only collect permissions for non-parent nodes
                     featurePermissions.push({
                         roleId: this.roleId,
                         featureId: d.id,
@@ -436,12 +418,13 @@ export class SetRolePermission implements OnInit {
         const traverseReports = (nodes: CustomTreeNode[]) => {
             for (const node of nodes) {
                 const d = node.data;
-                if (d?.id && !d.isParent) { // Only collect permissions for non-parent nodes
+                if (d?.id && !d.isParent) {
+                    // Only collect permissions for non-parent nodes
                     reportPermissions.push({
                         roleId: this.roleId,
                         reportId: d.id,
                         isViewed: !!d.isViewed,
-                        isExport: !!d.isExport,
+                        isExport: !!d.isExport
                     });
                 }
                 node.children && traverseReports(node.children as CustomTreeNode[]);

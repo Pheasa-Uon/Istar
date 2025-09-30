@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 export interface AppMessage {
-    severity: 'success' | 'info' | 'warn' | 'error';
-    summary: string;
+    severity: 'success' | 'info' | 'warn' | 'error' | 'secondary' | 'contrast';
+    summary?: string;
     detail: string;
 }
 

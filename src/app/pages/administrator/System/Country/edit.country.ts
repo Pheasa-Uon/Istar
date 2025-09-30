@@ -8,7 +8,7 @@ import { Select } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { MessageService } from '../../../message/message.service';
-import { Message } from '../../../message/message'; // adjust path if needed
+import { MessagesComponent } from '../../../message/message'; // adjust path if needed
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { CountryService } from '../../../service/administrator/system/country.service';
@@ -30,14 +30,14 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
         Select,
         Textarea,
         ButtonGroup,
-        Message,
+        MessagesComponent,
         HasPermissionDirective
     ],
     template: `
+
+        <app-messages></app-messages>
+
         <form #Form="ngForm" (ngSubmit)="save()" novalidate>
-            <div class="fixed top-0 right-4 z-50 w-[500px]">
-                <app-messages></app-messages>
-            </div>
 
             <div class="p-fluid">
                 <div class="card flex flex-col gap-6 w-full p-4">

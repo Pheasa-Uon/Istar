@@ -7,7 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonGroup, ButtonGroupModule } from 'primeng/buttongroup';
 import { MessageService } from '../../../message/message.service';
-import { Message } from '../../../message/message';
+import { MessagesComponent } from '../../../message/message';
 import { Select } from 'primeng/select';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import {
@@ -21,12 +21,12 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
 @Component({
     selector: 'app-add-branch',
     standalone: true,
-    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, TextareaModule, ButtonGroup, Message, Select, HasPermissionDirective, ToggleSwitch],
+    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, TextareaModule, ButtonGroup, MessagesComponent, Select, HasPermissionDirective, ToggleSwitch],
     template: `
+        <app-messages></app-messages>
+
         <form #Form="ngForm" (ngSubmit)="save()" novalidate>
-            <div class="fixed top-0 right-4 z-50 w-[500px]">
-                <app-messages></app-messages>
-            </div>
+
             <div class="p-fluid">
                 <div class="card flex flex-col gap-6 w-full p-4">
                     <div class="font-semibold text-xl">Add New Branch</div>

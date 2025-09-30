@@ -9,7 +9,7 @@ import { Textarea } from 'primeng/textarea';
 import { Fluid } from 'primeng/fluid';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { MessageService } from '../../../message/message.service';
-import { Message } from '../../../message/message'; // adjust path if needed
+import { MessagesComponent } from '../../../message/message'; // adjust path if needed
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { CurrencyModel } from '../../../model/administrator/system/currency.model';
@@ -18,12 +18,12 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
 @Component({
     selector: 'app-edit-CurrencyModel',
     standalone: true,
-    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, Message, HasPermissionDirective],
+    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, MessagesComponent, HasPermissionDirective],
     template: `
+
+        <app-messages></app-messages>
+
         <form #Form="ngForm" (ngSubmit)="save()" novalidate>
-            <div class="fixed top-3/1 right-4 z-50 w-[500px]">
-                <app-messages></app-messages>
-            </div>
 
             <p-fluid>
                 <div class="card flex flex-col gap-6 w-full">
