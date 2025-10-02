@@ -58,6 +58,7 @@ export class AppMenu implements OnInit {
                     items: dynamicMenuItems
                 },
                 // Keep other sections from old code if needed
+                /*
                 {
                     label: 'UI Components',
                     items: [
@@ -125,7 +126,7 @@ export class AppMenu implements OnInit {
                             routerLink: ['/pages/empty']
                         }
                     ]
-                }
+                }*/
             ];
         });
     }

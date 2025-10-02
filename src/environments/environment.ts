@@ -3,6 +3,7 @@ export const environment = {
     apiBase: 'http://localhost:8080/api/coregateways',
     apiEndpoints: {
         authentication: '/authentication',
+        systemDate:'/system-date',
         permission: '/permissions',
         usersManagement: {
             users: '/users',
@@ -22,5 +23,6 @@ export const environment = {
             branch: '/system-admin/branch',
             department: '/system-admin/department',
         }
+
     }
 };
