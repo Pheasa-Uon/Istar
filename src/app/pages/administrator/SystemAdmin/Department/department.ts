@@ -192,10 +192,10 @@ export class DepartmentComponent {
 
     ngOnInit() {
         forkJoin({
-            branch: this.departmentService.getAllDepartment()
+            department: this.departmentService.getAllDepartment()
         }).subscribe({
-            next: ({ branch }) => {
-                this.departmentList = branch;
+            next: ({ department }) => {
+                this.departmentList = department;
             },
             error: (err) => {
                 this.messageService.add({
