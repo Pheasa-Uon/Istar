@@ -11,6 +11,7 @@ import { SystemParameterComponent } from './administrator/System/SystemParameter
 import { GlobalPolicyComponent } from './administrator/System/GlobalPolicy/global.policy';
 import { BranchComponent } from './administrator/SystemAdmin/Branch/branch';
 import { DepartmentComponent } from './administrator/SystemAdmin/Department/department';
+import { ExchangeRateComponent } from './administrator/SystemAdmin/ExchangeRate/exchange.rate';
 
 export default [
     { path: 'documentation', component: Documentation },
@@ -25,6 +26,7 @@ export default [
     { path: 'global-policy', component: GlobalPolicyComponent },
     { path: 'branch', component: BranchComponent },
     { path: 'department', component: DepartmentComponent },
+    { path: 'exchange-rate', component: ExchangeRateComponent },
 
     //{ path: '', redirectTo: 'user', pathMatch: 'full' },
     { path: '**', redirectTo: '/notfound' }

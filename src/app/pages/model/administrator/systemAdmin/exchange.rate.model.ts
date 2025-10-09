@@ -1,21 +1,24 @@
+// src/app/model/administrator/systemAdmin/exchange.rate.model.ts
+export interface LongOption {
+    id: number;
+    label: string;
+}
+
 export interface ExchangeRateRequest {
-    version?: number;
-    systemDate?: string;    // "YYYY-MM-DD"
-    systemDateId: number;
-    currencyId: number;
-    systemRate: number;
-    bidRate?: number;
-    askRate?: number;
+    system_date_id: number;
+    system_date: string;
+    currency: number;
+    system_rate: number;
+    bid_rate?: number;
+    ask_rate?: number;
 }
 
 export interface ExchangeRateResponse {
     id: number;
-    systemDate?: string;
-    systemDateId?: any;
-    currency?: any;
-    systemRate?: number;
-    bidRate?: number;
-    askRate?: number;
-    createdBy?: number;
-    createdAt?: string;
+    system_date_id: number;
+    system_date: string;
+    currency: LongOption,
+    system_rate: number | null;
+    bid_rate: number | null;
+    ask_rate: number | null;
 }

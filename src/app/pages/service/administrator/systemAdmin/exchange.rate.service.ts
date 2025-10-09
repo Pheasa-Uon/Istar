@@ -30,8 +30,7 @@ export class ExchangeRateService {
         return this.http.get<ExchangeRateResponse[]>(this.apiUrl, { headers: this.getAuthHeaders() });
     }
 
-    CreateExchangeRate(data: ExchangeRateRequest): Observable<ExchangeRateRequest> {
-        return this.http.post<ExchangeRateRequest>(this.apiUrl, data, { headers: this.getAuthHeaders() });
+    CreateExchangeRateBulk(data: ExchangeRateRequest[]): Observable<any> {
+        return this.http.post(`${this.apiUrl}/bulk`, data, { headers: this.getAuthHeaders() });
     }
-
 }

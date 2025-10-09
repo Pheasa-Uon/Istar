@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-import { CurrencyModel } from '../../../model/administrator/system/currency.model';
+import { Currency, CurrencyModel } from '../../../model/administrator/system/currency.model';
 import { DropdownItemCurrency } from '../../../model/administrator/system/country.model';
 
 
@@ -66,5 +66,9 @@ export class CurrencyService {
     // ✅ Dropdowns
     getCurrencyDropdown(): Observable<DropdownItemCurrency[]> {
         return this.http.get<DropdownItemCurrency[]>(`${this.apiUrl}/currency-dropdown`, { headers: this.getAuthHeaders() });
+    }
+
+    getCurrency(): Observable<Currency[]> {
+        return this.http.get<Currency[]>(`${this.apiUrl}/currency-dropdown`, { headers: this.getAuthHeaders() });
     }
 }

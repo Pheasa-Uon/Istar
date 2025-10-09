@@ -5,105 +5,150 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
-import { ExchangeRateService } from '../../../service/administrator/systemAdmin/exchange-rate.service';
-import { ExchangeRateRequest, ExchangeRateResponse } from '../../../model/administrator/systemAdmin/exchange.rate.model';
+import { ExchangeRateService } from '../../../service/administrator/systemAdmin/exchange.rate.service';
+import { ExchangeRateResponse, ExchangeRateRequest, LongOption } from '../../../model/administrator/systemAdmin/exchange.rate.model';
+import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
+import { HasPermissionDirective } from '../../../directives/has-permission.directive';
+import { CurrencyService } from '../../../service/administrator/system/currency.service';
+import { SystemDateService } from '../../../../layout/service/system.date.service';
+import { SystemDateModel } from '../../../model/system.date.model';
+import { Currency } from '../../../model/administrator/system/currency.model';
 
 @Component({
     selector: 'app-exchange-rate',
     standalone: true,
-    imports: [CommonModule, FormsModule, TableModule, ButtonModule, InputTextModule],
+    imports: [CommonModule, FormsModule, TableModule, ButtonModule, InputTextModule, HasPermissionDirective],
     providers: [MessageService],
     template: `
         <div class="card p-4">
-            <h2 class="text-xl font-semibold mb-4 text-primary">Exchange Rate Management</h2>
+            <h2 class="text-xl font-semibold mb-4 text-primary">💱 Exchange Rate</h2>
 
-            <!-- Form Section -->
-            <div class="grid grid-cols-4 gap-4 mb-5">
-                <div>
-                    <label class="block mb-1 font-medium">Currency Code</label>
-                    <input pInputText [(ngModel)]="exchangeRate.currencyCode" placeholder="e.g. USD" class="w-full" />
-                </div>
-                <div>
-                    <label class="block mb-1 font-medium">System Rate</label>
-                    <input type="number" pInputText [(ngModel)]="exchangeRate.systemRate" class="w-full" />
-                </div>
-                <div>
-                    <label class="block mb-1 font-medium">Bid Rate</label>
-                    <input type="number" pInputText [(ngModel)]="exchangeRate.bidRate" class="w-full" />
-                </div>
-                <div>
-                    <label class="block mb-1 font-medium">Ask Rate</label>
-                    <input type="number" pInputText [(ngModel)]="exchangeRate.askRate" class="w-full" />
-                </div>
-            </div>
-
-            <button pButton label="Add Exchange Rate" icon="pi pi-plus" (click)="addExchangeRate()"></button>
-
-            <p-table [value]="exchangeRates" class="mt-5" [paginator]="true" [rows]="10" responsiveLayout="scroll">
+            <p-table [value]="exchangeRates" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Currency Code</th>
+                        <th>Currency</th>
                         <th>System Rate</th>
                         <th>Bid Rate</th>
                         <th>Ask Rate</th>
-                        <th>Created By</th>
-                        <th>Created Date</th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-row>
+                <ng-template pTemplate="body" let-rate>
                     <tr>
-                        <td>{{ row.currencyCode }}</td>
-                        <td>{{ row.systemRate }}</td>
-                        <td>{{ row.bidRate }}</td>
-                        <td>{{ row.askRate }}</td>
-                        <td>{{ row.createdBy || '-' }}</td>
-                        <td>{{ row.createdDate | date:'short' }}</td>
+                        <td>{{ rate.currency.label }}</td>
+                        <td><input type="number" [(ngModel)]="rate.system_rate" class="p-inputtext p-component w-full" /></td>
+                        <td><input type="number" [(ngModel)]="rate.bid_rate" class="p-inputtext p-component w-full" /></td>
+                        <td><input type="number" [(ngModel)]="rate.ask_rate" class="p-inputtext p-component w-full" /></td>
                     </tr>
                 </ng-template>
             </p-table>
+
+            <div class="mt-4 flex flex-wrap gap-0 w-full justify-end">
+                <p-button
+                    *hasFeaturePermission="['EXR', 'save']"
+                    label="Save"
+                    icon="pi pi-save"
+                    (click)="saveAll()"
+                ></p-button>
+            </div>
         </div>
     `
 })
 export class ExchangeRateComponent implements OnInit {
     exchangeRates: ExchangeRateResponse[] = [];
-    exchangeRate: ExchangeRateRequest = {
-        currencyCode: '',
-        systemRate: 0,
-        bidRate: 0,
-        askRate: 0
-    };
+    currencies: Currency[] = [];
+    systemDate?: SystemDateModel;
 
     constructor(
         private exchangeRateService: ExchangeRateService,
+        private permissionService: FeaturePermissionService,
+        private currencyService: CurrencyService,
+        private systemDateService: SystemDateService,
         private messageService: MessageService
-    ) {}
-
-    ngOnInit(): void {
-        this.loadExchangeRates();
+    ) {
+        this.permissionService.loadPermissions();
+        this.permissionService.loadFromCache();
     }
 
-    loadExchangeRates(): void {
-        this.exchangeRateService.getAll().subscribe({
-            next: (data) => (this.exchangeRates = data),
-            error: (err) => console.error('Failed to load exchange rates', err)
+    ngOnInit(): void {
+        this.loadSystemDate();
+        this.loadCurrencies();
+    }
+
+    /** Load active system date */
+    private loadSystemDate(): void {
+        this.systemDateService.getSystemDateIsActive().subscribe({
+            next: (data) => {
+                this.systemDate = data[0];
+                this.tryInitializeExchangeRates();
+            },
+            error: (err) => console.error('❌ Failed to load system date', err)
         });
     }
 
-    addExchangeRate(): void {
-        if (!this.exchangeRate.currencyCode || !this.exchangeRate.systemRate) {
-            this.messageService.add({ severity: 'warn', summary: 'Validation', detail: 'Currency code and system rate are required.' });
-            return;
-        }
+    /** Load available currencies */
+    private loadCurrencies(): void {
+        this.currencyService.getCurrency().subscribe({
+            next: (data) => {
+                this.currencies = data;
+                this.tryInitializeExchangeRates();
+            },
+            error: (err) => console.error('❌ Failed to load currencies', err)
+        });
+    }
 
-        this.exchangeRateService.create(this.exchangeRate).subscribe({
-            next: (res) => {
-                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Exchange rate added successfully!' });
-                this.exchangeRates.push(res);
-                this.exchangeRate = { currencyCode: '', systemRate: 0, bidRate: 0, askRate: 0 };
+    /** Initialize exchange rates only when both systemDate & currencies are ready */
+    private tryInitializeExchangeRates(): void {
+        if (this.systemDate && this.currencies.length > 0) {
+            this.initializeExchangeRates();
+        }
+    }
+
+    /** Prepare initial list of exchange rates */
+    private initializeExchangeRates(): void {
+        if (!this.systemDate) return;
+
+        this.exchangeRates = this.currencies.map(cur => ({
+            id: 0,
+            currency: cur, // ✅ includes value + label
+            system_rate: 0,
+            bid_rate: 0,
+            ask_rate: 0,
+            system_date_id: this.systemDate?.id ?? 0,
+            system_date: this.systemDate?.systemDate ?? new Date().toISOString().split('T')[0]
+        }));
+
+        console.log('✅ Initialized exchange rates:', this.exchangeRates);
+    }
+
+    /** Save all exchange rates */
+    saveAll(): void {
+        const requests: ExchangeRateRequest[] = this.exchangeRates.map(r => ({
+            currency: r.currency.id, // ✅ use numeric ID field
+            system_date_id: r.system_date_id,
+            system_date: r.system_date,
+            system_rate: r.system_rate ?? 0,
+            bid_rate: r.bid_rate ?? 0,
+            ask_rate: r.ask_rate ?? 0
+        }));
+
+        console.log('📤 Prepared requests:', requests);
+
+        this.exchangeRateService.CreateExchangeRateBulk(requests).subscribe({
+            next: () => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Saved',
+                    detail: 'Exchange rates saved successfully!'
+                });
+                this.initializeExchangeRates();
             },
             error: (err) => {
-                console.error('Error adding exchange rate', err);
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add exchange rate' });
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Failed to save exchange rates!'
+                });
+                console.error('❌ Save failed:', err);
             }
         });
     }

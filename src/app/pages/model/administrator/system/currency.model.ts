@@ -17,3 +17,8 @@ export interface CurrencyModel {
     currencyStatus?: StringOption;
     description: string;
 }
+
+export interface Currency {
+    id: number;
+    label: string;
+}
