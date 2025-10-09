@@ -1,8 +1,5 @@
 // src/app/model/administrator/systemAdmin/exchange.rate.model.ts
-export interface LongOption {
-    id: number;
-    label: string;
-}
+import { Currency } from '../system/currency.model';
 
 export interface ExchangeRateRequest {
     system_date_id: number;
@@ -17,7 +14,7 @@ export interface ExchangeRateResponse {
     id: number;
     system_date_id: number;
     system_date: string;
-    currency: LongOption,
+    currency: Currency,
     system_rate: number | null;
     bid_rate: number | null;
     ask_rate: number | null;

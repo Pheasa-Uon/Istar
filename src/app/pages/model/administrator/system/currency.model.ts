@@ -19,6 +19,6 @@ export interface CurrencyModel {
 }
 
 export interface Currency {
-    id: number;
+    value: number;
     label: string;
 }

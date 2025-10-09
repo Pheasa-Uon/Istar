@@ -27,10 +27,14 @@ export class ExchangeRateService {
     }
 
     GetExchangeRate(): Observable<ExchangeRateResponse[]> {
-        return this.http.get<ExchangeRateResponse[]>(this.apiUrl, { headers: this.getAuthHeaders() });
+        return this.http.get<ExchangeRateResponse[]>(`${this.apiUrl}/active`, { headers: this.getAuthHeaders() });
     }
 
     CreateExchangeRateBulk(data: ExchangeRateRequest[]): Observable<any> {
         return this.http.post(`${this.apiUrl}/bulk`, data, { headers: this.getAuthHeaders() });
+    }
+
+    UpdateExchangeRateToInactive(id: number): Observable<any> {
+        return this.http.put(`${this.apiUrl}/inactive/${id}`, {}, { headers: this.getAuthHeaders() });
     }
 }

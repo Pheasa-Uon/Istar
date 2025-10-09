@@ -6,7 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { ExchangeRateService } from '../../../service/administrator/systemAdmin/exchange.rate.service';
-import { ExchangeRateResponse, ExchangeRateRequest, LongOption } from '../../../model/administrator/systemAdmin/exchange.rate.model';
+import { ExchangeRateResponse, ExchangeRateRequest } from '../../../model/administrator/systemAdmin/exchange.rate.model';
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
@@ -72,6 +72,7 @@ export class ExchangeRateComponent implements OnInit {
     ngOnInit(): void {
         this.loadSystemDate();
         this.loadCurrencies();
+        this.loadExchangeRates();
     }
 
     /** Load active system date */
@@ -96,9 +97,20 @@ export class ExchangeRateComponent implements OnInit {
         });
     }
 
+    /** Load existing exchange rates (for editing) */
+    private loadExchangeRates(): void {
+        this.exchangeRateService.GetExchangeRate().subscribe({
+            next: (data) => {
+                this.exchangeRates = data;
+                this.tryInitializeExchangeRates();
+            },
+            error: (err) => console.error('❌ Failed to load exchange rates', err),
+        });
+    }
+
     /** Initialize exchange rates only when both systemDate & currencies are ready */
     private tryInitializeExchangeRates(): void {
-        if (this.systemDate && this.currencies.length > 0) {
+        if (this.systemDate && this.currencies.length > 0 && this.exchangeRates.length === 0) {
             this.initializeExchangeRates();
         }
     }
@@ -123,7 +135,7 @@ export class ExchangeRateComponent implements OnInit {
     /** Save all exchange rates */
     saveAll(): void {
         const requests: ExchangeRateRequest[] = this.exchangeRates.map(r => ({
-            currency: r.currency.id, // ✅ use numeric ID field
+            currency: r.currency.value, // ✅ use numeric ID field
             system_date_id: r.system_date_id,
             system_date: r.system_date,
             system_rate: r.system_rate ?? 0,
