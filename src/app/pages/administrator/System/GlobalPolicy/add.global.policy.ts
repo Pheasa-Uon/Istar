@@ -48,14 +48,14 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="policyCode">Policy Code</label>
                         <input pInputText id="policyCode" name="policyCode" type="text" placeholder="Auto"
-                               [readOnly]="true" [(ngModel)]="globalPolicy.policyCode" class="w-full" />
+                               [readOnly]="true" [(ngModel)]="globalPolicy.policy_code" class="w-full" />
                     </div>
                     <div class="flex flex-col gap-2 w-full">
                         <label for="policyName">Policy Name <span class="text-red-500">*</span></label>
                         <input pInputText id="policyName" name="policyName" type="text"
-                               [(ngModel)]="globalPolicy.policyName" required class="w-full"
-                               [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.policyName }" />
-                        <small *ngIf="submitted && !globalPolicy.policyName" class="text-red-500">Policy Name is required.</small>
+                               [(ngModel)]="globalPolicy.policy_name" required class="w-full"
+                               [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.policy_name }" />
+                        <small *ngIf="submitted && !globalPolicy.policy_name" class="text-red-500">Policy Name is required.</small>
                     </div>
                 </div>
 
@@ -64,16 +64,16 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="validFrom">Valid from <span class="text-red-500">*</span></label>
                         <p-calendar id="validFrom" name="validFrom" [showIcon]="true" [showButtonBar]="true" dateFormat="dd/mm/yy"
-                                    [(ngModel)]="globalPolicy.validFrom" required class="w-full"
-                                    [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.validFrom }"></p-calendar>
-                        <small *ngIf="submitted && !globalPolicy.validFrom" class="text-red-500">Valid from is required.</small>
+                                    [(ngModel)]="globalPolicy.valid_from" required class="w-full"
+                                    [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.valid_from }"></p-calendar>
+                        <small *ngIf="submitted && !globalPolicy.valid_from" class="text-red-500">Valid from is required.</small>
                     </div>
                     <div class="flex flex-col gap-2 w-full">
                         <label for="validTo">Valid to <span class="text-red-500">*</span></label>
                         <p-calendar id="validTo" name="validTo" [showIcon]="true" [showButtonBar]="true" dateFormat="dd/mm/yy"
-                                    [(ngModel)]="globalPolicy.validTo" required class="w-full"
-                                    [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.validTo }"></p-calendar>
-                        <small *ngIf="submitted && !globalPolicy.validTo" class="text-red-500">Valid to is required.</small>
+                                    [(ngModel)]="globalPolicy.valid_to" required class="w-full"
+                                    [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.valid_to }"></p-calendar>
+                        <small *ngIf="submitted && !globalPolicy.valid_to" class="text-red-500">Valid to is required.</small>
                     </div>
                 </div>
 
@@ -82,14 +82,14 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="numberDuplicatedPassword">Number of duplicated passwords <span class="text-red-500">*</span></label>
                         <input pInputText id="numberDuplicatedPassword" name="numberDuplicatedPassword" type="number"
-                               [(ngModel)]="globalPolicy.numberDuplicatedPassword" class="w-full"
-                               [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.numberDuplicatedPassword }" />
-                        <small *ngIf="submitted && !globalPolicy.numberDuplicatedPassword" class="text-red-500">Number is required.</small>
+                               [(ngModel)]="globalPolicy.number_duplicated_password" class="w-full"
+                               [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.number_duplicated_password }" />
+                        <small *ngIf="submitted && !globalPolicy.number_duplicated_password" class="text-red-500">Number is required.</small>
                     </div>
                     <div class="flex flex-col gap-2 w-full">
                         <label for="dayPasswordExpired">Days of password expired</label>
                         <input pInputText id="dayPasswordExpired" name="dayPasswordExpired" type="number"
-                               [(ngModel)]="globalPolicy.dayPasswordExpired" class="w-full" />
+                               [(ngModel)]="globalPolicy.day_password_expired" class="w-full" />
                     </div>
                 </div>
 
@@ -97,11 +97,11 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="minimumPasswordLength">Minimum password length</label>
                         <input pInputText id="minimumPasswordLength" name="minimumPasswordLength" type="number"
-                               [(ngModel)]="globalPolicy.minimumPasswordLength" class="w-full" />
+                               [(ngModel)]="globalPolicy.minimum_password_length" class="w-full" />
                     </div>
                     <div class="flex flex-col gap-2 w-full">
                         <label for="complexedPassword">Complexed password?</label>
-                        <p-dropdown id="complexedPassword" name="complexedPassword" [(ngModel)]="globalPolicy.complexedPassword"
+                        <p-dropdown id="complexedPassword" name="complexedPassword" [(ngModel)]="globalPolicy.complexed_password"
                                     [options]="dropdownItems" optionLabel="name" optionValue="value" placeholder="Select One"
                                     class="w-full"></p-dropdown>
                     </div>
@@ -112,13 +112,13 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="includedLowerCaseLetter">Include lower case letter</label>
                         <p-dropdown id="includedLowerCaseLetter" name="includedLowerCaseLetter"
-                                    [(ngModel)]="globalPolicy.includedLowerCaseLetter" [options]="dropdownItems" optionLabel="name"
+                                    [(ngModel)]="globalPolicy.included_lower_case_letter" [options]="dropdownItems" optionLabel="name"
                                     optionValue="value" placeholder="Select One" class="w-full"></p-dropdown>
                     </div>
                     <div class="flex flex-col gap-2 w-full">
                         <label for="includedUpperCaseLetter">Include upper case letter</label>
                         <p-dropdown id="includedUpperCaseLetter" name="includedUpperCaseLetter"
-                                    [(ngModel)]="globalPolicy.includedUpperCaseLetter" [options]="dropdownItems" optionLabel="name"
+                                    [(ngModel)]="globalPolicy.included_upper_case_letter" [options]="dropdownItems" optionLabel="name"
                                     optionValue="value" placeholder="Select One" class="w-full"></p-dropdown>
                     </div>
                 </div>
@@ -127,12 +127,12 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="includedSymbolCharacter">Include symbol character</label>
                         <p-dropdown id="includedSymbolCharacter" name="includedSymbolCharacter"
-                                    [(ngModel)]="globalPolicy.includedSymbolCharacter" [options]="dropdownItems" optionLabel="name"
+                                    [(ngModel)]="globalPolicy.included_symbol_character" [options]="dropdownItems" optionLabel="name"
                                     optionValue="value" placeholder="Select One" class="w-full"></p-dropdown>
                     </div>
                     <div class="flex flex-col gap-2 w-full">
                         <label for="includedNumber">Include number</label>
-                        <p-dropdown id="includedNumber" name="includedNumber" [(ngModel)]="globalPolicy.includedNumber"
+                        <p-dropdown id="includedNumber" name="includedNumber" [(ngModel)]="globalPolicy.included_number"
                                     [options]="dropdownItems" optionLabel="name" optionValue="value" placeholder="Select One"
                                     class="w-full"></p-dropdown>
                     </div>
@@ -142,17 +142,17 @@ import { MessagesComponent } from '../../../message/message';
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-col gap-2 w-full">
                         <label for="canLoginFrom">Can login from <span class="text-red-500">*</span></label>
-                        <p-calendar id="canLoginFrom" name="canLoginFrom" [(ngModel)]="globalPolicy.canLoginFrom"
+                        <p-calendar id="canLoginFrom" name="canLoginFrom" [(ngModel)]="globalPolicy.can_login_from"
                                     [showIcon]="true" [showButtonBar]="true" [timeOnly]="true" hourFormat="12" class="w-full"
-                                    [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.canLoginFrom }"></p-calendar>
-                        <small *ngIf="submitted && !globalPolicy.canLoginFrom" class="text-red-500">Time is required.</small>
+                                    [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.can_login_from }"></p-calendar>
+                        <small *ngIf="submitted && !globalPolicy.can_login_from" class="text-red-500">Time is required.</small>
                     </div>
                     <div class="flex flex-col gap-2 w-full">
                         <label for="canLoginTo">Can login to <span class="text-red-500">*</span></label>
-                        <p-calendar id="canLoginTo" name="canLoginTo" [(ngModel)]="globalPolicy.canLoginTo"
+                        <p-calendar id="canLoginTo" name="canLoginTo" [(ngModel)]="globalPolicy.can_login_to"
                                     [showIcon]="true" [showButtonBar]="true" [timeOnly]="true" hourFormat="12" class="w-full"
-                                    [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.canLoginTo }"></p-calendar>
-                        <small *ngIf="submitted && !globalPolicy.canLoginTo" class="text-red-500">Time is required.</small>
+                                    [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.can_login_to }"></p-calendar>
+                        <small *ngIf="submitted && !globalPolicy.can_login_to" class="text-red-500">Time is required.</small>
                     </div>
                 </div>
 
@@ -161,9 +161,9 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="numberFailedLoginAttempts">Number of failed login attempts <span class="text-red-500">*</span></label>
                         <input pInputText id="numberFailedLoginAttempts" name="numberFailedLoginAttempts" type="number"
-                               [(ngModel)]="globalPolicy.numberFailedLoginAttempts" class="w-full"
-                               [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.numberFailedLoginAttempts }" />
-                        <small *ngIf="submitted && !globalPolicy.numberFailedLoginAttempts" class="text-red-500">Number is required.</small>
+                               [(ngModel)]="globalPolicy.number_failed_login_attempts" class="w-full"
+                               [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.number_failed_login_attempts }" />
+                        <small *ngIf="submitted && !globalPolicy.number_failed_login_attempts" class="text-red-500">Number is required.</small>
                     </div>
                     <div class="flex flex-col gap-2 w-full"></div>
                 </div>
@@ -190,21 +190,21 @@ export class AddGlobalPolicy {
     submitted = false;
 
     globalPolicy: GlobalPolicyModel = {
-        policyCode: '',
-        policyName: '',
-        validFrom: undefined,
-        validTo: undefined,
-        numberDuplicatedPassword: undefined,
-        dayPasswordExpired: undefined,
-        minimumPasswordLength: undefined,
-        complexedPassword: undefined,
-        includedLowerCaseLetter: undefined,
-        includedUpperCaseLetter: undefined,
-        includedSymbolCharacter: undefined,
-        includedNumber: undefined,
-        canLoginFrom: undefined,
-        canLoginTo: undefined,
-        numberFailedLoginAttempts: undefined,
+        policy_code: '',
+        policy_name: '',
+        valid_from: undefined,
+        valid_to: undefined,
+        number_duplicated_password: undefined,
+        day_password_expired: undefined,
+        minimum_password_length: undefined,
+        complexed_password: undefined,
+        included_lower_case_letter: undefined,
+        included_upper_case_letter: undefined,
+        included_symbol_character: undefined,
+        included_number: undefined,
+        can_login_from: undefined,
+        can_login_to: undefined,
+        number_failed_login_attempts: undefined,
         description: ''
     };
 
@@ -230,13 +230,13 @@ export class AddGlobalPolicy {
     saveGlobalPolicy() {
         this.submitted = true;
 
-        if (!this.globalPolicy.policyName ||
-            !this.globalPolicy.validFrom ||
-            !this.globalPolicy.validTo ||
-            !this.globalPolicy.numberDuplicatedPassword ||
-            !this.globalPolicy.canLoginFrom ||
-            !this.globalPolicy.canLoginTo ||
-            !this.globalPolicy.numberFailedLoginAttempts) {
+        if (!this.globalPolicy.policy_name ||
+            !this.globalPolicy.valid_from ||
+            !this.globalPolicy.valid_to ||
+            !this.globalPolicy.number_duplicated_password ||
+            !this.globalPolicy.can_login_from ||
+            !this.globalPolicy.can_login_to ||
+            !this.globalPolicy.number_failed_login_attempts) {
             return;
         }
 
@@ -265,12 +265,12 @@ export class AddGlobalPolicy {
     private preparePayload(): any {
         const payload = { ...this.globalPolicy };
 
-        if (payload.canLoginFrom instanceof Date) {
-            payload.canLoginFrom = this.formatTimeForBackend(payload.canLoginFrom);
+        if (payload.can_login_from instanceof Date) {
+            payload.can_login_from = this.formatTimeForBackend(payload.can_login_from);
         }
 
-        if (payload.canLoginTo instanceof Date) {
-            payload.canLoginTo = this.formatTimeForBackend(payload.canLoginTo);
+        if (payload.can_login_to instanceof Date) {
+            payload.can_login_to = this.formatTimeForBackend(payload.can_login_to);
         }
 
         return payload;

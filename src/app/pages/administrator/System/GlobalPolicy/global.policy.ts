@@ -94,8 +94,8 @@ import { Time12HourPipe } from '../../../utils/time12-hour.pipe';
                 </ng-template>
                 <ng-template pTemplate="body" let-viewDetails>
                     <tr>
-                        <td>{{ viewDetails.policyCode }}</td>
-                        <td>{{ viewDetails.policyName }}</td>
+                        <td>{{ viewDetails.policy_code }}</td>
+                        <td>{{ viewDetails.policy_name }}</td>
                         <td>{{ viewDetails.description }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
@@ -140,14 +140,14 @@ import { Time12HourPipe } from '../../../utils/time12-hour.pipe';
 
                 <!-- Values Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedRow?.policyCode }}</div>
-                    <div>{{ selectedRow?.validFrom | formatDate }}</div>
-                    <div>{{ selectedRow?.numberDuplicatedPassword }}</div>
-                    <div>{{ selectedRow?.minimumPasswordLength }}</div>
-                    <div>{{ selectedRow?.includedLowerCaseLetter?.label }}</div>
-                    <div>{{ selectedRow?.includedSymbolCharacter?.label }}</div>
-                    <div>{{ selectedRow?.canLoginFrom | time12Hour }}</div>
-                    <div>{{ selectedRow?.numberFailedLoginAttempts }}</div>
+                    <div>{{ selectedRow?.policy_code }}</div>
+                    <div>{{ selectedRow?.valid_from | formatDate }}</div>
+                    <div>{{ selectedRow?.number_duplicated_password }}</div>
+                    <div>{{ selectedRow?.minimum_password_length }}</div>
+                    <div>{{ selectedRow?.included_lower_case_letter?.label }}</div>
+                    <div>{{ selectedRow?.included_symbol_character?.label }}</div>
+                    <div>{{ selectedRow?.can_login_from | time12Hour }}</div>
+                    <div>{{ selectedRow?.number_failed_login_attempts }}</div>
                 </div>
 
                 <!-- Labels Column 2 -->
@@ -164,13 +164,13 @@ import { Time12HourPipe } from '../../../utils/time12-hour.pipe';
 
                 <!-- Values Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedRow?.policyName }}</div>
-                    <div>{{ selectedRow?.validTo | formatDate }}</div>
-                    <div>{{ selectedRow?.dayPasswordExpired }}</div>
-                    <div>{{ selectedRow?.complexedPassword?.label }}</div>
-                    <div>{{ selectedRow?.includedUpperCaseLetter?.label }}</div>
-                    <div>{{ selectedRow?.includedNumber?.label }}</div>
-                    <div>{{ selectedRow?.canLoginTo | time12Hour }}</div>
+                    <div>{{ selectedRow?.policy_name }}</div>
+                    <div>{{ selectedRow?.valid_to | formatDate }}</div>
+                    <div>{{ selectedRow?.day_password_expired }}</div>
+                    <div>{{ selectedRow?.complexed_password?.label }}</div>
+                    <div>{{ selectedRow?.included_upper_case_letter?.label }}</div>
+                    <div>{{ selectedRow?.included_number?.label }}</div>
+                    <div>{{ selectedRow?.can_login_to | time12Hour }}</div>
                     <div>{{ selectedRow?.description }}</div>
                 </div>
             </div>
@@ -250,7 +250,7 @@ export class GlobalPolicyComponent {
 
     deleteGlobalPolicy(globalPolicy: GlobalPolicyModel) {
         this.confirmationService.confirm({
-            message: `Are you sure you want to delete "${globalPolicy.policyName}"?`,
+            message: `Are you sure you want to delete "${globalPolicy.policy_name}"?`,
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
@@ -259,7 +259,7 @@ export class GlobalPolicyComponent {
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Deleted',
-                            detail: `"${globalPolicy.policyName}" deleted successfully.`,
+                            detail: `"${globalPolicy.policy_name}" deleted successfully.`,
                             life: 3000
                         });
                         this.allDataList = this.allDataList.filter(r => r.id !== globalPolicy.id);

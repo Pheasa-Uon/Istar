@@ -52,18 +52,18 @@ import { MessagesComponent } from '../../../message/message';
                         <input pInputText id="policyCode" name="policyCode" type="text"
                                placeholder="Auto"
                                [readOnly]="true"
-                               [(ngModel)]="globalPolicy.policyCode"
+                               [(ngModel)]="globalPolicy.policy_code"
                                class="w-full" />
                     </div>
 
                     <div class="flex flex-col gap-2 w-full">
                         <label for="policyName">Policy Name <span class="text-red-500">*</span></label>
                         <input pInputText id="policyName" name="policyName" type="text"
-                               [(ngModel)]="globalPolicy.policyName"
+                               [(ngModel)]="globalPolicy.policy_name"
                                required
                                class="w-full"
-                               [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.policyName }" />
-                        <small *ngIf="submitted && !globalPolicy.policyName" class="text-red-500">
+                               [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.policy_name }" />
+                        <small *ngIf="submitted && !globalPolicy.policy_name" class="text-red-500">
                             Policy Name is required.
                         </small>
                     </div>
@@ -77,12 +77,12 @@ import { MessagesComponent } from '../../../message/message';
                                       name="validFrom"
                                       [showIcon]="true"
                                       [showButtonBar]="true"
-                                      [(ngModel)]="globalPolicy.validFrom"
+                                      [(ngModel)]="globalPolicy.valid_from"
                                       dateFormat="dd/mm/yy"
                                       required
                                       class="w-full">
                         </p-datepicker>
-                        <small *ngIf="submitted && !globalPolicy.validFrom" class="text-red-500">
+                        <small *ngIf="submitted && !globalPolicy.valid_from" class="text-red-500">
                             Valid from is required.
                         </small>
                     </div>
@@ -93,12 +93,12 @@ import { MessagesComponent } from '../../../message/message';
                                       name="validTo"
                                       [showIcon]="true"
                                       [showButtonBar]="true"
-                                      [(ngModel)]="globalPolicy.validTo"
+                                      [(ngModel)]="globalPolicy.valid_to"
                                       dateFormat="dd/mm/yy"
                                       required
                                       class="w-full">
                         </p-datepicker>
-                        <small *ngIf="submitted && !globalPolicy.validTo" class="text-red-500">
+                        <small *ngIf="submitted && !globalPolicy.valid_to" class="text-red-500">
                             Valid to is required.
                         </small>
                     </div>
@@ -109,13 +109,13 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="numberDuplicatedPassword">Number of duplicated passwords</label>
                         <input pInputText id="numberDuplicatedPassword" name="numberDuplicatedPassword"
-                               type="number" [(ngModel)]="globalPolicy.numberDuplicatedPassword" class="w-full" />
+                               type="number" [(ngModel)]="globalPolicy.number_duplicated_password" class="w-full" />
                     </div>
 
                     <div class="flex flex-col gap-2 w-full">
                         <label for="dayPasswordExpired">Days of password expired</label>
                         <input pInputText id="dayPasswordExpired" name="dayPasswordExpired"
-                               type="number" [(ngModel)]="globalPolicy.dayPasswordExpired" class="w-full" />
+                               type="number" [(ngModel)]="globalPolicy.day_password_expired" class="w-full" />
                     </div>
                 </div>
 
@@ -124,13 +124,13 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="minimumPasswordLength">Minimum password length</label>
                         <input pInputText id="minimumPasswordLength" name="minimumPasswordLength"
-                               type="number" [(ngModel)]="globalPolicy.minimumPasswordLength" class="w-full" />
+                               type="number" [(ngModel)]="globalPolicy.minimum_password_length" class="w-full" />
                     </div>
 
                     <div class="flex flex-col gap-2 w-full">
                         <label for="complexedPassword">Complexed password?</label>
                         <p-dropdown id="complexedPassword" name="complexedPassword"
-                                    [(ngModel)]="globalPolicy.complexedPassword"
+                                    [(ngModel)]="globalPolicy.complexed_password"
                                     [options]="dropdownItems" optionLabel="name" optionValue="value"
                                     placeholder="Select One" class="w-full">
                         </p-dropdown>
@@ -142,7 +142,7 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="includedLowerCaseLetter">Include lower case letter</label>
                         <p-dropdown id="includedLowerCaseLetter" name="includedLowerCaseLetter"
-                                    [(ngModel)]="globalPolicy.includedLowerCaseLetter"
+                                    [(ngModel)]="globalPolicy.included_lower_case_letter"
                                     [options]="dropdownItems" optionLabel="name" optionValue="value"
                                     placeholder="Select One" class="w-full">
                         </p-dropdown>
@@ -151,7 +151,7 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="includedUpperCaseLetter">Include upper case letter</label>
                         <p-dropdown id="includedUpperCaseLetter" name="includedUpperCaseLetter"
-                                    [(ngModel)]="globalPolicy.includedUpperCaseLetter"
+                                    [(ngModel)]="globalPolicy.included_upper_case_letter"
                                     [options]="dropdownItems" optionLabel="name" optionValue="value"
                                     placeholder="Select One" class="w-full">
                         </p-dropdown>
@@ -162,7 +162,7 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="includedSymbolCharacter">Include symbol character</label>
                         <p-dropdown id="includedSymbolCharacter" name="includedSymbolCharacter"
-                                    [(ngModel)]="globalPolicy.includedSymbolCharacter"
+                                    [(ngModel)]="globalPolicy.included_symbol_character"
                                     [options]="dropdownItems" optionLabel="name" optionValue="value"
                                     placeholder="Select One" class="w-full">
                         </p-dropdown>
@@ -171,7 +171,7 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="includedNumber">Include number</label>
                         <p-dropdown id="includedNumber" name="includedNumber"
-                                    [(ngModel)]="globalPolicy.includedNumber"
+                                    [(ngModel)]="globalPolicy.included_number"
                                     [options]="dropdownItems" optionLabel="name" optionValue="value"
                                     placeholder="Select One" class="w-full">
                         </p-dropdown>
@@ -183,7 +183,7 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="canLoginFrom">Can login from</label>
                         <p-calendar id="canLoginFrom" name="canLoginFrom"
-                                    [(ngModel)]="globalPolicy.canLoginFrom"
+                                    [(ngModel)]="globalPolicy.can_login_from"
                                     [showIcon]="true" [showButtonBar]="true"
                                     [timeOnly]="true" hourFormat="12"
                                     class="w-full">
@@ -193,7 +193,7 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="canLoginTo">Can login to</label>
                         <p-calendar id="canLoginTo" name="canLoginTo"
-                                    [(ngModel)]="globalPolicy.canLoginTo"
+                                    [(ngModel)]="globalPolicy.can_login_to"
                                     [showIcon]="true" [showButtonBar]="true"
                                     [timeOnly]="true" hourFormat="12"
                                     class="w-full">
@@ -206,7 +206,7 @@ import { MessagesComponent } from '../../../message/message';
                     <div class="flex flex-col gap-2 w-full">
                         <label for="numberFailedLoginAttempts">Number of failed login attempts</label>
                         <input pInputText id="numberFailedLoginAttempts" name="numberFailedLoginAttempts"
-                               type="number" [(ngModel)]="globalPolicy.numberFailedLoginAttempts" class="w-full" />
+                               type="number" [(ngModel)]="globalPolicy.number_failed_login_attempts" class="w-full" />
                     </div>
                 </div>
 
@@ -230,21 +230,21 @@ export class EditGlobalPolicy {
     submitted = false;
 
     globalPolicy: GlobalPolicyModel = {
-        policyCode: '',
-        policyName: '',
-        validFrom: undefined,
-        validTo: undefined,
-        numberDuplicatedPassword: undefined,
-        dayPasswordExpired: undefined,
-        minimumPasswordLength: undefined,
-        complexedPassword: undefined,
-        includedLowerCaseLetter: undefined,
-        includedUpperCaseLetter: undefined,
-        includedSymbolCharacter: undefined,
-        includedNumber: undefined,
-        canLoginFrom: undefined,
-        canLoginTo: undefined,
-        numberFailedLoginAttempts: undefined,
+        policy_code: '',
+        policy_name: '',
+        valid_from: undefined,
+        valid_to: undefined,
+        number_duplicated_password: undefined,
+        day_password_expired: undefined,
+        minimum_password_length: undefined,
+        complexed_password: undefined,
+        included_lower_case_letter: undefined,
+        included_upper_case_letter: undefined,
+        included_symbol_character: undefined,
+        included_number: undefined,
+        can_login_from: undefined,
+        can_login_to: undefined,
+        number_failed_login_attempts: undefined,
         description: ''
     };
 
@@ -264,19 +264,19 @@ export class EditGlobalPolicy {
             const policy = { ...navigation.extras.state['globalPolicy'] };
 
             // Convert string dates from backend to Date objects
-            policy.validFrom = policy.validFrom ? new Date(policy.validFrom) : undefined;
-            policy.validTo = policy.validTo ? new Date(policy.validTo) : undefined;
+            policy.valid_from = policy.valid_from ? new Date(policy.valid_from) : undefined;
+            policy.valid_to = policy.valid_to ? new Date(policy.valid_to) : undefined;
 
             // Normalize dropdowns
-            policy.complexedPassword = !!policy.complexedPassword?.value;
-            policy.includedLowerCaseLetter = !!policy.includedLowerCaseLetter?.value;
-            policy.includedUpperCaseLetter = !!policy.includedUpperCaseLetter?.value;
-            policy.includedSymbolCharacter = !!policy.includedSymbolCharacter?.value;
-            policy.includedNumber = !!policy.includedNumber?.value;
+            policy.complexed_password = !!policy.complexed_password?.value;
+            policy.included_lower_case_letter = !!policy.included_lower_case_letter?.value;
+            policy.included_upper_case_letter = !!policy.included_upper_case_letter?.value;
+            policy.included_symbol_character = !!policy.included_symbol_character?.value;
+            policy.included_number = !!policy.included_number?.value;
 
             // Convert time strings to Date objects for p-calendar
-            policy.canLoginFrom = this.parseTimeToDate(policy.canLoginFrom as unknown as string);
-            policy.canLoginTo = this.parseTimeToDate(policy.canLoginTo as unknown as string);
+            policy.can_login_from = this.parseTimeToDate(policy.can_login_from as unknown as string);
+            policy.can_login_to = this.parseTimeToDate(policy.can_login_to as unknown as string);
 
             this.globalPolicy = policy;
         }
@@ -291,7 +291,7 @@ export class EditGlobalPolicy {
 
     saveGlobalPolicy() {
         this.submitted = true;
-        if (!this.globalPolicy.policyName) return;
+        if (!this.globalPolicy.policy_name) return;
 
         const payload = this.preparePayload();
 
@@ -319,11 +319,11 @@ export class EditGlobalPolicy {
         const payload = { ...this.globalPolicy };
 
         // Convert time-only fields back to "HH:mm:ss"
-        if (payload.canLoginFrom instanceof Date) {
-            payload.canLoginFrom = this.formatTimeForBackend(payload.canLoginFrom);
+        if (payload.can_login_from instanceof Date) {
+            payload.can_login_from = this.formatTimeForBackend(payload.can_login_from);
         }
-        if (payload.canLoginTo instanceof Date) {
-            payload.canLoginTo = this.formatTimeForBackend(payload.canLoginTo);
+        if (payload.can_login_to instanceof Date) {
+            payload.can_login_to = this.formatTimeForBackend(payload.can_login_to);
         }
 
         return payload;
