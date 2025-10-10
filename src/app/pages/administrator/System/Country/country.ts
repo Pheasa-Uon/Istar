@@ -103,14 +103,14 @@ import { CountryService } from '../../../service/administrator/system/country.se
                     <tr>
                         <td>{{ country.iso2Alpha }}</td>
                         <td>{{ country.iso3Alpha }}</td>
-                        <td>{{ country.countryName }}</td>
+                        <td>{{ country.country_name }}</td>
                         <td>{{ country.language?.label }}</td>
                         <td
                             [ngStyle]="{
-                                'color': country.countryStatus?.value === 'A' ? 'Green' :
-                                         country.countryStatus?.value === 'I' ? 'Gray' : 'black'
+                                'color': country.country_status?.value === 'A' ? 'Green' :
+                                         country.country_status?.value === 'I' ? 'Gray' : 'black'
                         }">
-                            {{ country.countryStatus?.label }}
+                            {{ country.country_status?.label }}
                         </td>
 
                         <td>
@@ -168,10 +168,10 @@ import { CountryService } from '../../../service/administrator/system/country.se
                 <!-- Values Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
                     <div>{{ selectedCountry?.iso2Alpha }}</div>
-                    <div>{{ selectedCountry?.countryName }}</div>
-                    <div>{{ selectedCountry?.currencyId?.label }}</div>
+                    <div>{{ selectedCountry?.country_name }}</div>
+                    <div>{{ selectedCountry?.currency_id?.label }}</div>
                     <div>{{ selectedCountry?.region?.label }}</div>
-                    <div>{{ selectedCountry?.countryStatus?.label }}</div>
+                    <div>{{ selectedCountry?.country_status?.label }}</div>
                     <div>{{ selectedCountry?.description }}</div>
                 </div>
 
@@ -187,10 +187,10 @@ import { CountryService } from '../../../service/administrator/system/country.se
                 <!-- Values Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
                     <div>{{ selectedCountry?.iso3Alpha }}</div>
-                    <div>{{ selectedCountry?.localCountryName }}</div>
+                    <div>{{ selectedCountry?.local_country_name }}</div>
                     <div>{{ selectedCountry?.language?.label }}</div>
                     <div>{{ selectedCountry?.blacklist?.label }}</div>
-                    <div>{{ selectedCountry?.displayOrder }}</div>
+                    <div>{{ selectedCountry?.display_order }}</div>
                 </div>
             </div>
         </p-dialog>
@@ -269,7 +269,7 @@ export class CountryComponent {
 
     delete(country: CountryModel) {
         this.confirmationService.confirm({
-            message: `Are you sure you want to delete role "${country.countryName}"?`,
+            message: `Are you sure you want to delete role "${country.country_name}"?`,
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
@@ -278,7 +278,7 @@ export class CountryComponent {
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Deleted',
-                            detail: `Role "${country.countryName}" deleted successfully.`,
+                            detail: `Role "${country.country_name}" deleted successfully.`,
                             life: 3000
                         });
                         // remove from UI list

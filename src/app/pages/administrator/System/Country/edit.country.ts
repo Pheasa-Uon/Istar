@@ -69,15 +69,15 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
                         <div class="flex flex-col gap-2 w-full">
                             <label for="countryName">Country Name <span class="text-red-500">*</span></label>
                             <input pInputText id="countryName" name="countryName" type="text"
-                                   placeholder="Country Name" [(ngModel)]="country.countryName"
-                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.countryName }" />
-                            <small *ngIf="submitted && !country.countryName" class="text-red-500">Country name is
+                                   placeholder="Country Name" [(ngModel)]="country.country_name"
+                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.country_name }" />
+                            <small *ngIf="submitted && !country.country_name" class="text-red-500">Country name is
                                 required.</small>
                         </div>
                         <div class="flex flex-col gap-2 w-full">
                             <label for="localCountryName">Local Country Name </label>
                             <input pInputText id="localCountryName" name="localCountryName" type="text"
-                                   placeholder="Local Country Name" [(ngModel)]="country.localCountryName"
+                                   placeholder="Local Country Name" [(ngModel)]="country.local_country_name"
                                    class="w-full" />
                         </div>
                     </div>
@@ -90,7 +90,7 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
                                       [options]="dropdownCurrencyItems"
                                       optionLabel="label"
                                       optionValue="id"
-                                      [(ngModel)]="country.currencyId"
+                                      [(ngModel)]="country.currency_id"
                                       placeholder="Select Currency"></p-select>
                         </div>
                         <div class="flex flex-col gap-2 w-full">
@@ -131,9 +131,9 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
                         <div class="flex flex-col gap-2 w-full">
                             <label for="displayOrder">Order <span class="text-red-500">*</span></label>
                             <input pInputText id="displayOrder" name="displayOrder" type="number"
-                                   placeholder="Order" [(ngModel)]="country.displayOrder"
-                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.displayOrder }" />
-                            <small *ngIf="submitted && !country.displayOrder" class="text-red-500">Order is
+                                   placeholder="Order" [(ngModel)]="country.display_order"
+                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.display_order }" />
+                            <small *ngIf="submitted && !country.display_order" class="text-red-500">Order is
                                 required.</small>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
@@ -142,7 +142,7 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
                                       [options]="dropdownItems"
                                       optionLabel="name"
                                       optionValue="code"
-                                      [(ngModel)]="country.countryStatus"
+                                      [(ngModel)]="country.country_status"
                                       placeholder="Select One"></p-select>
                         </div>
                     </div>
@@ -174,14 +174,14 @@ export class EditCountry {
         id: undefined,
         iso2Alpha: '',
         iso3Alpha: '',
-        countryName: '',
-        localCountryName: '',
-        currencyId: undefined,
+        country_name: '',
+        local_country_name: '',
+        currency_id: undefined,
         language: undefined,
         region: undefined,
         blacklist: undefined,
-        displayOrder: undefined,
-        countryStatus: undefined,
+        display_order: undefined,
+        country_status: undefined,
         description: ''
     };
 
@@ -207,11 +207,11 @@ export class EditCountry {
 
             this.country = {
                 ...country,
-                currencyId: country.currencyId?.value,   // primitive id
+                currency_id: country.currency_id?.value,   // primitive id
                 language: country.language?.value,       // primitive code
                 region: country.region?.value,
                 blacklist: country.blacklist?.value,
-                countryStatus: country.countryStatus?.value,
+                country_status: country.country_status?.value,
             };
         }
 
@@ -233,9 +233,9 @@ export class EditCountry {
     save() {
         this.submitted = true;
 
-        if (!this.country.iso2Alpha || !this.country.iso3Alpha || !this.country.countryName ||
-            !this.country.currencyId || !this.country.language ||
-            !this.country.region || !this.country.blacklist || this.country.displayOrder === undefined) {
+        if (!this.country.iso2Alpha || !this.country.iso3Alpha || !this.country.country_name ||
+            !this.country.currency_id || !this.country.language ||
+            !this.country.region || !this.country.blacklist || this.country.display_order === undefined) {
             this.messageService.show({
                 severity: 'error',
                 summary: 'Error',

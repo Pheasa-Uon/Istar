@@ -12,14 +12,14 @@ export interface CountryModel {
     id?: number | undefined;
     iso2Alpha?: string;
     iso3Alpha?: string;
-    countryName?: string;
-    localCountryName?: string;
-    currencyId?: LongOption;
+    country_name?: string;
+    local_country_name?: string;
+    currency_id?: LongOption;
     language?: StringOption;
     region?: StringOption;
     blacklist?: StringOption;
-    displayOrder?: number;
-    countryStatus?: StringOption;
+    display_order?: number;
+    country_status?: StringOption;
     description?: string;
 }
 

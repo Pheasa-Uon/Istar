@@ -66,15 +66,15 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
                         <div class="flex flex-col gap-2 w-full">
                             <label for="countryName">Country Name <span class="text-red-500">*</span></label>
                             <input pInputText id="countryName" name="countryName" type="text"
-                                   placeholder="Country Name" [(ngModel)]="country.countryName"
-                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.countryName }"/>
-                            <small *ngIf="submitted && !country.countryName" class="text-red-500">Country name is required.</small>
+                                   placeholder="Country Name" [(ngModel)]="country.country_name"
+                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.country_name }"/>
+                            <small *ngIf="submitted && !country.country_name" class="text-red-500">Country name is required.</small>
                         </div>
                         <div class="flex flex-col gap-2 w-full">
                             <label for="localCountryName">Local Country Name </label>
                             <input pInputText id="localCountryName" name="localCountryName" type="text"
-                                   placeholder="Local Country Name" [(ngModel)]="country.localCountryName"
-                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.localCountryName }" />
+                                   placeholder="Local Country Name" [(ngModel)]="country.local_country_name"
+                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.local_country_name }" />
                         </div>
                     </div>
 
@@ -86,7 +86,7 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
                                             [options]="dropdownCurrencyItems"
                                             optionLabel="label"
                                             optionValue="id"
-                                            [(ngModel)]="country.currencyId"
+                                            [(ngModel)]="country.currency_id"
                                             placeholder="Select Currency"></p-select>
                         </div>
                         <div class="flex flex-col gap-2 w-full">
@@ -124,13 +124,13 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
                         <div class="flex flex-col gap-2 w-full">
                             <label for="displayOrder">Order <span class="text-red-500">*</span></label>
                             <input pInputText id="displayOrder" name="displayOrder" type="number"
-                                   placeholder="Order" [(ngModel)]="country.displayOrder"
-                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.displayOrder }" />
-                            <small *ngIf="submitted && !country.displayOrder" class="text-red-500">Order is required.</small>
+                                   placeholder="Order" [(ngModel)]="country.display_order"
+                                   class="w-full" [ngClass]="{ 'p-invalid': submitted && !country.display_order }" />
+                            <small *ngIf="submitted && !country.display_order" class="text-red-500">Order is required.</small>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="status">Status</label>
-                            <p-select id="status" name="status" [(ngModel)]="country.countryStatus" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
+                            <p-select id="status" name="status" [(ngModel)]="country.country_status" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
                         </div>
                     </div>
 
@@ -159,14 +159,14 @@ export class AddCountry implements OnInit {
         id: undefined,
         iso2Alpha: '',
         iso3Alpha: '',
-        countryName: '',
-        localCountryName: '',
-        currencyId: undefined,
+        country_name: '',
+        local_country_name: '',
+        currency_id: undefined,
         language: undefined,
         region: undefined,
         blacklist: undefined,
-        displayOrder: undefined,
-        countryStatus: undefined,
+        display_order: undefined,
+        country_status: undefined,
         description: ''
     };
 
@@ -200,7 +200,7 @@ export class AddCountry implements OnInit {
     save() {
         this.submitted = true;
 
-        if (!this.country.iso2Alpha || !this.country.iso3Alpha || !this.country.countryName || this.country.displayOrder === undefined)
+        if (!this.country.iso2Alpha || !this.country.iso3Alpha || !this.country.country_name || this.country.display_order === undefined)
         {
             return;
         }
