@@ -46,64 +46,64 @@ import { CurrencyModel } from '../../../model/administrator/system/currency.mode
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="currencyId">Currency Code <span class="text-red-500">*</span></label>
-                            <input pInputText id="currencyId" name="currencyCode" type="text" placeholder="Currency Code" [(ngModel)]="currency.currencyCode" class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.currencyCode }"/>
-                            <small *ngIf="submitted && !currency.currencyCode" class="text-red-500">Currency code is required.</small>
+                            <input pInputText id="currencyId" name="currencyCode" type="text" placeholder="Currency Code" [(ngModel)]="currency.currency_code" class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.currency_code }"/>
+                            <small *ngIf="submitted && !currency.currency_code" class="text-red-500">Currency code is required.</small>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="currencyChar">Currency Char <span class="text-red-500">*</span></label>
-                            <input pInputText id="currencyChar" name="currencyChar" type="text" placeholder="Currency Char"  [(ngModel)]="currency.currencyChar" required class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.currencyChar }" />
-                            <small *ngIf="submitted && !currency.currencyChar" class="text-red-500">Currency char is required.</small>
+                            <input pInputText id="currencyChar" name="currencyChar" type="text" placeholder="Currency Char"  [(ngModel)]="currency.currency_char" required class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.currency_char }" />
+                            <small *ngIf="submitted && !currency.currency_char" class="text-red-500">Currency char is required.</small>
                         </div>
                     </div>
 
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="currencyNumber">Currency Number <span class="text-red-500">*</span></label>
-                            <input pInputText id="currencyNumber" name="currencyNumber" type="text" placeholder="Currency Number" [(ngModel)]="currency.currencyNumber" class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.currencyNumber }"/>
-                            <small *ngIf="submitted && !currency.currencyNumber" class="text-red-500">Currency number is required.</small>
+                            <input pInputText id="currencyNumber" name="currencyNumber" type="text" placeholder="Currency Number" [(ngModel)]="currency.currency_number" class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.currency_number }"/>
+                            <small *ngIf="submitted && !currency.currency_number" class="text-red-500">Currency number is required.</small>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="currencySymbol">Currency Symbol <span class="text-red-500">*</span></label>
-                            <input pInputText id="currencySymbol" name="currencySymbol" type="text" placeholder="Currency Symbol" [(ngModel)]="currency.currencySymbol" required class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.currencySymbol }" />
-                            <small *ngIf="submitted && !currency.currencySymbol" class="text-red-500">Currency char is required.</small>
+                            <input pInputText id="currencySymbol" name="currencySymbol" type="text" placeholder="Currency Symbol" [(ngModel)]="currency.currency_symbol" required class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.currency_symbol }" />
+                            <small *ngIf="submitted && !currency.currency_symbol" class="text-red-500">Currency char is required.</small>
                         </div>
                     </div>
 
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="currencyName">Currency Name <span class="text-red-500">*</span></label>
-                            <input pInputText id="currencyName" name="currencyName" type="text" placeholder="Currency Name" [(ngModel)]="currency.currencyName" class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.currencyName }"/>
-                            <small *ngIf="submitted && !currency.currencyName" class="text-red-500">Currency name is required.</small>
+                            <input pInputText id="currencyName" name="currencyName" type="text" placeholder="Currency Name" [(ngModel)]="currency.currency_name" class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.currency_name }"/>
+                            <small *ngIf="submitted && !currency.currency_name" class="text-red-500">Currency name is required.</small>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="localCurrencyName">Local Currency Name <span class="text-red-500">*</span></label>
-                            <input pInputText id="localCurrencyName" name="localCurrencyName" type="text" placeholder="Local Currency Name" [(ngModel)]="currency.localCurrencyName" required class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.localCurrencyName }" />
-                            <small *ngIf="submitted && !currency.localCurrencyName" class="text-red-500">Local currency name is required.</small>
+                            <input pInputText id="localCurrencyName" name="localCurrencyName" type="text" placeholder="Local Currency Name" [(ngModel)]="currency.local_currency_name" required class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.local_currency_name }" />
+                            <small *ngIf="submitted && !currency.local_currency_name" class="text-red-500">Local currency name is required.</small>
                         </div>
                     </div>
 
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="decimalDigits">Decimal Digits <span class="text-red-500">*</span></label>
-                            <input pInputText id="decimalDigits" name="decimalDigits" type="text" placeholder="Decimal Digits" [(ngModel)]="currency.decimalDigits" class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.decimalDigits }"/>
-                            <small *ngIf="submitted && !currency.decimalDigits" class="text-red-500">Decimal Digits is required.</small>
+                            <input pInputText id="decimalDigits" name="decimalDigits" type="text" placeholder="Decimal Digits" [(ngModel)]="currency.decimal_digits" class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.decimal_digits }"/>
+                            <small *ngIf="submitted && !currency.decimal_digits" class="text-red-500">Decimal Digits is required.</small>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="roundDigits">Rounding Digits <span class="text-red-500">*</span></label>
-                            <input pInputText id="roundDigits" name="roundDigits" type="text" placeholder="Round Digits" [(ngModel)]="currency.roundingDigits" required class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.roundingDigits }" />
-                            <small *ngIf="submitted && !currency.roundingDigits" class="text-red-500">Rounding Digits is required.</small>
+                            <input pInputText id="roundDigits" name="roundDigits" type="text" placeholder="Round Digits" [(ngModel)]="currency.rounding_digits" required class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.rounding_digits }" />
+                            <small *ngIf="submitted && !currency.rounding_digits" class="text-red-500">Rounding Digits is required.</small>
                         </div>
                     </div>
 
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="displayOrder">Order <span class="text-red-500">*</span></label>
-                            <input pInputText id="displayOrder" name="roundDigits" type="text" placeholder="Order" [(ngModel)]="currency.displayOrder" required class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.displayOrder }" />
-                            <small *ngIf="submitted && !currency.displayOrder" class="text-red-500">Order is required.</small>
+                            <input pInputText id="displayOrder" name="roundDigits" type="text" placeholder="Order" [(ngModel)]="currency.display_order" required class="w-full" [ngClass]="{ 'p-invalid': submitted && !currency.display_order }" />
+                            <small *ngIf="submitted && !currency.display_order" class="text-red-500">Order is required.</small>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="status">Status</label>
-                            <p-select id="status" name="status" [(ngModel)]="currency.currencyStatus" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
+                            <p-select id="status" name="status" [(ngModel)]="currency.currency_status" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
                         </div>
                     </div>
 
@@ -127,16 +127,16 @@ export class AddCurrency {
     submitted = false; // Added submitted flag
     currency: CurrencyModel = {
         id: undefined,
-        currencyCode: '',
-        currencyChar: '',
-        currencyNumber: '',
-        currencyName: '',
-        localCurrencyName: '',
-        currencySymbol: '',
-        decimalDigits: undefined,
-        roundingDigits: undefined,
-        displayOrder: undefined,
-        currencyStatus: undefined,
+        currency_code: '',
+        currency_char: '',
+        currency_number: '',
+        currency_name: '',
+        local_currency_name: '',
+        currency_symbol: '',
+        decimal_digits: undefined,
+        rounding_digits: undefined,
+        display_order: undefined,
+        currency_status: undefined,
         description: ''
     };
 
@@ -162,16 +162,16 @@ export class AddCurrency {
     save() {
         this.submitted = true; // Set submitted flag
 
-        if (!this.currency.currencyCode ||
-            !this.currency.currencyChar ||
-            !this.currency.currencyNumber ||
-            !this.currency.currencyName ||
-            !this.currency.localCurrencyName ||
-            !this.currency.currencySymbol ||
-            !this.currency.decimalDigits ||
-            !this.currency.roundingDigits ||
-            this.currency.displayOrder === null ||
-            this.currency.displayOrder === undefined
+        if (!this.currency.currency_code ||
+            !this.currency.currency_char ||
+            !this.currency.currency_number ||
+            !this.currency.currency_name ||
+            !this.currency.local_currency_name ||
+            !this.currency.currency_symbol ||
+            !this.currency.decimal_digits ||
+            !this.currency.rounding_digits ||
+            this.currency.display_order === null ||
+            this.currency.display_order === undefined
         ) {
             return; // don't proceed if required field is missing
         }

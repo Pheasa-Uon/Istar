@@ -100,14 +100,14 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
                 </ng-template>
                 <ng-template pTemplate="body" let-currency>
                     <tr>
-                        <td>{{ currency.currencyCode }}</td>
-                        <td>{{ currency.currencyChar }} ({{ currency.currencySymbol }})</td>
-                        <td>{{ currency.currencyName }}</td>
+                        <td>{{ currency.currency_code }}</td>
+                        <td>{{ currency.currency_char }} ({{ currency.currency_symbol }})</td>
+                        <td>{{ currency.currency_name }}</td>
                         <td
                             [ngStyle]="{
-                                'color': currency.currencyStatus?.value === 'A' ? 'Green' :
-                                         currency.currencyStatus?.value === 'I' ? 'Gray' : 'black'
-                        }">{{ currency.currencyStatus?.label }}</td>
+                                'color': currency.currency_status?.value === 'A' ? 'Green' :
+                                         currency.currency_status?.value === 'I' ? 'Gray' : 'black'
+                        }">{{ currency.currency_status?.label }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button *hasFeaturePermission="['CUR','view']"
@@ -162,11 +162,11 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
 
                 <!-- Values Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedCurrency?.currencyCode }}</div>
-                    <div>{{ selectedCurrency?.currencyNumber }}</div>
-                    <div>{{ selectedCurrency?.currencyName }}</div>
-                    <div>{{ selectedCurrency?.decimalDigits }}</div>
-                    <div>{{ selectedCurrency?.displayOrder }}</div>
+                    <div>{{ selectedCurrency?.currency_code }}</div>
+                    <div>{{ selectedCurrency?.currency_number }}</div>
+                    <div>{{ selectedCurrency?.currency_name }}</div>
+                    <div>{{ selectedCurrency?.decimal_digits }}</div>
+                    <div>{{ selectedCurrency?.display_order }}</div>
                     <div>{{ selectedCurrency?.description }}</div>
                 </div>
 
@@ -181,11 +181,11 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
 
                 <!-- Values Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedCurrency?.currencyChar }}</div>
-                    <div>{{ selectedCurrency?.currencySymbol }}</div>
-                    <div>{{ selectedCurrency?.localCurrencyName }}</div>
-                    <div>{{ selectedCurrency?.roundingDigits != null ? selectedCurrency?.roundingDigits : '-' }}</div>
-                    <div>{{ selectedCurrency?.currencyStatus?.label }}</div>
+                    <div>{{ selectedCurrency?.currency_char }}</div>
+                    <div>{{ selectedCurrency?.currency_symbol }}</div>
+                    <div>{{ selectedCurrency?.local_currency_name }}</div>
+                    <div>{{ selectedCurrency?.rounding_digits != null ? selectedCurrency?.rounding_digits : '-' }}</div>
+                    <div>{{ selectedCurrency?.currency_status?.label }}</div>
                 </div>
             </div>
         </p-dialog>
@@ -263,7 +263,7 @@ export class CurrencyComponent {
 
     delete(currency: CurrencyModel) {
         this.confirmationService.confirm({
-            message: `Are you sure you want to delete role "${currency.currencyName}"?`,
+            message: `Are you sure you want to delete role "${currency.currency_name}"?`,
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
@@ -272,7 +272,7 @@ export class CurrencyComponent {
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Deleted',
-                            detail: `Role "${currency.currencyName}" deleted successfully.`,
+                            detail: `Role "${currency.currency_name}" deleted successfully.`,
                             life: 3000
                         });
                         // remove from UI list
