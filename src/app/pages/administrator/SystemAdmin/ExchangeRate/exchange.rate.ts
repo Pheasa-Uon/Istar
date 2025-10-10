@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { MessageService } from 'primeng/api';
 import { ExchangeRateResponse, ExchangeRateRequest } from '../../../model/administrator/systemAdmin/exchange.rate.model';
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
@@ -13,15 +12,18 @@ import { SystemDateModel } from '../../../model/system.date.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { forkJoin, switchMap, of } from 'rxjs';
+import { MessageService } from '../../../message/message.service';
+import { MessagesComponent } from '../../../message/message';
 
 @Component({
     selector: 'app-exchange-rate',
     standalone: true,
-    imports: [CommonModule, FormsModule, TableModule, ButtonModule, InputTextModule, HasPermissionDirective],
-    providers: [MessageService],
+    imports: [CommonModule, FormsModule, TableModule, ButtonModule, InputTextModule, HasPermissionDirective, MessagesComponent],
     template: `
+        <app-messages></app-messages>
+
         <div class="card p-4">
-            <h2 class="text-xl font-semibold mb-4 text-primary">💱 Exchange Rate</h2>
+            <div class="font-semibold text-xl mb-4">💱 Exchange Rate</div>
 
             <p-table [value]="exchangeRates" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
@@ -148,7 +150,7 @@ export class ExchangeRateComponent implements OnInit {
                     errorDetail = 'Unauthorized. Please login again.';
                 }
 
-                this.messageService.add({
+                this.messageService.show({
                     severity: 'error',
                     summary: 'Error',
                     detail: errorDetail
@@ -201,7 +203,7 @@ export class ExchangeRateComponent implements OnInit {
     saveAll(): void {
         // Validate data first
         if (!this.systemDate?.id) {
-            this.messageService.add({
+            this.messageService.show({
                 severity: 'error',
                 summary: 'Error',
                 detail: 'System date is not available!'
@@ -244,7 +246,7 @@ export class ExchangeRateComponent implements OnInit {
         if (invalidRequests.length > 0) {
             console.error('❌ Invalid requests found:', invalidRequests);
 
-            this.messageService.add({
+            this.messageService.show({
                 severity: 'error',
                 summary: 'Error',
                 detail: `Missing currency IDs in ${invalidRequests.length} requests. Check console for details.`
@@ -291,9 +293,9 @@ export class ExchangeRateComponent implements OnInit {
                     console.log('✅ Server returned empty response (common for successful POST operations)');
                 }
 
-                this.messageService.add({
+                this.messageService.show({
                     severity: 'success',
-                    summary: 'Saved',
+                    summary: 'Success',
                     detail: 'Exchange rates saved successfully!'
                 });
 
@@ -305,7 +307,7 @@ export class ExchangeRateComponent implements OnInit {
                 console.error('❌ Error status:', err.status);
                 console.error('❌ Error message:', err.message);
 
-                let errorDetail = 'Failed to save exchange rates!';
+                let errorDetail = 'Exchange rates save failed. Please try again.';
 
                 if (err.status === 403) {
                     errorDetail = 'Access denied. Please check your permissions.';
@@ -317,10 +319,10 @@ export class ExchangeRateComponent implements OnInit {
                     // Since it's 200, we treat it as success
                     console.warn('⚠️ Server returned 200 but Angular encountered parsing error - treating as success');
 
-                    this.messageService.add({
+                    this.messageService.show({
                         severity: 'success',
-                        summary: 'Saved',
-                        detail: 'Exchange rates saved successfully! (Server accepted request)'
+                        summary: 'Success',
+                        detail: 'Exchange rates saved successfully!'
                     });
 
                     // Reload data anyway since the server accepted the request
@@ -330,7 +332,7 @@ export class ExchangeRateComponent implements OnInit {
                     errorDetail = err.error.message;
                 }
 
-                this.messageService.add({
+                this.messageService.show({
                     severity: 'error',
                     summary: 'Error',
                     detail: errorDetail

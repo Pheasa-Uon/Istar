@@ -51,21 +51,6 @@ import { MessageService } from '../../pages/message/message.service';
                 <span class="branch">{{ branchCode }}</span>
             </div>
             -->
-            <div class="layout-topbar-logo-container" >
-                <!-- 👇 Display system date -->
-                <span *ngIf="systemDate">
-                  <i class="pi "></i>
-                            {{ systemDate | date:'dd/MM/yyyy' }}
-                </span>
-            </div>
-            <div class="layout-topbar-logo-container" >
-                <span *ngIf="branchName">
-                  <i class="pi "></i>
-                            {{ branchName}}
-                </span>
-            </div>
-
-
             <div class="layout-config-menu">
                 <button type="button" class="layout-topbar-action" (click)="toggleDarkMode()">
                     <i [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.isDarkTheme(), 'pi-sun': !layoutService.isDarkTheme() }"></i>
