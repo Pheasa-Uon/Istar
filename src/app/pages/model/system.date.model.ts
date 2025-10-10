@@ -1,6 +1,6 @@
 export interface SystemDateModel {
-    id?: number | undefined;
-    systemDate?: undefined;
+    id?: number;
+    systemDate: string;
     sysDate?: string;
     isActive?: boolean;
 }

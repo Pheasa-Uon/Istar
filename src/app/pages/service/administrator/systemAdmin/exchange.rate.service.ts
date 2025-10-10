@@ -35,6 +35,7 @@ export class ExchangeRateService {
     }
 
     UpdateExchangeRateToInactive(id: number): Observable<any> {
+
         return this.http.put(`${this.apiUrl}/inactive/${id}`, {}, { headers: this.getAuthHeaders() });
     }
 }
