@@ -89,7 +89,10 @@ export class ExchangeRateComponent implements OnInit {
         return this.http.put(
             `${environment.apiBase}${environment.apiEndpoints.systemAdmin.exchangeRate}/inactive/${id}`,
             {},
-            { headers }
+            {
+                headers,
+                responseType: 'text' as 'json' // Handle any response format
+            }
         );
     }
 
@@ -269,31 +272,60 @@ export class ExchangeRateComponent implements OnInit {
         deactivationObservable.pipe(
             switchMap(() => {
                 console.log('✅ Deactivation completed, creating new rates...');
+                // Use responseType: 'text' to handle any response format including empty responses
                 return this.http.post(
                     `${environment.apiBase}${environment.apiEndpoints.systemAdmin.exchangeRate}/bulk`,
                     requests,
-                    { headers }
+                    {
+                        headers,
+                        responseType: 'text' as 'json' // This will handle empty or malformed responses
+                    }
                 );
             })
         ).subscribe({
-            next: (response) => {
-                console.log('✅ Save successful:', response);
+            next: (response: any) => {
+                console.log('✅ Save successful - Response:', response);
+
+                // Handle empty or any response format
+                if (response === '' || response === null || response === undefined) {
+                    console.log('✅ Server returned empty response (common for successful POST operations)');
+                }
+
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Saved',
                     detail: 'Exchange rates saved successfully!'
                 });
-                // Reload data
+
+                // Reload data to get updated exchange rates
                 this.loadInitialData();
             },
             error: (err) => {
-                console.error('❌ Save failed:', err);
+                console.error('❌ Save failed - Full error:', err);
+                console.error('❌ Error status:', err.status);
+                console.error('❌ Error message:', err.message);
 
                 let errorDetail = 'Failed to save exchange rates!';
+
                 if (err.status === 403) {
                     errorDetail = 'Access denied. Please check your permissions.';
                 } else if (err.status === 401) {
                     errorDetail = 'Unauthorized. Please login again.';
+                } else if (err.status === 200) {
+                    // Special case: Server returns 200 but Angular treats it as error
+                    // This usually means empty response or response format issue
+                    // Since it's 200, we treat it as success
+                    console.warn('⚠️ Server returned 200 but Angular encountered parsing error - treating as success');
+
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Saved',
+                        detail: 'Exchange rates saved successfully! (Server accepted request)'
+                    });
+
+                    // Reload data anyway since the server accepted the request
+                    this.loadInitialData();
+                    return; // Don't show error message
                 } else if (err.error?.message) {
                     errorDetail = err.error.message;
                 }
