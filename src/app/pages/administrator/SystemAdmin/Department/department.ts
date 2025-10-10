@@ -99,8 +99,8 @@ import { DepartmentService } from '../../../service/administrator/systemAdmin/de
                 </ng-template>
                 <ng-template pTemplate="body" let-department>
                     <tr>
-                        <td>{{ department.departmentCode }}</td>
-                        <td>{{ department.departmentName }}</td>
+                        <td>{{ department.department_code }}</td>
+                        <td>{{ department.department_name }}</td>
                         <td>{{ department.description }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
@@ -152,7 +152,7 @@ import { DepartmentService } from '../../../service/administrator/systemAdmin/de
 
                 <!-- Values Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedDepartment?.departmentCode }}</div>
+                    <div>{{ selectedDepartment?.department_code }}</div>
                     <div>{{ selectedDepartment?.description }}</div>
                 </div>
 
@@ -163,7 +163,7 @@ import { DepartmentService } from '../../../service/administrator/systemAdmin/de
 
                 <!-- Values Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedDepartment?.departmentName }}</div>
+                    <div>{{ selectedDepartment?.department_name }}</div>
                 </div>
             </div>
         </p-dialog>
@@ -240,7 +240,7 @@ export class DepartmentComponent {
 
     delete(department: DepartmentModel) {
         this.confirmationService.confirm({
-            message: `Are you sure you want to delete role "${department.departmentName}"?`,
+            message: `Are you sure you want to delete role "${department.department_name}"?`,
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
@@ -249,7 +249,7 @@ export class DepartmentComponent {
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Deleted',
-                            detail: `Role "${department.departmentName}" deleted successfully.`,
+                            detail: `Role "${department.department_name}" deleted successfully.`,
                             life: 3000
                         });
                         // remove from UI list

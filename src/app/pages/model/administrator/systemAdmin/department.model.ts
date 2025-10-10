@@ -1,6 +1,6 @@
 export interface DepartmentModel {
     id?: number | undefined;
-    departmentCode?: string;
-    departmentName?: string;
+    department_code?: string;
+    department_name?: string;
     description?: string;
 }

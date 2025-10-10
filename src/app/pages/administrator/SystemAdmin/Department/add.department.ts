@@ -47,7 +47,7 @@ import { DepartmentService } from '../../../service/administrator/systemAdmin/de
                                 type="text"
                                 placeholder="Department code"
                                 [readonly]="true"
-                                [(ngModel)]="department.departmentCode"
+                                [(ngModel)]="department.department_code"
                                 maxlength="4"
                                 class="w-full"
                             />
@@ -63,13 +63,13 @@ import { DepartmentService } from '../../../service/administrator/systemAdmin/de
                                 name="departmentName"
                                 type="text"
                                 placeholder="Department name"
-                                [(ngModel)]="department.departmentName"
+                                [(ngModel)]="department.department_name"
                                 required
                                 class="w-full"
-                                [ngClass]="{ 'p-invalid': submitted && !department.departmentName }"
+                                [ngClass]="{ 'p-invalid': submitted && !department.department_name }"
                             />
                             <small
-                                *ngIf="submitted && !department.departmentName"
+                                *ngIf="submitted && !department.department_name"
                                 class="text-red-500"
                             >Department name is required.</small
                             >
@@ -117,8 +117,8 @@ export class AddDepartment implements OnInit {
 
     department: DepartmentModel = {
         id: undefined,
-        departmentCode: '',
-        departmentName: '',
+        department_code: '',
+        department_name: '',
         description: '',
     };
 
@@ -142,7 +142,7 @@ export class AddDepartment implements OnInit {
         this.submitted = true;
 
         // Validate required field
-        if (!this.department.departmentName) {
+        if (!this.department.department_name) {
             this.messageService.show({
                 severity: 'error',
                 summary: 'Validation Error',

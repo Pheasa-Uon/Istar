@@ -104,15 +104,15 @@ import { BranchModel } from '../../../model/administrator/systemAdmin/branch.mod
                     <tr>
                         <td>{{ branch.branch_code }}</td>
                         <td>{{ branch.branch_name }}</td>
-                        <td>{{ branch.branch_prefixrefix }}</td>
+                        <td>{{ branch.branch_prefix }}</td>
                         <td>{{ branch.province?.label }}</td>
                         <td>{{ branch.phone }}</td>
                         <td
                             [ngStyle]="{
-                                'color': branch.onlineStatus?.value === true ? 'Green' :
-                                         branch.onlineStatus?.value === false ? 'Gray' : 'black'
+                                'color': branch.online_status?.value === true ? 'Green' :
+                                         branch.online_status?.value === false ? 'Gray' : 'black'
                         }">
-                            {{ branch.onlineStatus?.label }}
+                            {{ branch.online_status?.label }}
                         </td>
 
                         <td>
