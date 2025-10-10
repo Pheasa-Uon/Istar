@@ -36,21 +36,21 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-col gap-2 w-full">
                             <label for="branchCode">Branch code <span class="text-red-500">*</span></label>
-                            <input pInputText id="branchCode" name="branchCode" type="text" placeholder="Branch code" [(ngModel)]="branch.branchCode" maxlength="4" class="w-full" [ngClass]="{ 'p-invalid': submitted && !branch.branchCode }" />
-                            <small *ngIf="submitted && !branch.branchCode" class="text-red-500">Branch code is required.</small>
+                            <input pInputText id="branchCode" name="branchCode" type="text" placeholder="Branch code" [(ngModel)]="branch.branch_code" maxlength="4" class="w-full" [ngClass]="{ 'p-invalid': submitted && !branch.branch_code }" />
+                            <small *ngIf="submitted && !branch.branch_code" class="text-red-500">Branch code is required.</small>
                         </div>
                         <div class="flex flex-col gap-2 w-full">
                             <label for="branchName">Branch Name <span class="text-red-500">*</span></label>
-                            <input pInputText id="branchName" name="branchName" type="text" placeholder="Branch name" [(ngModel)]="branch.branchName" class="w-full" [ngClass]="{ 'p-invalid': submitted && !branch.branchCode }" />
+                            <input pInputText id="branchName" name="branchName" type="text" placeholder="Branch name" [(ngModel)]="branch.branch_name" class="w-full" [ngClass]="{ 'p-invalid': submitted && !branch.branch_code }" />
                         </div>
-                        <small *ngIf="submitted && !branch.branchName" class="text-red-500">Branch name is required.</small>
+                        <small *ngIf="submitted && !branch.branch_name" class="text-red-500">Branch name is required.</small>
                     </div>
 
                     <!-- Country Name -->
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-col gap-2 w-full">
                             <label for="branchPrefix">Branch Prefix </label>
-                            <input pInputText id="branchPrefix" name="branchPrefix" type="text" placeholder="Branch prefix" [(ngModel)]="branch.branchPrefix" class="w-full" [ngClass]="{ 'p-invalid': submitted && !branch.branchPrefix }" />
+                            <input pInputText id="branchPrefix" name="branchPrefix" type="text" placeholder="Branch prefix" [(ngModel)]="branch.branch_prefix" class="w-full" [ngClass]="{ 'p-invalid': submitted && !branch.branch_prefix }" />
                         </div>
                         <div class="flex flex-col gap-2 w-full">
                             <label for="localBranchName">Local Branch Name <span class="text-red-500">*</span></label>
@@ -60,11 +60,11 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
                                 name="localBranchName"
                                 type="text"
                                 placeholder="Local Branch Name"
-                                [(ngModel)]="branch.localBranchName"
+                                [(ngModel)]="branch.local_branch_name"
                                 class="w-full"
-                                [ngClass]="{ 'p-invalid': submitted && !branch.localBranchName }"
+                                [ngClass]="{ 'p-invalid': submitted && !branch.local_branch_name }"
                             />
-                            <small *ngIf="submitted && !branch.localBranchName" class="text-red-500">Local branch name is required.</small>
+                            <small *ngIf="submitted && !branch.local_branch_name" class="text-red-500">Local branch name is required.</small>
                         </div>
                     </div>
 
@@ -107,16 +107,16 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-col gap-2 w-full">
                             <label for="cloneGlFromBranch">Clone GL from </label>
-                            <p-select id="cloneGlFromBranch" name="cloneGlFromBranch" class="w-full" [options]="dropdownBranchItems" optionLabel="label" optionValue="id" [(ngModel)]="branch.cloneGlFromBranch" placeholder="Select Branch"></p-select>
+                            <p-select id="cloneGlFromBranch" name="cloneGlFromBranch" class="w-full" [options]="dropdownBranchItems" optionLabel="label" optionValue="id" [(ngModel)]="branch.clone_gl_from_branch" placeholder="Select Branch"></p-select>
                         </div>
                         <div class="flex flex-col gap-2 w-full">
                             <label for="phone">Online </label>
-                            <p-select id="onlineStatus" name="onlineStatus" class="w-full" [options]="dropdownItems" optionLabel="name" optionValue="value" [(ngModel)]="branch.onlineStatus" placeholder="Select online status"></p-select>
+                            <p-select id="onlineStatus" name="onlineStatus" class="w-full" [options]="dropdownItems" optionLabel="name" optionValue="value" [(ngModel)]="branch.online_status" placeholder="Select online status"></p-select>
                         </div>
                     </div>
                     <!-- Description -->
                     <div class="flex flex-col gap-2 w-full">
-                        <label for="isHq">Online</label>
+                        <label for="isHq">Is HQ</label>
                         <p-toggleswitch name="isHq" [(ngModel)]="branch.isHq"></p-toggleswitch>
                     </div>
 
@@ -142,17 +142,17 @@ export class AddBranch implements OnInit {
     submitted = false;
     branch: BranchModel = {
         id: undefined,
-        branchCode: '',
-        branchName: '',
-        localBranchName: '',
-        branchPrefix: '',
+        branch_code: '',
+        branch_name: '',
+        local_branch_name: '',
+        branch_prefix: '',
         province: undefined,
         phone: '',
         email: '',
         address: '',
         isHq: undefined,
-        cloneGlFromBranch: undefined,
-        onlineStatus: undefined,
+        clone_gl_from_branch: undefined,
+        online_status: undefined,
         description: ''
     };
 
@@ -181,7 +181,7 @@ export class AddBranch implements OnInit {
     save() {
         this.submitted = true;
 
-        if (!this.branch.branchCode || !this.branch.branchName || !this.branch.localBranchName || this.branch.province === undefined) {
+        if (!this.branch.branch_code || !this.branch.branch_name || !this.branch.local_branch_name || this.branch.province === undefined) {
             return;
         }
 

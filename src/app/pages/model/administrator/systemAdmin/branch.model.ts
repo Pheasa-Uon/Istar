@@ -15,17 +15,17 @@ export interface StringOption {
 
 export interface BranchModel {
     id?: number | undefined;
-    branchCode?: string;
-    branchName?: string;
-    localBranchName?: string;
-    branchPrefix?: string;
+    branch_code?: string;
+    branch_name?: string;
+    local_branch_name?: string;
+    branch_prefix?: string;
     province?: StringOption;
     phone?: string;
     email?: string;
     address?: string;
     isHq?: BooleanOption;
-    cloneGlFromBranch?: LongOption;
-    onlineStatus?: BooleanOption;
+    clone_gl_from_branch?: LongOption;
+    online_status?: BooleanOption;
     description?: string;
 }
 

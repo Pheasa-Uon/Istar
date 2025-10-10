@@ -102,9 +102,9 @@ import { BranchModel } from '../../../model/administrator/systemAdmin/branch.mod
                 </ng-template>
                 <ng-template pTemplate="body" let-branch>
                     <tr>
-                        <td>{{ branch.branchCode }}</td>
-                        <td>{{ branch.branchName }}</td>
-                        <td>{{ branch.branchPrefix }}</td>
+                        <td>{{ branch.branch_code }}</td>
+                        <td>{{ branch.branch_name }}</td>
+                        <td>{{ branch.branch_prefixrefix }}</td>
                         <td>{{ branch.province?.label }}</td>
                         <td>{{ branch.phone }}</td>
                         <td
@@ -170,12 +170,12 @@ import { BranchModel } from '../../../model/administrator/systemAdmin/branch.mod
 
                 <!-- Values Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedBranch?.branchCode }}</div>
-                    <div>{{ selectedBranch?.branchPrefix }}</div>
+                    <div>{{ selectedBranch?.branch_code }}</div>
+                    <div>{{ selectedBranch?.branch_prefix }}</div>
                     <div>{{ selectedBranch?.province?.label }}</div>
                     <div>{{ selectedBranch?.email }}</div>
                     <div>{{ selectedBranch?.address }}</div>
-                    <div>{{ selectedBranch?.cloneGlFromBranch?.label || '-' }}</div>
+                    <div>{{ selectedBranch?.clone_gl_from_branch?.label || '-' }}</div>
                     <div>{{ selectedBranch?.description }}</div>
                 </div>
 
@@ -190,11 +190,11 @@ import { BranchModel } from '../../../model/administrator/systemAdmin/branch.mod
 
                 <!-- Values Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedBranch?.branchName }}</div>
-                    <div>{{ selectedBranch?.localBranchName }}</div>
+                    <div>{{ selectedBranch?.branch_name }}</div>
+                    <div>{{ selectedBranch?.local_branch_name }}</div>
                     <div>{{ selectedBranch?.phone }}</div>
                     <div>{{ selectedBranch?.isHq?.label }}</div>
-                    <div>{{ selectedBranch?.onlineStatus?.label }}</div>
+                    <div>{{ selectedBranch?.online_status?.label }}</div>
                 </div>
             </div>
         </p-dialog>
@@ -273,7 +273,7 @@ export class BranchComponent {
 
     delete(branch: BranchModel) {
         this.confirmationService.confirm({
-            message: `Are you sure you want to delete role "${branch.branchName}"?`,
+            message: `Are you sure you want to delete role "${branch.branch_name}"?`,
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
@@ -282,7 +282,7 @@ export class BranchComponent {
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Deleted',
-                            detail: `Role "${branch.branchName}" deleted successfully.`,
+                            detail: `Role "${branch.branch_name}" deleted successfully.`,
                             life: 3000
                         });
                         // remove from UI list
