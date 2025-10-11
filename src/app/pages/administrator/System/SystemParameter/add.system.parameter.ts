@@ -52,23 +52,23 @@ import { SystemParameterModel } from '../../../model/administrator/system/system
                             <label for="parameterModule">Parameter Module <span class="text-red-500">*</span></label>
                             <p-select
                                 id="parameterModule" name="parameterModule"
-                                [(ngModel)]="systemParameter.parameterModule"
+                                [(ngModel)]="systemParameter.parameter_module"
                                 [options]="dropdownModuleNameItems"
                                 optionLabel="name" optionValue="code"
                                 placeholder="Select One" class="w-full"
-                                [ngClass]="{ 'p-invalid': submitted && !systemParameter.parameterModule }"
+                                [ngClass]="{ 'p-invalid': submitted && !systemParameter.parameter_module }"
                                 required>
                             </p-select>
-                            <small *ngIf="submitted && !systemParameter.parameterModule" class="text-red-500">Parameter Module is required.</small>
+                            <small *ngIf="submitted && !systemParameter.parameter_module" class="text-red-500">Parameter Module is required.</small>
                         </div>
 
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="parameterName">Parameter Name <span class="text-red-500">*</span></label>
                             <input pInputText id="parameterName" name="parameterName" type="text" placeholder="Parameter Name"
-                                   [(ngModel)]="systemParameter.parameterName" maxlength="15"
+                                   [(ngModel)]="systemParameter.parameter_name" maxlength="15"
                                    required class="w-full"
-                                   [ngClass]="{ 'p-invalid': submitted && !systemParameter.parameterName }" />
-                            <small *ngIf="submitted && !systemParameter.parameterName" class="text-red-500">Parameter Name is required.</small>
+                                   [ngClass]="{ 'p-invalid': submitted && !systemParameter.parameter_name }" />
+                            <small *ngIf="submitted && !systemParameter.parameter_name" class="text-red-500">Parameter Name is required.</small>
                         </div>
                     </div>
 
@@ -77,10 +77,10 @@ import { SystemParameterModel } from '../../../model/administrator/system/system
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="parameterValue">Parameter Value <span class="text-red-500">*</span></label>
                             <input pInputText id="parameterValue" name="parameterValue" type="text" placeholder="Parameter Value"
-                                   [(ngModel)]="systemParameter.parameterValue" maxlength="15"
+                                   [(ngModel)]="systemParameter.parameter_value" maxlength="15"
                                    required class="w-full"
-                                   [ngClass]="{ 'p-invalid': submitted && !systemParameter.parameterValue }" />
-                            <small *ngIf="submitted && !systemParameter.parameterValue" class="text-red-500">Sys par code is required.</small>
+                                   [ngClass]="{ 'p-invalid': submitted && !systemParameter.parameter_value }" />
+                            <small *ngIf="submitted && !systemParameter.parameter_value" class="text-red-500">Sys par code is required.</small>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full"></div>
                     </div>
@@ -109,9 +109,9 @@ export class AddSystemParameter implements OnInit {
     submitted = false; // Added submitted flag like in AddUser
     systemParameter: SystemParameterModel = {
         id: undefined,
-        parameterModule: undefined,
-        parameterName: '',
-        parameterValue: '',
+        parameter_module: undefined,
+        parameter_name: '',
+        parameter_value: '',
         description: ''
     };
 
@@ -144,9 +144,9 @@ export class AddSystemParameter implements OnInit {
         this.submitted = true; // Set submitted flag like in AddUser
 
         // Validate required fields before proceeding
-        if (!this.systemParameter.parameterModule ||
-            !this.systemParameter.parameterName ||
-            !this.systemParameter.parameterValue
+        if (!this.systemParameter.parameter_module ||
+            !this.systemParameter.parameter_name ||
+            !this.systemParameter.parameter_value
         ) {
             return; // don't proceed if required fields are missing
         }
@@ -156,7 +156,7 @@ export class AddSystemParameter implements OnInit {
                 this.messageService.show({
                     severity: 'success',
                     summary: 'Success',
-                    detail: 'Global System Parameter created successfully!'
+                    detail: 'System Parameter created successfully!'
                 });
                 setTimeout(() => this.goBack(), 1000);
             },
@@ -164,7 +164,7 @@ export class AddSystemParameter implements OnInit {
                 this.messageService.show({
                     severity: 'error',
                     summary: 'Error',
-                    detail: 'Global System Parameter creation failed.'
+                    detail: 'System Parameter creation failed.'
                 });
             }
         });

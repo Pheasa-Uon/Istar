@@ -89,9 +89,9 @@ import { SPDropdownItemService } from '../../../service/administrator/system/sys
                 </ng-template>
                 <ng-template pTemplate="body" let-sp>
                     <tr>
-                        <td>{{ sp.parameterModule?.label }}</td>
-                        <td>{{ sp.parameterName }}</td>
-                        <td>{{ sp.parameterValue }}</td>
+                        <td>{{ sp.parameter_module?.label }}</td>
+                        <td>{{ sp.parameter_name }}</td>
+                        <td>{{ sp.parameter_value }}</td>
                         <td>{{ sp.description }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
@@ -121,8 +121,8 @@ import { SPDropdownItemService } from '../../../service/administrator/system/sys
 
                 <!-- Values Column 1 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedSP?.parameterModule?.label }}</div>
-                    <div>{{ selectedSP?.parameterValue }}</div>
+                    <div>{{ selectedSP?.parameter_module?.label }}</div>
+                    <div>{{ selectedSP?.parameter_value }}</div>
                 </div>
 
                 <!-- Labels Column 2 -->
@@ -133,7 +133,7 @@ import { SPDropdownItemService } from '../../../service/administrator/system/sys
 
                 <!-- Values Column 2 -->
                 <div class="w-full md:w-1/4 flex flex-col space-y-5 py-5">
-                    <div>{{ selectedSP?.parameterName }}</div>
+                    <div>{{ selectedSP?.parameter_name }}</div>
                     <div>{{ selectedSP?.description }}</div>
                 </div>
             </div>
@@ -149,9 +149,7 @@ export class SystemParameterComponent {
     searchText = '';
     displayDetails = false;
     selectedSP: SystemParameterModel | null = null;
-    statusMap: Record<string, string> = {};
     moduleNameMap: Record<string, string> = {};
-    fieldNameMap: Record<string, string> = {};
 
     constructor(
         private spService: SystemParameterService,
@@ -218,7 +216,7 @@ export class SystemParameterComponent {
 
     deleteSystemParameter(sp: SystemParameterModel) {
         this.confirmationService.confirm({
-            message: `Are you sure you want to delete "${sp.parameterName}"?`,
+            message: `Are you sure you want to delete "${sp.parameter_name}"?`,
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
@@ -227,7 +225,7 @@ export class SystemParameterComponent {
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Deleted',
-                            detail: `"${sp.parameterName}" deleted successfully.`,
+                            detail: `"${sp.parameter_name}" deleted successfully.`,
                             life: 3000
                         });
                         this.SPList = this.SPList.filter(r => r.id !== sp.id);

@@ -40,7 +40,7 @@ import { SPDropdownItemService } from '../../../service/administrator/system/sys
                         <label for="parameterModule">Parameter Module <span class="text-red-500">*</span></label>
                         <p-select
                             id="parameterModule" name="parameterModule"
-                            [(ngModel)]="systemParameter.parameterModule"
+                            [(ngModel)]="systemParameter.parameter_module"
                             [options]="dropdownModuleNameItems"
                             optionLabel="name" optionValue="code"
                             placeholder="Select One" class="w-full"
@@ -53,7 +53,7 @@ import { SPDropdownItemService } from '../../../service/administrator/system/sys
 
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="parameterName">Parameter Name <span class="text-red-500">*</span></label>
-                        <input pInputText id="parameterName" name="parameterName" type="text" placeholder="Parameter Name" [(ngModel)]="systemParameter.parameterName"/> <!-- 👈 limit to 15 characters -->
+                        <input pInputText id="parameterName" name="parameterName" type="text" placeholder="Parameter Name" [(ngModel)]="systemParameter.parameter_name"/> <!-- 👈 limit to 15 characters -->
                         <!--
                          <small *ngIf="gspForm.submitted && !globalSystemParameter.sysParCode" class="text-red-500">Sys par code is required.</small>
                         -->
@@ -64,7 +64,7 @@ import { SPDropdownItemService } from '../../../service/administrator/system/sys
                 <div class="flex flex-col md:flex-row gap-6">
                      <div class="flex flex-wrap gap-2 w-full">
                          <label for="parameterValue">Parameter Value <span class="text-red-500">*</span></label>
-                         <input pInputText id="parameterValue" name="parameterValue" type="text" placeholder="Parameter Value" [(ngModel)]="systemParameter.parameterValue" />
+                         <input pInputText id="parameterValue" name="parameterValue" type="text" placeholder="Parameter Value" [(ngModel)]="systemParameter.parameter_value" />
                          <!--
                          <small *ngIf="gspForm.submitted && !globalSystemParameter.valueName" class="text-red-500">Value Name is required.</small>
                          -->
@@ -90,9 +90,9 @@ import { SPDropdownItemService } from '../../../service/administrator/system/sys
 export class EditSystemParameter {
     systemParameter: SystemParameterModel = {
         id: undefined,
-        parameterModule: undefined,
-        parameterName: '',
-        parameterValue: '',
+        parameter_module: undefined,
+        parameter_name: '',
+        parameter_value: '',
         description: ''
     };
 
@@ -111,7 +111,7 @@ export class EditSystemParameter {
 
             this.systemParameter = {
                 ...systemParameter,
-               parameterModule: systemParameter.parameterModule?.value
+               parameter_module: systemParameter.parameter_module?.value
             };
 
         }

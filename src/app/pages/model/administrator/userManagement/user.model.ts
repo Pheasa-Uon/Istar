@@ -5,12 +5,12 @@ export interface StringOption {
 
 export interface User {
     id?: number;
-    userCode: string;
+    user_code: string;
     username: string;
     name: string;
     password: string;
     email: string;
-    userStatus?: StringOption;   // 👈 optional, can be undefined
+    user_status?: StringOption;   // 👈 optional, can be undefined
     description: string;
-    lastLoginAt?: string | Date;
+    last_login_at?: string | Date;
 }

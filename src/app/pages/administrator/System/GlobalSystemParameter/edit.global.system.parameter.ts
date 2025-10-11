@@ -20,7 +20,6 @@ import {
     DropdownItemModuleName, GspDropdownItemService
 } from '../../../service/administrator/system/gsp.dropdown.item.service';
 import { GlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
-import { Messages } from 'primeng/messages';
 
 @Component({
     selector: 'app-edit-global-System-parameter',
@@ -42,7 +41,7 @@ import { Messages } from 'primeng/messages';
                         <label for="moduleName">Module Name <span class="text-red-500">*</span></label>
                         <p-select
                             id="moduleName" name="moduleName"
-                            [(ngModel)]="globalSystemParameter.moduleName"
+                            [(ngModel)]="globalSystemParameter.module_name"
                             [options]="dropdownModuleNameItems"
                             optionLabel="name" optionValue="code"
                             placeholder="Select One" class="w-full"
@@ -58,7 +57,7 @@ import { Messages } from 'primeng/messages';
                         <label for="fieldName">Field Name <span class="text-red-500">*</span></label>
                         <p-select
                             id="fieldName" name="fieldName"
-                            [(ngModel)]="globalSystemParameter.fieldName"
+                            [(ngModel)]="globalSystemParameter.field_name"
                             [options]="dropdownFieldItems"
                             optionLabel="name" optionValue="code"
                             [readonly]="true"
@@ -74,14 +73,14 @@ import { Messages } from 'primeng/messages';
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="sysParCode">Sys par code <span class="text-red-500">*</span></label>
-                        <input pInputText id="sysParCode" name="sysParCode" type="text" placeholder="Sys par code" [(ngModel)]="globalSystemParameter.sysParCode"  maxlength="15" /> <!-- 👈 limit to 15 characters -->
+                        <input pInputText id="sysParCode" name="sysParCode" type="text" placeholder="Sys par code" [(ngModel)]="globalSystemParameter.sys_par_code"  maxlength="15" /> <!-- 👈 limit to 15 characters -->
                         <!--
                          <small *ngIf="gspForm.submitted && !globalSystemParameter.sysParCode" class="text-red-500">Sys par code is required.</small>
                         -->
                      </div>
                      <div class="flex flex-wrap gap-2 w-full">
                          <label for="valueName">Value Name <span class="text-red-500">*</span></label>
-                         <input pInputText id="valueName" name="valueName" type="text" placeholder="Value Name" [(ngModel)]="globalSystemParameter.valueName" />
+                         <input pInputText id="valueName" name="valueName" type="text" placeholder="Value Name" [(ngModel)]="globalSystemParameter.value_name" />
                          <!--
                          <small *ngIf="gspForm.submitted && !globalSystemParameter.valueName" class="text-red-500">Value Name is required.</small>
                          -->
@@ -92,14 +91,14 @@ import { Messages } from 'primeng/messages';
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="localValueName">Local Value Name <span class="text-red-500">*</span></label>
-                        <input pInputText id="localValueName" name="localValueName" type="text" placeholder="Local value name" [(ngModel)]="globalSystemParameter.localValueName" />
+                        <input pInputText id="localValueName" name="localValueName" type="text" placeholder="Local value name" [(ngModel)]="globalSystemParameter.local_value_name" />
                         <!--
                         <small *ngIf="gspForm.submitted && !globalSystemParameter.localValueName" class="text-red-500">Local value name is required.</small>
                         -->
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="displayOrder">Order <span class="text-red-500">*</span></label>
-                        <input pInputText id="displayOrder" name="displayOrder" type="number" placeholder="Order" [(ngModel)]="globalSystemParameter.displayOrder" />
+                        <input pInputText id="displayOrder" name="displayOrder" type="number" placeholder="Order" [(ngModel)]="globalSystemParameter.display_order" />
 <!--
                         <small *ngIf="gspForm.submitted && (globalSystemParameter.displayOrder === null || globalSystemParameter.displayOrder === undefined)" class="text-red-500">
                             Order is required.
@@ -112,7 +111,7 @@ import { Messages } from 'primeng/messages';
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="status">Status</label>
-                        <p-select id="status" name="status" [(ngModel)]="globalSystemParameter.sysParStatus" [options]="dropdownStatusItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
+                        <p-select id="status" name="status" [(ngModel)]="globalSystemParameter.sys_par_status" [options]="dropdownStatusItems" optionLabel="name" optionValue="code" placeholder="Select One" class="w-full"></p-select>
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
 
@@ -137,13 +136,13 @@ import { Messages } from 'primeng/messages';
 export class EditGlobalSystemParameter {
     globalSystemParameter: GlobalSystemParameter = {
         id: undefined,
-        sysParCode: '',
-        moduleName: undefined,
-        fieldName: undefined,
-        valueName: '',
-        localValueName: '',
-        displayOrder: undefined,
-        sysParStatus: undefined,
+        sys_par_code: '',
+        module_name: undefined,
+        field_name: undefined,
+        value_name: '',
+        local_value_name: '',
+        display_order: undefined,
+        sys_par_status: undefined,
         description: ''
     };
 
@@ -193,7 +192,7 @@ export class EditGlobalSystemParameter {
                 this.dropdownModuleNameItems = data;
 
                 // If editing, load fields for the already selected module
-                if (this.globalSystemParameter.moduleName) {
+                if (this.globalSystemParameter.module_name) {
                     this.loadFieldsForModule('');
                 }
             },
@@ -207,10 +206,10 @@ export class EditGlobalSystemParameter {
                 this.dropdownFieldItems = data;
 
                 // Optional: keep the previously selected field value
-                if (this.globalSystemParameter.fieldName?.value) {
-                    const exists = data.find(f => f.code === this.globalSystemParameter.fieldName?.value);
+                if (this.globalSystemParameter.field_name?.value) {
+                    const exists = data.find(f => f.code === this.globalSystemParameter.field_name?.value);
                     if (!exists) {
-                        this.globalSystemParameter.fieldName = undefined; // or handle invalid field
+                        this.globalSystemParameter.field_name = undefined; // or handle invalid field
                     }
                 }
             },
@@ -224,7 +223,7 @@ export class EditGlobalSystemParameter {
             this.loadFieldsForModule(selectedModule);
         } else {
             this.dropdownFieldItems = [];
-            this.globalSystemParameter.fieldName = undefined;
+            this.globalSystemParameter.field_name = undefined;
         }
     }
 

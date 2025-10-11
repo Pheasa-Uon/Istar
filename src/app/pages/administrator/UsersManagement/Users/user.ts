@@ -95,17 +95,17 @@ import { RolePermissionModel } from '../../../model/administrator/userManagement
                 </ng-template>
                 <ng-template pTemplate="body" let-user>
                     <tr>
-                        <td>{{ user.userCode }}</td>
+                        <td>{{ user.user_code }}</td>
                         <td>{{ user.username }}</td>
                         <td>{{ user.name }}</td>
-                        <td>{{ user.lastLoginAt | date: 'dd-MM-yyyy HH:mm:ss' }}</td>
+                        <td>{{ user.last_login_at | date: 'dd-MM-yyyy HH:mm:ss' }}</td>
                         <td>{{ user.email }}</td>
                         <td
                             [ngStyle]="{
-                                'color': user.userStatus === 'A' ? 'Green' :
-                                         user.userStatus === 'I' ? 'Gray' :
-                                         user.userStatus === 'B' ? 'Orange' : 'black'
-                        }">{{ user.userStatus?.label }}</td>
+                                'color': user.user_status === 'A' ? 'Green' :
+                                         user.user_status === 'I' ? 'Gray' :
+                                         user.user_status === 'B' ? 'Orange' : 'black'
+                        }">{{ user.user_status?.label }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
                                 <p-button *hasFeaturePermission="['USR','view']" icon="pi pi-eye" text raised rounded (click)="viewUser(user)"></p-button>
@@ -130,7 +130,7 @@ import { RolePermissionModel } from '../../../model/administrator/userManagement
                 </div>
 
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
-                    <div>{{ selectedUser?.userCode }}</div>
+                    <div>{{ selectedUser?.user_code }}</div>
                     <div>{{ selectedUser?.username }}</div>
                     <div>{{ selectedUser?.email }}</div>
                     <div>{{ selectedUser?.description }}</div>
@@ -154,7 +154,7 @@ import { RolePermissionModel } from '../../../model/administrator/userManagement
                         <!--                            (click)="showPassword = !showPassword"-->
                         <!--                        ></p-button>-->
                     </div>
-                    <div>{{ selectedUser?.userStatus?.label }}</div>
+                    <div>{{ selectedUser?.user_status?.label }}</div>
                 </div>
             </div>
             <p-divider></p-divider>

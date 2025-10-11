@@ -30,7 +30,7 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="userid">User Id</label>
-                        <input pInputText id="userid" type="text" [(ngModel)]="user.userCode" [readonly]="true" name="userCode" />
+                        <input pInputText id="userid" type="text" [(ngModel)]="user.user_code" [readonly]="true" name="userCode" />
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="name">Login Name <span class="text-red-500">*</span></label>
@@ -86,7 +86,7 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="status">Status</label>
-                        <p-select id="status" [(ngModel)]="user.userStatus" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" name="userStatus" class="w-full"></p-select>
+                        <p-select id="status" [(ngModel)]="user.user_status" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" name="userStatus" class="w-full"></p-select>
                     </div>
                 </div>
 
@@ -108,12 +108,12 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
 export class EditUser {
     user: User = {
         id: undefined,
-        userCode: '',
+        user_code: '',
         username: '',
         name: '',
         password: '',
         email: '',
-        userStatus: undefined,
+        user_status: undefined,
         description: ''
     };
 
@@ -141,7 +141,7 @@ export class EditUser {
             // Assign the user from navigation state directly to this.user
             this.user = {
                 ...navUser,
-                userStatus: navUser.userStatus?.value || 'I' // ensure default code if undefined
+                user_status: navUser.user_status?.value || 'I' // ensure default code if undefined
             };
 
             // Keep a copy of the original user for comparison
@@ -171,7 +171,7 @@ export class EditUser {
         if (this.user.name !== this.originalUser.name) updatedData.name = this.user.name;
         if (this.user.username !== this.originalUser.username) updatedData.username = this.user.username;
         if (this.user.email !== this.originalUser.email) updatedData.email = this.user.email;
-        if (this.user.userStatus !== this.originalUser.userStatus) updatedData.userStatus = this.user.userStatus;
+        if (this.user.user_status !== this.originalUser.user_status) updatedData.user_status = this.user.user_status;
         if (this.user.description !== this.originalUser.description) updatedData.description = this.user.description;
 
         if (Object.keys(updatedData).length === 0) {

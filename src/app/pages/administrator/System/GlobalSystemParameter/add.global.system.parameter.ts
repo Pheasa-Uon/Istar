@@ -56,29 +56,29 @@ import { GlobalSystemParameter } from '../../../model/administrator/system/globa
                             <label for="moduleName">Module Name <span class="text-red-500">*</span></label>
                             <p-select
                                 id="moduleName" name="moduleName"
-                                [(ngModel)]="globalSystemParameter.moduleName"
+                                [(ngModel)]="globalSystemParameter.module_name"
                                 [options]="dropdownModuleNameItems"
                                 optionLabel="name" optionValue="code"
                                 placeholder="Select One" class="w-full"
                                 (onChange)="onModuleChange($event)"
-                                [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.moduleName }"
+                                [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.module_name }"
                                 required>
                             </p-select>
-                            <small *ngIf="submitted && !globalSystemParameter.moduleName" class="text-red-500">Module Name is required.</small>
+                            <small *ngIf="submitted && !globalSystemParameter.module_name" class="text-red-500">Module Name is required.</small>
                         </div>
 
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="fieldName">Field Name <span class="text-red-500">*</span></label>
                             <p-select
                                 id="fieldName" name="fieldName"
-                                [(ngModel)]="globalSystemParameter.fieldName"
+                                [(ngModel)]="globalSystemParameter.field_name"
                                 [options]="dropdownFieldItems"
                                 optionLabel="name" optionValue="code"
                                 placeholder="Select One" class="w-full"
-                                [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.fieldName }"
+                                [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.field_name }"
                                 required>
                             </p-select>
-                            <small *ngIf="submitted && !globalSystemParameter.fieldName" class="text-red-500">Field Name is required.</small>
+                            <small *ngIf="submitted && !globalSystemParameter.field_name" class="text-red-500">Field Name is required.</small>
                         </div>
                     </div>
 
@@ -87,17 +87,17 @@ import { GlobalSystemParameter } from '../../../model/administrator/system/globa
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="sysParCode">Sys par code <span class="text-red-500">*</span></label>
                             <input pInputText id="sysParCode" name="sysParCode" type="text" placeholder="Sys par code"
-                                   [(ngModel)]="globalSystemParameter.sysParCode" maxlength="15"
+                                   [(ngModel)]="globalSystemParameter.sys_par_code" maxlength="15"
                                    required class="w-full"
-                                   [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.sysParCode }" />
-                            <small *ngIf="submitted && !globalSystemParameter.sysParCode" class="text-red-500">Sys par code is required.</small>
+                                   [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.sys_par_code }" />
+                            <small *ngIf="submitted && !globalSystemParameter.sys_par_code" class="text-red-500">Sys par code is required.</small>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="valueName">Value Name <span class="text-red-500">*</span></label>
                             <input pInputText id="valueName" name="valueName" type="text" placeholder="Value Name"
-                                   [(ngModel)]="globalSystemParameter.valueName" required class="w-full"
-                                   [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.valueName }" />
-                            <small *ngIf="submitted && !globalSystemParameter.valueName" class="text-red-500">Value Name is required.</small>
+                                   [(ngModel)]="globalSystemParameter.value_name" required class="w-full"
+                                   [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.value_name }" />
+                            <small *ngIf="submitted && !globalSystemParameter.value_name" class="text-red-500">Value Name is required.</small>
                         </div>
                     </div>
 
@@ -106,16 +106,16 @@ import { GlobalSystemParameter } from '../../../model/administrator/system/globa
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="localValueName">Local Value Name <span class="text-red-500">*</span></label>
                             <input pInputText id="localValueName" name="localValueName" type="text" placeholder="Local value name"
-                                   [(ngModel)]="globalSystemParameter.localValueName" required class="w-full"
-                                   [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.localValueName }" />
-                            <small *ngIf="submitted && !globalSystemParameter.localValueName" class="text-red-500">Local value name is required.</small>
+                                   [(ngModel)]="globalSystemParameter.local_value_name" required class="w-full"
+                                   [ngClass]="{ 'p-invalid': submitted && !globalSystemParameter.local_value_name }" />
+                            <small *ngIf="submitted && !globalSystemParameter.local_value_name" class="text-red-500">Local value name is required.</small>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="displayOrder">Order <span class="text-red-500">*</span></label>
                             <input pInputText id="displayOrder" name="displayOrder" type="number" placeholder="Order"
-                                   [(ngModel)]="globalSystemParameter.displayOrder" required class="w-full"
-                                   [ngClass]="{ 'p-invalid': submitted && (globalSystemParameter.displayOrder === null || globalSystemParameter.displayOrder === undefined) }" />
-                            <small *ngIf="submitted && (globalSystemParameter.displayOrder === null || globalSystemParameter.displayOrder === undefined)" class="text-red-500">
+                                   [(ngModel)]="globalSystemParameter.display_order" required class="w-full"
+                                   [ngClass]="{ 'p-invalid': submitted && (globalSystemParameter.display_order === null || globalSystemParameter.display_order === undefined) }" />
+                            <small *ngIf="submitted && (globalSystemParameter.display_order === null || globalSystemParameter.display_order === undefined)" class="text-red-500">
                                 Order is required.
                             </small>
                         </div>
@@ -126,7 +126,7 @@ import { GlobalSystemParameter } from '../../../model/administrator/system/globa
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="status">Status</label>
                             <p-select id="status" name="status"
-                                      [(ngModel)]="globalSystemParameter.sysParStatus"
+                                      [(ngModel)]="globalSystemParameter.sys_par_status"
                                       [options]="dropdownStatusItems"
                                       optionLabel="name" optionValue="code"
                                       placeholder="Select One" class="w-full"></p-select>
@@ -160,13 +160,13 @@ export class AddGlobalSystemParameter implements OnInit {
     submitted = false; // Added submitted flag like in AddUser
     globalSystemParameter: GlobalSystemParameter = {
         id: undefined,
-        sysParCode: '',
-        moduleName: undefined,
-        fieldName: undefined,
-        valueName: '',
-        localValueName: '',
-        displayOrder: undefined,
-        sysParStatus: undefined,
+        sys_par_code: '',
+        module_name: undefined,
+        field_name: undefined,
+        value_name: '',
+        local_value_name: '',
+        display_order: undefined,
+        sys_par_status: undefined,
         description: ''
     };
 
@@ -217,22 +217,22 @@ export class AddGlobalSystemParameter implements OnInit {
         this.submitted = true; // Set submitted flag like in AddUser
 
         // Validate required fields before proceeding
-        if (!this.globalSystemParameter.moduleName ||
-            !this.globalSystemParameter.fieldName ||
-            !this.globalSystemParameter.sysParCode ||
-            !this.globalSystemParameter.valueName ||
-            !this.globalSystemParameter.localValueName ||
-            this.globalSystemParameter.displayOrder === null ||
-            this.globalSystemParameter.displayOrder === undefined)
+        if (!this.globalSystemParameter.module_name ||
+            !this.globalSystemParameter.field_name ||
+            !this.globalSystemParameter.sys_par_code ||
+            !this.globalSystemParameter.value_name ||
+            !this.globalSystemParameter.local_value_name ||
+            this.globalSystemParameter.display_order === null ||
+            this.globalSystemParameter.display_order === undefined)
         {
             return; // don't proceed if required fields are missing
         }
 
         const payload = {
             ...this.globalSystemParameter,
-            moduleName: this.globalSystemParameter.moduleName?.value,
-            fieldName: this.globalSystemParameter.fieldName?.value,
-            sysParStatus: this.globalSystemParameter.sysParStatus?.value // already just 'A' or 'I'
+            moduleName: this.globalSystemParameter.module_name?.value,
+            fieldName: this.globalSystemParameter.field_name?.value,
+            sysParStatus: this.globalSystemParameter.sys_par_status?.value // already just 'A' or 'I'
         };
 
         this.globalSystemParameterService.addGlobalSystemParameter(this.globalSystemParameter).subscribe({

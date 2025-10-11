@@ -35,7 +35,7 @@ import { StringOption } from '../../../model/administrator/userManagement/role.p
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="userid">User Id</label>
                             <!--                            <input pInputText id="userid" type="text" placeholder="Auto" [readonly]="true" [(ngModel)]="user.userCode"/>-->
-                            <input pInputText id="userid" name="userCode" type="text" placeholder="Auto" [readonly]="true" [(ngModel)]="user.userCode" />
+                            <input pInputText id="userid" name="userCode" type="text" placeholder="Auto" [readonly]="true" [(ngModel)]="user.user_code" />
                         </div>
 
                         <div class="flex flex-wrap gap-2 w-full">
@@ -73,7 +73,7 @@ import { StringOption } from '../../../model/administrator/userManagement/role.p
 
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="status">Status</label>
-                            <p-select id="status" name="status" [(ngModel)]="user.userStatus" [options]="dropdownItems" optionLabel="label" placeholder="Select One" class="w-full"></p-select>
+                            <p-select id="status" name="status" [(ngModel)]="user.user_status" [options]="dropdownItems" optionLabel="label" placeholder="Select One" class="w-full"></p-select>
                         </div>
                     </div>
 
@@ -98,12 +98,12 @@ import { StringOption } from '../../../model/administrator/userManagement/role.p
 export class AddUser {
     submitted = false;
     user: User = {
-        userCode: '',
+        user_code: '',
         name: '',
         username: '',
         password: '',
         email: '',
-        userStatus: undefined,
+        user_status: undefined,
         description: ''
     };
 
@@ -126,7 +126,7 @@ export class AddUser {
         this.permissionService.loadFromCache();
 
         // set default after dropdownItems is initialized
-        this.user.userStatus = this.dropdownItems[0]; // default to Active
+        this.user.user_status = this.dropdownItems[0]; // default to Active
     }
 
     goBack() {
@@ -136,7 +136,7 @@ export class AddUser {
     saveUser() {
         this.submitted = true;
 
-        if (!this.user.name || !this.user.userStatus?.value
+        if (!this.user.name || !this.user.user_status?.value
             || !this.user.username || !this.user.password || !this.user.email
         ) {
             return; // don't proceed if required fields missing
@@ -145,7 +145,7 @@ export class AddUser {
         const payload = {
             ...this.user,
             id: undefined,
-            userStatus: this.user.userStatus.value // send only the value
+            user_status: this.user.user_status.value // send only the value
         };
 
         this.userService.addUser(payload).subscribe({

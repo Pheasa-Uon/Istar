@@ -5,15 +5,15 @@ export interface StringOption {
 
 export interface GlobalSystemParameter {
     id?: number;
-    sysParCode?: string;
-    moduleName?: StringOption;
-    fieldName?: StringOption;
-    valueName?: string;
-    localValueName?: string;
-    displayOrder?: number;
-    sysParStatus?: StringOption;
+    sys_par_code?: string;
+    module_name?: StringOption;
+    field_name?: StringOption;
+    value_name?: string;
+    local_value_name?: string;
+    display_order?: number;
+    sys_par_status?: StringOption;
     description?: string;
-    bstatus?: boolean;
-    createdAt?: string;
-    updatedAt?: string;
+    status?: boolean;
+    created_at?: string;
+    updated_at?: string;
 }

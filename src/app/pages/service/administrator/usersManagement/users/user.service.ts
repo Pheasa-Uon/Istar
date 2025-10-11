@@ -12,7 +12,7 @@ export class UserService {
 
     constructor(private http: HttpClient) {}
 
-    addUser(user: { id: undefined; userCode: string; username: string; name: string; password: string; email: string; userStatus: string; description: string; lastLoginAt?: string | Date }): Observable<User> {
+    addUser(user: { id: undefined; user_code: string; username: string; name: string; password: string; email: string; user_status: string; description: string; last_login_at?: string | Date }): Observable<User> {
         return this.http.post<User>(this.userUrl, user);
     }
 

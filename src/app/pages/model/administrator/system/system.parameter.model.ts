@@ -5,8 +5,8 @@ export interface StringOption {
 
 export interface SystemParameterModel {
     id?: number | undefined;
-    parameterModule?: StringOption;
-    parameterName: string;
-    parameterValue: string;
+    parameter_module?: StringOption;
+    parameter_name: string;
+    parameter_value: string;
     description: string;
 }
