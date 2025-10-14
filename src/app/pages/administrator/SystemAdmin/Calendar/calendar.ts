@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -17,11 +18,15 @@ import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
 import { BranchModel } from '../../../model/administrator/systemAdmin/branch.model';
+import { HolidayModel } from '../../../model/administrator/systemAdmin/holiday.model';
+import { Dialog } from 'primeng/dialog';
+import { Divider } from 'primeng/divider';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 
 @Component({
     selector: 'app-calendar',
     standalone: true,
-    imports: [CommonModule, TableModule, CheckboxModule, MessagesComponent, FormsModule, Button, Fluid, HasPermissionDirective, IconField, InputIcon, InputText],
+    imports: [CommonModule, TableModule, CheckboxModule, MessagesComponent, FormsModule, Button, Fluid, HasPermissionDirective, IconField, InputIcon, InputText, Dialog, Divider, ConfirmDialog],
     template: `
         <app-messages></app-messages>
 
@@ -63,6 +68,7 @@ import { BranchModel } from '../../../model/administrator/systemAdmin/branch.mod
 
             <div class="border-t border-gray-200 my-8"></div>
 
+            <!-- Holiday Code -->
             <div class="font-semibold text-xm mb-4">Holiday</div>
 
             <p-fluid class="flex flex-col md:flex-row gap-2 justify-end items-center">
@@ -85,75 +91,70 @@ import { BranchModel } from '../../../model/administrator/systemAdmin/branch.mod
             </p-fluid>
 
             <p-table
-                [value]="branchList"
+                [value]="holidayList"
                 [rows]="5"
                 [paginator]="true"
                 [rowHover]="true"
                 dataKey="id"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} branch"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} holiday"
                 [showCurrentPageReport]="true"
                 [rowsPerPageOptions]="[5, 10, 15, 20, 25, 30]"
             >
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="min-width:150px">Branch Code</th>
-                        <th style="min-width:150px">Branch Name</th>
-                        <th style="min-width:250px">Branch Prefix</th>
-                        <th style="min-width:200px">City/Province</th>
-                        <th style="min-width:150px">Phone</th>
-                        <th style="min-width:100px">Online</th>
-                        <th style="min-width:200px">Actions</th>
+                        <th style="min-width:100px">Holiday Date</th>
+                        <th style="min-width:200px">Holiday Name</th>
+                        <th style="min-width:300px">Description</th>
+                        <th style="min-width:100px">Actions</th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-branch>
+                <ng-template pTemplate="body" let-holiday>
                     <tr>
-                        <td>{{ branch.branch_code }}</td>
-                        <td>{{ branch.branch_name }}</td>
-                        <td>{{ branch.branch_prefix }}</td>
-                        <td>{{ branch.province?.label }}</td>
-                        <td>{{ branch.phone }}</td>
-                        <td
-                            [ngStyle]="{
-                                'color': branch.online_status?.value === true ? 'Green' :
-                                         branch.online_status?.value === false ? 'Gray' : 'black'
-                        }">
-                            {{ branch.online_status?.label }}
-                        </td>
-
+                        <td>{{ holiday.holiday_date }}</td>
+                        <td>{{ holiday.holiday_name }}</td>
+                        <td>{{ holiday.description }}</td>
                         <td>
                             <div class="flex flex-wrap gap-1">
-                                <p-button *hasFeaturePermission="['CAL','view']"
-                                          icon="pi pi-eye"
-                                          text
-                                          raised
-                                          rounded
-                                          (click)="view(branch)">
-                                </p-button>
+                                <p-button *hasFeaturePermission="['CAL', 'view']" icon="pi pi-eye" text raised rounded (click)="view(holiday)"> </p-button>
 
-                                <p-button *hasFeaturePermission="['CAL','edit']"
-                                          icon="pi pi-pencil"
-                                          severity="info"
-                                          text
-                                          raised
-                                          rounded
-                                          (click)="edit(branch)">
-                                </p-button>
+                                <p-button *hasFeaturePermission="['CAL', 'edit']" icon="pi pi-pencil" severity="info" text raised rounded (click)="edit(holiday)"> </p-button>
 
-                                <p-button *hasFeaturePermission="['CAL','deleted']"
-                                          icon="pi pi-trash"
-                                          severity="danger"
-                                          text
-                                          raised
-                                          rounded
-                                          (click)="delete(branch)">
-                                </p-button>
+                                <p-button *hasFeaturePermission="['CAL', 'deleted']" icon="pi pi-trash" severity="danger" text raised rounded (click)="delete(holiday)"> </p-button>
                             </div>
                         </td>
                     </tr>
                 </ng-template>
             </p-table>
 
+            <!-- View Holiday Dialog -->
+            <p-dialog header="View Holiday Details" [(visible)]="displayDetails" [modal]="true" [style]="{ width: '1100px' }" [closable]="true">
+                <p-divider></p-divider>
+                <div class="flex flex-col md:flex-row">
+                    <!-- Labels Column 1 -->
+                    <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
+                        <div><strong>Holiday date:</strong></div>
+                        <div><strong>Description:</strong></div>
+                    </div>
 
+                    <!-- Values Column 1 -->
+                    <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
+                        <div>{{ selectedHoliday?.holiday_date }}</div>
+                        <div>{{ selectedHoliday?.description }}</div>
+                    </div>
+
+                    <!-- Labels Column 2 -->
+                    <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
+                        <div><strong>Holiday name:</strong></div>
+                    </div>
+
+                    <!-- Values Column 2 -->
+                    <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">
+                        <div>{{ selectedHoliday?.holiday_name }}</div>
+                    </div>
+                </div>
+            </p-dialog>
+
+            <p-confirmdialog [style]="{ width: '450px' }" />
         </div>
     `
 })
@@ -165,13 +166,14 @@ export class CalendarComponent implements OnInit {
     // Holiday
     searchText = '';
     loading = [false];
-    branchList: BranchModel[] = [];
-    selectedBranch: BranchModel | null = null;
+    holidayList: HolidayModel[] = [];
+    selectedHoliday: HolidayModel | null = null;
     displayDetails = false;
 
     constructor(
         private workingDayService: WorkingDayService,
         private permissionService: FeaturePermissionService,
+        private router: Router,
         private messageService: MessageService
     ) {
         this.permissionService.loadPermissions();
@@ -247,7 +249,7 @@ export class CalendarComponent implements OnInit {
     }
 
     addNew() {
-        //this.router.navigate(['/add-branch']);
+        this.router.navigate(['/add-holiday']);
     }
 
     edit(branch: BranchModel) {

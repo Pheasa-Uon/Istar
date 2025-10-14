@@ -37,18 +37,18 @@ export class BranchService {
     }
 
     // ✅ Create new Branch
-    addBranch(country: BranchModel): Observable<BranchModel> {
-        return this.http.post<BranchModel>(this.apiUrl, country, { headers: this.getAuthHeaders() });
+    addBranch(branch: BranchModel): Observable<BranchModel> {
+        return this.http.post<BranchModel>(this.apiUrl, branch, { headers: this.getAuthHeaders() });
     }
 
     // ✅ Update existing Branch
-    updateBranch(country: BranchModel): Observable<BranchModel> {
-        return this.http.put<BranchModel>(`${this.apiUrl}/${country.id}`, country, { headers: this.getAuthHeaders() });
+    updateBranch(branch: BranchModel): Observable<BranchModel> {
+        return this.http.put<BranchModel>(`${this.apiUrl}/${branch.id}`, branch, { headers: this.getAuthHeaders() });
     }
 
     // ✅ Delete Branch
-    deleteBranch(countryId: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/${countryId}`, { headers: this.getAuthHeaders() });
+    deleteBranch(branchId: number): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/${branchId}`, { headers: this.getAuthHeaders() });
     }
 
     // ✅ Search Branch

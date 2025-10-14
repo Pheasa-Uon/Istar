@@ -24,6 +24,7 @@ export const environment = {
             department: '/system-admin/department',
             exchangeRate: '/system-admin/exchange-rate',
             workingDay: '/system-admin/working-day',
+            holiday: '/system-admin/holiday',
         }
 
     }
