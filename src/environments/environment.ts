@@ -23,6 +23,7 @@ export const environment = {
             branch: '/system-admin/branch',
             department: '/system-admin/department',
             exchangeRate: '/system-admin/exchange-rate',
+            workingDay: '/system-admin/working-day',
         }
 
     }

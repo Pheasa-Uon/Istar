@@ -12,6 +12,9 @@ import { GlobalPolicyComponent } from './administrator/System/GlobalPolicy/globa
 import { BranchComponent } from './administrator/SystemAdmin/Branch/branch';
 import { DepartmentComponent } from './administrator/SystemAdmin/Department/department';
 import { ExchangeRateComponent } from './administrator/SystemAdmin/ExchangeRate/exchange.rate';
+import {
+    CalendarComponent
+} from './administrator/SystemAdmin/Calendar/calendar';
 
 export default [
     { path: 'documentation', component: Documentation },
@@ -27,6 +30,7 @@ export default [
     { path: 'branch', component: BranchComponent },
     { path: 'department', component: DepartmentComponent },
     { path: 'exchange-rate', component: ExchangeRateComponent },
+    { path: 'calendar', component: CalendarComponent },
 
     //{ path: '', redirectTo: 'user', pathMatch: 'full' },
     { path: '**', redirectTo: '/notfound' }

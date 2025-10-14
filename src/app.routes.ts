@@ -35,6 +35,7 @@ import { DepartmentComponent } from './app/pages/administrator/SystemAdmin/Depar
 import { AddDepartment } from './app/pages/administrator/SystemAdmin/Department/add.department';
 import { EditDepartment } from './app/pages/administrator/SystemAdmin/Department/edit.department';
 import { ExchangeRateComponent } from './app/pages/administrator/SystemAdmin/ExchangeRate/exchange.rate';
+import { CalendarComponent } from './app/pages/administrator/SystemAdmin/Calendar/calendar';
 
 export const appRoutes: Routes = [
 
@@ -105,6 +106,7 @@ export const appRoutes: Routes = [
             { path: 'edit-department', component: EditDepartment },
 
             { path: 'exchange-rate', component: ExchangeRateComponent },
+            { path: 'calendar', component: CalendarComponent },
 
             // Lazy loaded modules - make sure these modules exist and export NgModule classes
             { path: 'uikit', loadChildren: () => import('./app/UI/uikit/uikit.routes') },
