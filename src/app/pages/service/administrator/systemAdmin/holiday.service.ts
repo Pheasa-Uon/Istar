@@ -7,6 +7,7 @@ import { HolidayModel } from '../../../model/administrator/systemAdmin/holiday.m
 
 @Injectable({ providedIn: 'root' })
 export class HolidayService {
+
     private apiUrl = environment.apiBase + environment.apiEndpoints.systemAdmin.holiday;
 
     constructor(private http: HttpClient) {}
