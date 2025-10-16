@@ -114,7 +114,7 @@ import { GlobalSystemParameter } from '../../../model/administrator/system/globa
         </div>
 
         <!-- View Global System Parameter Dialog -->
-        <p-dialog header="Global System Parameter Details"
+        <p-dialog header="View Details"
                   [(visible)]="displayDetails"
                   [modal]="true"
                   [style]="{ width: '1200px' }"

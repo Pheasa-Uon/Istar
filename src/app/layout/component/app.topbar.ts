@@ -17,11 +17,10 @@ import { MessageService } from '../../pages/message/message.service';
             <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
                 <i class="pi pi-bars"></i>
             </button>
-            <a class="layout-topbar-logo" routerLink="/dashboard">
-                <img src="assets/image/midas.png" alt="Istar Business Intelligence" style="height: 35px; width: auto; margin-right: 25px;">
-                <!--
+                <!-- <a class="layout-topbar-logo" routerLink="/dashboard"> -->
+                <!-- <img src="assets/image/midas.png" alt="Istar Business Intelligence" style="height: 35px; width: auto; margin-right: 25px;">-->
+
                 <a class="layout-topbar-logo" routerLink="/dashboard" style="display: flex; align-items: center; text-decoration: none;">
-                <img src="assets/image/logo_istar.png" alt="Istar Business Intelligence" style="height: 35px; width: auto; margin-right: 10px;">
                 <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         fill-rule="evenodd"
@@ -39,8 +38,7 @@ import { MessageService } from '../../pages/message/message.service';
                         />
                     </g>
                 </svg>
-                <span style="white-space: nowrap; font-weight: bold;">Istar Business Intelligence</span>
-                -->
+                <span style="white-space: nowrap; font-weight: bold; color: white;">CIDI Core Banking System</span>
             </a>
         </div>
 

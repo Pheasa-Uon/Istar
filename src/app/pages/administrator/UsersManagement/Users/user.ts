@@ -119,7 +119,7 @@ import { RolePermissionModel } from '../../../model/administrator/userManagement
         </div>
 
         <!-- View User Dialog -->
-        <p-dialog header="User Details" [(visible)]="displayDetails" [modal]="true" [style]="{ width: '1100px' }" [closable]="true">
+        <p-dialog header="View Details" [(visible)]="displayDetails" [modal]="true" [style]="{ width: '1200px' }" [closable]="true">
             <p-divider></p-divider>
             <div class="flex flex-col md:flex-row">
                 <div class="w-full md:w-1/4 flex flex-col space-y-6 py-5">

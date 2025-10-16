@@ -8,8 +8,9 @@ export const environment = {
         usersManagement: {
             users: '/users',
             roles: '/roles',
-            rolePermissions: '/rolepermissions',
-            userRoles: '/userroles',
+            rolePermissions: '/role-permissions',
+            userRoles: '/user-roles',
+            userBranch: '/user-branches',
         },
         system: {
             converterName: '/converter-name',

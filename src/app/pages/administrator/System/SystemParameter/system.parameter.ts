@@ -106,7 +106,7 @@ import { SPDropdownItemService } from '../../../service/administrator/system/sys
         </div>
 
         <!-- View Global System Parameter Dialog -->
-        <p-dialog header="System Parameter Details"
+        <p-dialog header="View Details"
                   [(visible)]="displayDetails"
                   [modal]="true"
                   [style]="{ width: '1200px' }"

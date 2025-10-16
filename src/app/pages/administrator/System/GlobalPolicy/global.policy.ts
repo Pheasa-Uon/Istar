@@ -119,7 +119,7 @@ import { Time12HourPipe } from '../../../utils/time12-hour.pipe';
         </div>
 
         <!-- View Global Policy Dialog -->
-        <p-dialog header="View Global Policy Details"
+        <p-dialog header="View Details"
                   [(visible)]="displayDetails"
                   [modal]="true"
                   [style]="{ width: '1200px' }"

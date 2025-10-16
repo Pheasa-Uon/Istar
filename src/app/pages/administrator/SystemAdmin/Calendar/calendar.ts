@@ -183,7 +183,7 @@ import { DateFormatPipe } from '../../../utils/date-format.pipe';
                 header="View Details"
                 [(visible)]="displayDetails"
                 [modal]="true"
-                [style]="{ width: '1200px', height: '300px' }"
+                [style]="{ width: '1200px' }"
                 [closable]="true"
             >
                 <p-divider></p-divider>

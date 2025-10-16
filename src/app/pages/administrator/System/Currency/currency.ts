@@ -143,10 +143,10 @@ import { CurrencyService } from '../../../service/administrator/system/currency.
         </div>
 
         <!-- View User Dialog -->
-        <p-dialog header="Currency Details"
+        <p-dialog header="View Details"
                   [(visible)]="displayDetails"
                   [modal]="true"
-                  [style]="{ width: '1100px' }"
+                  [style]="{ width: '1200px' }"
                   [closable]="true">
             <p-divider></p-divider>
             <div class="flex flex-col md:flex-row">
