@@ -150,7 +150,7 @@ import { BranchModel } from '../../../model/administrator/systemAdmin/branch.mod
         </div>
 
         <!-- View User Dialog -->
-        <p-dialog header="View Branch Details"
+        <p-dialog header="View Details"
                   [(visible)]="displayDetails"
                   [modal]="true"
                   [style]="{ width: '1100px' }"
