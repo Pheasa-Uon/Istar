@@ -180,7 +180,7 @@ import { DateFormatPipe } from '../../../utils/date-format.pipe';
 
             <!-- View Holiday Dialog -->
             <p-dialog
-                header="View Holiday Details"
+                header="View Details"
                 [(visible)]="displayDetails"
                 [modal]="true"
                 [style]="{ width: '1200px', height: '300px' }"
