@@ -4,38 +4,32 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { TextareaModule } from 'primeng/textarea';
+import { Select } from 'primeng/select';
+import { Textarea } from 'primeng/textarea';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { MessageService } from '../../../message/message.service';
-import { MessagesComponent } from '../../../message/message';
+import { MessagesComponent } from '../../../message/message'; // adjust path if needed
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
+import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
+
+import { ToggleSwitch } from 'primeng/toggleswitch';
+import { DepartmentModel } from '../../../model/administrator/systemAdmin/department.model';
+import { DepartmentService } from '../../../service/administrator/systemAdmin/department.service';
 import { HolidayModel } from '../../../model/administrator/systemAdmin/holiday.model';
 import { HolidayService } from '../../../service/administrator/systemAdmin/holiday.service';
-import { DialogModule } from 'primeng/dialog';
-import { DatePickerModule } from 'primeng/datepicker';
+import { DatePicker } from 'primeng/datepicker';
 
 @Component({
-    selector: 'app-add-holiday',
+    selector: 'app-edit-holiday',
     standalone: true,
-    imports: [
-        CommonModule,
-        FormsModule,
-        InputTextModule,
-        ButtonModule,
-        TextareaModule,
-        ButtonGroup,
-        MessagesComponent,
-        HasPermissionDirective,
-        DialogModule,
-        DatePickerModule
-    ],
+    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Textarea, ButtonGroup, MessagesComponent, HasPermissionDirective, DatePicker],
     template: `
         <app-messages></app-messages>
 
         <form #Form="ngForm" (ngSubmit)="save()" novalidate>
             <div class="p-fluid">
                 <div class="card flex flex-col gap-6 w-full p-4">
-                    <div class="font-semibold text-xl">Add New Holiday</div>
+                    <div class="font-semibold text-xl">Edit Holiday</div>
 
                     <div class="border-t border-gray-200 my-4"></div>
 
@@ -61,17 +55,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 
                         <div class="flex flex-col gap-2 w-full">
                             <label for="holidayName">Holiday Name <span class="text-red-500">*</span></label>
-                            <input
-                                pInputText
-                                id="holidayName"
-                                name="holidayName"
-                                type="text"
-                                placeholder="Holiday name"
-                                [(ngModel)]="holiday.holiday_name"
-                                required
-                                class="w-full"
-                                [ngClass]="{ 'p-invalid': submitted && !holiday.holiday_name }"
-                            />
+                            <input pInputText id="holidayName" name="holidayName" type="text" placeholder="Holiday name" [(ngModel)]="holiday.holiday_name" required class="w-full" [ngClass]="{ 'p-invalid': submitted && !holiday.holiday_name }" />
                             <small *ngIf="submitted && !holiday.holiday_name" class="text-red-500">Holiday name is required.</small>
                         </div>
                     </div>
@@ -85,7 +69,7 @@ import { DatePickerModule } from 'primeng/datepicker';
                     <!-- Buttons -->
                     <div class="card flex flex-wrap gap-0 w-full justify-end">
                         <p-buttongroup>
-                            <p-button *hasFeaturePermission="['CAL', 'save']" type="submit" label="Create New" icon="pi pi-plus-circle" [disabled]="Form.invalid"></p-button>
+                            <p-button *hasFeaturePermission="['CAL', 'save']" type="submit" label="Save" icon="pi pi-check" [disabled]="Form.invalid" />
                             <p-button *hasFeaturePermission="['CAL', 'cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
                         </p-buttongroup>
                     </div>
@@ -94,7 +78,7 @@ import { DatePickerModule } from 'primeng/datepicker';
         </form>
     `
 })
-export class AddHolidayComponent implements OnInit {
+export class EditHolidayComponent implements OnInit {
     submitted = false;
 
     holiday: HolidayModel = {
@@ -107,8 +91,21 @@ export class AddHolidayComponent implements OnInit {
     constructor(
         private router: Router,
         private holidayService: HolidayService,
-        private messageService: MessageService
-    ) {}
+        private messageService: MessageService,
+        private permissionService: FeaturePermissionService
+    ) {
+        const navigation = this.router.getCurrentNavigation();
+        if (navigation?.extras.state?.['holiday']) {
+            const holiday = { ...navigation.extras.state['holiday'] };
+
+            holiday.holiday_date = holiday.holiday_date ? new Date(holiday.holiday_date) : undefined;
+
+            this.holiday = holiday;
+        }
+
+        this.permissionService.loadPermissions();
+        this.permissionService.loadFromCache();
+    }
 
     ngOnInit(): void {}
 
@@ -119,26 +116,29 @@ export class AddHolidayComponent implements OnInit {
     save() {
         this.submitted = true;
 
-        if (!this.holiday.holiday_date || !this.holiday.holiday_name) {
+        if (!this.holiday.holiday_name) {
+            this.messageService.show({
+                severity: 'error',
+                summary: 'Validation Error',
+                detail: 'Department name is required.'
+            });
             return;
         }
 
-        this.holidayService.addHoliday(this.holiday).subscribe({
-            next: (response) => {
-                console.log('✅ Server response:', response);
+        this.holidayService.updateHoliday(this.holiday).subscribe({
+            next: () => {
                 this.messageService.show({
                     severity: 'success',
                     summary: 'Success',
-                    detail: typeof response === 'string' ? response : 'Holiday created successfully!'
+                    detail: 'Country updated successfully!'
                 });
                 setTimeout(() => this.goBack(), 1000);
             },
-            error: (error) => {
-                console.error('❌ Error creating holiday:', error);
+            error: () => {
                 this.messageService.show({
                     severity: 'error',
                     summary: 'Error',
-                    detail: 'Holiday creation failed. Please try again.'
+                    detail: 'Country update failed.'
                 });
             }
         });

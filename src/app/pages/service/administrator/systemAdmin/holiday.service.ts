@@ -4,7 +4,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { HolidayModel } from '../../../model/administrator/systemAdmin/holiday.model';
 
-
 @Injectable({ providedIn: 'root' })
 export class HolidayService {
 
@@ -34,9 +33,12 @@ export class HolidayService {
         return this.http.get<HolidayModel>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
     }
 
-    // ✅ Create new Holiday
-    addHoliday(holiday: HolidayModel): Observable<HolidayModel> {
-        return this.http.post<HolidayModel>(this.apiUrl, holiday, { headers: this.getAuthHeaders() });
+    // ✅ Create new Holiday (fix applied here)
+    addHoliday(holiday: HolidayModel): Observable<any> {
+        return this.http.post(this.apiUrl, holiday, {
+            headers: this.getAuthHeaders(),
+            responseType: 'text' // ✅ prevents JSON parsing error
+        });
     }
 
     // ✅ Update existing Holiday
