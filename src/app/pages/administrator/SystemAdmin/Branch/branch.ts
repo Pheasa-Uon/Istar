@@ -153,7 +153,7 @@ import { BranchModel } from '../../../model/administrator/systemAdmin/branch.mod
         <p-dialog header="View Details"
                   [(visible)]="displayDetails"
                   [modal]="true"
-                  [style]="{ width: '1100px' }"
+                  [style]="{ width: '1200px' }"
                   [closable]="true">
             <p-divider></p-divider>
             <div class="flex flex-col md:flex-row">
