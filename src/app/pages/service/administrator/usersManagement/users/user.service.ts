@@ -4,11 +4,13 @@ import { environment } from '../../../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { RolePermissionModel } from '../../../../model/administrator/userManagement/role.permission.model';
 import { User } from '../../../../model/administrator/userManagement/user.model';
+import { UserBranchModel } from '../../../../model/administrator/userManagement/user.branch';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
     private userUrl = environment.apiBase + environment.apiEndpoints.usersManagement.users;
     private roleUrl = environment.apiBase + environment.apiEndpoints.usersManagement.userRoles;
+    private branchUrl = environment.apiBase + environment.apiEndpoints.usersManagement.userBranch;
 
     constructor(private http: HttpClient) {}
 
@@ -62,5 +64,17 @@ export class UserService {
 
     getUserRoles(userId: number): Observable<RolePermissionModel[]> {
         return this.http.get<RolePermissionModel[]>(`${this.roleUrl}/${userId}`);
+    }
+
+    assignBranch(data: { userId: number; branchId: number }) {
+        return this.http.post(`${this.branchUrl}/assign`, data);
+    }
+
+    removeBranch(data: { userId: number; branchId: number }) {
+        return this.http.post(`${this.branchUrl}/remove`, data);
+    }
+
+    getUserBranches(userId: number): Observable<UserBranchModel[]> {
+        return this.http.get<UserBranchModel[]>(`${this.branchUrl}/${userId}`);
     }
 }
