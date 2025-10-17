@@ -1,29 +1,23 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-    const token = localStorage.getItem('authToken'); // adjust key if needed
-    if (token) {
-        req = req.clone({
-            headers: req.headers.set('Authorization', `Bearer ${token}`)
-        });
-    }
-    return next(req);
+    const router = inject(Router);
+    const token = localStorage.getItem('authToken');
+
+    const clonedReq = token ? req.clone({
+        headers: req.headers.set('Authorization', `Bearer ${token}`)
+    }) : req;
+
+    return next(clonedReq).pipe(
+        catchError(err => {
+            if (err.status === 401) {
+                localStorage.removeItem('authToken');
+                router.navigate(['/login']); // auto-redirect to login
+            }
+            return throwError(() => err);
+        })
+    );
 };
-
-
-// import { HttpEvent, HttpHandler, HttpInterceptor, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
-// import { Injectable } from '@angular/core';
-// import { Observable } from 'rxjs';
-//
-// @Injectable()
-// export class AuthInterceptor implements HttpInterceptor {
-//     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-//         const token = localStorage.getItem('authTolen');
-//         if (token) {
-//             req = req.clone({
-//                 headers: req.headers.set('Authorization', `Bearer ${token}`)
-//             });
-//         }
-//         return next.handle(req);
-//     }
-// }

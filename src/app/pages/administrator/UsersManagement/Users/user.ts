@@ -21,7 +21,7 @@ import { UserService } from '../../../service/administrator/usersManagement/user
 import { RolePermissionService } from '../../../service/administrator/usersManagement/rolepermissions/role.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
-import { User } from '../../../model/administrator/userManagement/user.model';
+import { UserResponse } from '../../../model/administrator/userManagement/user.model';
 import { RolePermissionModel } from '../../../model/administrator/userManagement/role.permission.model';
 
 @Component({
@@ -194,12 +194,12 @@ import { RolePermissionModel } from '../../../model/administrator/userManagement
     `
 })
 export class UsersComponent {
-    usersList: User[] = [];
+    usersList: UserResponse[] = [];
     roleList: RolePermissionModel[] = [];
     loading = [false];
     searchText = '';
     displayDetails = false;
-    selectedUser: User | null = null;
+    selectedUser: UserResponse | null = null;
     showPassword = false;
 
     constructor(
@@ -229,7 +229,7 @@ export class UsersComponent {
         });
     }
 
-    viewUser(user: User) {
+    viewUser(user: UserResponse) {
         this.selectedUser = user;
         this.showPassword = false;
         this.displayDetails = true;
@@ -258,11 +258,11 @@ export class UsersComponent {
         this.router.navigate(['/add-user']);
     }
 
-    editUser(user: User) {
+    editUser(user: UserResponse) {
         this.router.navigate(['/edit-user'], { state: { user } });
     }
 
-    deleteUser(user: User) {
+    deleteUser(user: UserResponse) {
         this.confirmationService.confirm({
             message: `Are you sure you want to delete user "${user.name}"?`,
             header: 'Confirm',

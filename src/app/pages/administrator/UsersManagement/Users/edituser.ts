@@ -8,105 +8,110 @@ import { Select } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
 import { Fluid } from 'primeng/fluid';
 import { ButtonGroup } from 'primeng/buttongroup';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { UserService } from '../../../service/administrator/usersManagement/users/user.service';
-import { User } from '../../../model/administrator/userManagement/user.model';
+import { BranchService } from '../../../service/administrator/systemAdmin/branch.service';
+import { UserResponse } from '../../../model/administrator/userManagement/user.model';
+import { UserBranchModel } from '../../../model/administrator/userManagement/user.branch';
+import { StringOption } from '../../../model/administrator/userManagement/role.permission.model';
 import { MessageService } from '../../../message/message.service';
-import { MessagesComponent } from '../../../message/message';
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
+import { MessagesComponent } from '../../../message/message';
 
 @Component({
     selector: 'app-edit-user',
     standalone: true,
-    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, Fluid, ButtonGroup, MessagesComponent, HasPermissionDirective],
+    imports: [
+        CommonModule,
+        FormsModule,
+        InputTextModule,
+        ButtonModule,
+        Select,
+        Textarea,
+        Fluid,
+        ButtonGroup,
+        MessagesComponent,
+        HasPermissionDirective,
+        MultiSelectModule
+    ],
     template: `
-
         <app-messages></app-messages>
+        <form #userForm="ngForm" (ngSubmit)="saveUser()" novalidate>
+            <p-fluid>
+                <div class="card flex flex-col gap-6 w-full">
+                    <div class="font-semibold text-xl">Edit User Profile</div>
+                    <div class="border-t border-gray-200 my-4"></div>
 
-        <p-fluid>
-            <form class="card flex flex-col gap-6 w-full" (ngSubmit)="saveUser()">
-                <div class="font-semibold text-xl">Edit User Profile</div>
-                <div class="border-t border-gray-200 my-4"></div>
-                <div class="flex flex-col md:flex-row gap-6">
-                    <div class="flex flex-wrap gap-2 w-full">
-                        <label for="userid">User Id</label>
-                        <input pInputText id="userid" type="text" [(ngModel)]="user.user_code" [readonly]="true" name="userCode" />
-                    </div>
-                    <div class="flex flex-wrap gap-2 w-full">
-                        <label for="name">Login Name <span class="text-red-500">*</span></label>
-                        <input pInputText id="name" type="text" [(ngModel)]="user.name" name="name" required />
-                    </div>
-                </div>
-
-                <div class="flex flex-col md:flex-row gap-6">
-                    <div class="flex flex-wrap gap-2 w-full">
-                        <label for="username">Username <span class="text-red-500">*</span></label>
-                        <input pInputText id="username" type="text" [(ngModel)]="user.username" name="username" required />
-                    </div>
-                    <!--                    <div class="flex flex-wrap gap-2 w-full">-->
-                    <!--                        <label for="password">Password <span class="text-red-500">*</span></label>-->
-                    <!--                        <div class="flex w-full items-center gap-2">-->
-                    <!--                            <input-->
-                    <!--                                pInputText-->
-                    <!--                                id="password"-->
-                    <!--                                [type]="showPassword ? 'text' : 'password'"-->
-                    <!--                                [(ngModel)]="user.password"-->
-                    <!--                                name="password"-->
-                    <!--                                class="flex-1"-->
-                    <!--                            />-->
-                    <!--                            <button-->
-                    <!--                                type="button"-->
-                    <!--                                pButton-->
-                    <!--                                icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}"-->
-                    <!--                                (click)="showPassword = !showPassword"-->
-                    <!--                                class="p-button-sm"-->
-                    <!--                            ></button>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
-                    <div class="flex flex-wrap gap-2 w-full">
-                        <label for="password">Password <span class="text-red-500">*</span></label>
-                        <div class="flex w-full items-center gap-2">
-                            <input pInputText id="password" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="user.password" name="password" class="flex-1" [readonly]="true" />
-                            <button
-                                type="button"
-                                pButton
-                                icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}"
-                                (click)="showPassword = !showPassword"
-                                [disabled]="!user.password || user.password.trim().length === 0"
-                                class="p-button-sm"
-                            ></button>
+                    <!-- User Info -->
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label>User Id</label>
+                            <input pInputText [(ngModel)]="user.user_code" name="userCode" readonly class="w-full" />
+                        </div>
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label>Login Name <span class="text-red-500">*</span></label>
+                            <input pInputText [(ngModel)]="user.name" name="name" required class="w-full" />
                         </div>
                     </div>
-                </div>
 
-                <div class="flex flex-col md:flex-row gap-6">
-                    <div class="flex flex-wrap gap-2 w-full">
-                        <label for="email">Email <span class="text-red-500">*</span></label>
-                        <input pInputText id="email" type="email" [(ngModel)]="user.email" name="email" required />
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label>Username <span class="text-red-500">*</span></label>
+                            <input pInputText [(ngModel)]="user.username" name="username" required class="w-full" />
+                        </div>
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label>Password</label>
+                            <input pInputText [(ngModel)]="user.password" name="password" type="password" readonly class="w-full" />
+                        </div>
                     </div>
+
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label>Email <span class="text-red-500">*</span></label>
+                            <input pInputText [(ngModel)]="user.email" name="email" required class="w-full" />
+                        </div>
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label>Status</label>
+                            <p-select [(ngModel)]="user.user_status" name="status" [options]="dropdownItems" optionLabel="label" optionValue="value" placeholder="Select One" class="w-full"></p-select>
+                        </div>
+                    </div>
+
+                    <!-- Branch MultiSelect -->
+                    <div class="flex flex-col w-full">
+                        <label>Branch</label>
+                        <p-multiselect
+                            [options]="dropdownBranchItems"
+                            [(ngModel)]="selectedBranches"
+                            [ngModelOptions]="{standalone: true}"
+                            optionLabel="label"
+                            optionValue="id"
+                            placeholder="Select Branch"
+                            display="chip"
+                            [filter]="true">
+                        </p-multiselect>
+                    </div>
+
+                    <!-- Description -->
                     <div class="flex flex-wrap gap-2 w-full">
-                        <label for="status">Status</label>
-                        <p-select id="status" [(ngModel)]="user.user_status" [options]="dropdownItems" optionLabel="name" optionValue="code" placeholder="Select One" name="userStatus" class="w-full"></p-select>
+                        <label>Description</label>
+                        <textarea pTextarea [(ngModel)]="user.description" name="description" rows="4" class="w-full"></textarea>
+                    </div>
+
+                    <!-- Save/Cancel Buttons -->
+                    <div class="card flex flex-wrap gap-0 w-full justify-end">
+                        <p-buttongroup>
+                            <p-button *hasFeaturePermission="['USR','save']" type="submit" label="Save" icon="pi pi-check" [disabled]="userForm.invalid"></p-button>
+                            <p-button *hasFeaturePermission="['USR','cancel']" type="button" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
+                        </p-buttongroup>
                     </div>
                 </div>
-
-                <div class="flex flex-wrap gap-2 w-full">
-                    <label for="description">Description</label>
-                    <textarea pTextarea id="description" rows="4" [(ngModel)]="user.description" name="description"></textarea>
-                </div>
-
-                <div class="card flex flex-wrap gap-0 w-full justify-end">
-                    <p-buttongroup>
-                        <p-button *hasFeaturePermission="['USR','save']" label="Save" icon="pi pi-check" type="submit" />
-                        <p-button *hasFeaturePermission="['USR','cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()" type="button" />
-                    </p-buttongroup>
-                </div>
-            </form>
-        </p-fluid>
+            </p-fluid>
+        </form>
     `
 })
 export class EditUser {
-    user: User = {
+    user: UserResponse = {
         id: undefined,
         user_code: '',
         username: '',
@@ -117,96 +122,97 @@ export class EditUser {
         description: ''
     };
 
-    originalUser: User | null = null;
-
-    dropdownItems = [
-        { name: 'Active', code: 'A' },
-        { name: 'Block', code: 'B' },
-        { name: 'Pending', code: 'P' },
-        { name: 'Inactive', code: 'I' }
+    dropdownItems: StringOption[] = [
+        { label: 'Active', value: 'A' },
+        { label: 'Blocked', value: 'B' },
+        { label: 'Pending', value: 'P' },
+        { label: 'Inactive', value: 'I' }
     ];
 
-    showPassword = false;
+    dropdownBranchItems: UserBranchModel[] = [];
+    selectedBranches: number[] = []; // IDs of selected branches
+    originalBranches: number[] = []; // IDs for comparison
 
     constructor(
         private router: Router,
         private userService: UserService,
+        private branchService: BranchService,
         private messageService: MessageService,
         private permissionService: FeaturePermissionService
     ) {
-        const navigation = this.router.getCurrentNavigation();
-        const navUser = navigation?.extras.state?.['user'];
-
+        this.permissionService.loadFromCache();
+        const navUser = this.router.getCurrentNavigation()?.extras.state?.['user'];
         if (navUser) {
-            // Assign the user from navigation state directly to this.user
             this.user = {
                 ...navUser,
-                user_status: navUser.user_status?.value || 'I' // ensure default code if undefined
+                user_status: navUser.user_status?.value
             };
-
-            // Keep a copy of the original user for comparison
-            this.originalUser = { ...this.user };
         }
-
-        this.permissionService.loadPermissions();
-        this.permissionService.loadFromCache();
     }
 
+    ngOnInit() {
+        // Load all branches
+        this.branchService.getBranchDropdown().subscribe(data => {
+            this.dropdownBranchItems = data;
+        });
+
+        // Load user's existing branches and pre-select
+        if (this.user.id) {
+            this.userService.getUserBranches(this.user.id).subscribe(branches => {
+                this.selectedBranches = branches.map(b => b.id!);
+                this.originalBranches = [...this.selectedBranches]; // copy for comparison
+            });
+        }
+    }
 
     goBack() {
         this.router.navigate(['/user']);
     }
 
     saveUser() {
-        if (!this.originalUser || this.user.id == null) {
+        if (!this.user.name || !this.user.username || !this.user.email || !this.user.user_status) {
             this.messageService.show({
                 severity: 'error',
                 summary: 'Error',
-                detail: 'Invalid user: missing ID.'
+                detail: 'Please fill all required fields.'
             });
             return;
         }
 
-        const updatedData: Partial<User> = {};
-        if (this.user.name !== this.originalUser.name) updatedData.name = this.user.name;
-        if (this.user.username !== this.originalUser.username) updatedData.username = this.user.username;
-        if (this.user.email !== this.originalUser.email) updatedData.email = this.user.email;
-        if (this.user.user_status !== this.originalUser.user_status) updatedData.user_status = this.user.user_status;
-        if (this.user.description !== this.originalUser.description) updatedData.description = this.user.description;
+        const payload = { ...this.user, user_status: this.user.user_status };
 
-        if (Object.keys(updatedData).length === 0) {
-            this.messageService.show({
-                severity: 'info',
-                summary: 'No Changes',
-                detail: 'No fields were changed to update.'
-            });
-            return;
-        }
+        // Update user
+        this.userService.updateUser(payload as any).subscribe({
+            next: savedUser => {
+                // Assign new branches
+                this.selectedBranches.forEach(branchId => {
+                    if (!this.originalBranches.includes(branchId)) {
+                        this.userService.assignBranch({ userId: savedUser.id!, branchId }).subscribe();
+                    }
+                });
 
-        const fullUser: Partial<User> & { id: number } = {
-            ...this.originalUser,
-            ...updatedData,
-            id: this.user.id! // non-null assertion here
-        };
+                // Remove unselected branches
+                this.originalBranches.forEach(branchId => {
+                    if (!this.selectedBranches.includes(branchId)) {
+                        this.userService.removeBranch({ userId: savedUser.id!, branchId }).subscribe();
+                    }
+                });
 
-        this.userService.updateUser(fullUser).subscribe({
-            next: () => {
                 this.messageService.show({
                     severity: 'success',
                     summary: 'Success',
-                    detail: 'User updated successfully!'
+                    detail: 'User updated successfully.'
                 });
+
                 setTimeout(() => this.goBack(), 1000);
             },
             error: () => {
                 this.messageService.show({
                     severity: 'error',
                     summary: 'Error',
-                    detail: 'Update failed.'
+                    detail: 'Failed to update user.'
                 });
             }
         });
-
-        console.log(fullUser);
     }
 }

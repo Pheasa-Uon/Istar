@@ -3,7 +3,7 @@ export interface StringOption {
     value: string;
 }
 
-export interface User {
+export interface UserResponse {
     id?: number;
     user_code: string;
     username: string;
@@ -11,6 +11,18 @@ export interface User {
     password: string;
     email: string;
     user_status?: StringOption;   // 👈 optional, can be undefined
+    description: string;
+    last_login_at?: string | Date;
+}
+
+export interface UserRequest {
+    id?: number;
+    user_code: string;
+    username: string;
+    name: string;
+    password: string;
+    email: string;
+    user_status?: string;   // 👈 optional, can be undefined
     description: string;
     last_login_at?: string | Date;
 }

@@ -38,7 +38,7 @@ import { MessageService } from '../../pages/message/message.service';
                         />
                     </g>
                 </svg>
-                <span style="white-space: nowrap; font-weight: bold; color: white;">CiDi Core Banking System</span>
+                <span style="white-space: nowrap; font-weight: bold;">CiDi Core Banking System</span>
             </a>
         </div>
 

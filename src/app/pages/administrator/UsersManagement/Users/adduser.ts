@@ -11,7 +11,7 @@ import { ButtonGroup } from 'primeng/buttongroup';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { UserService } from '../../../service/administrator/usersManagement/users/user.service';
 import { BranchService } from '../../../service/administrator/systemAdmin/branch.service';
-import { User } from '../../../model/administrator/userManagement/user.model';
+import { UserResponse } from '../../../model/administrator/userManagement/user.model';
 import { DropdownItemBranch } from '../../../model/administrator/systemAdmin/branch.model';
 import { StringOption } from '../../../model/administrator/userManagement/role.permission.model';
 import { MessageService } from '../../../message/message.service';
@@ -121,7 +121,7 @@ import { MessagesComponent } from '../../../message/message';
 })
 export class AddUser {
     submitted = false;
-    user: User = {
+    user: UserResponse = {
         user_code: '',
         name: '',
         username: '',
@@ -171,20 +171,15 @@ export class AddUser {
             return; // required fields missing
         }
 
-        // const payload = {
-        //     ...this.user,
-        //     user_status: this.user.user_status.value
-        // };
-
         const payload = {
             ...this.user,
-            id: undefined,
-            user_status: this.user.user_status.value // send only the value
+            user_status: this.user.user_status.value
         };
 
+        // Step 1: create user
         this.userService.addUser(payload).subscribe({
             next: (savedUser) => {
-                // Assign selected branches
+                // Step 2: assign branches using savedUser.id
                 this.selectedBranches.forEach(branch => {
                     this.userService.assignBranch({ userId: savedUser.id!, branchId: branch.id! }).subscribe();
                 });
