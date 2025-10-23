@@ -18,6 +18,7 @@ import {
 } from '../../../model/administrator/systemAdmin/branch.model';
 import { BranchService } from '../../../service/administrator/systemAdmin/branch.service';
 import { ToggleSwitch } from 'primeng/toggleswitch';
+import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
 
 @Component({
     selector: 'app-edit-branch',
@@ -130,8 +131,8 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
                     <!-- Buttons -->
                     <div class="card flex flex-wrap gap-0 w-full justify-end">
                         <p-buttongroup>
-                            <p-button *hasFeaturePermission="['COU', 'save']" type="submit" label="Save" icon="pi pi-check" [disabled]="Form.invalid" />
-                            <p-button *hasFeaturePermission="['COU', 'cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
+                            <p-button *hasFeaturePermission="['BRN', 'save']" type="submit" label="Save" icon="pi pi-check" [disabled]="Form.invalid" />
+                            <p-button *hasFeaturePermission="['BRN', 'cancel']" label="Cancel" icon="pi pi-times" (click)="goBack()"></p-button>
                         </p-buttongroup>
                     </div>
                 </div>
@@ -167,6 +168,7 @@ export class EditBranch {
     constructor(
         private router: Router,
         private branchService: BranchService,
+        private globalSystemParameterService: GlobalSystemParameterService,
         private messageService: MessageService,
         private permissionService: FeaturePermissionService
     ) {
@@ -189,7 +191,7 @@ export class EditBranch {
 
     ngOnInit(): void {
         this.branchService.getBranchDropdown().subscribe((data) => (this.dropdownBranchItems = data));
-        this.branchService.getProvinceDropdown().subscribe((data) => (this.dropdownProvinceItems = data));
+        this.globalSystemParameterService.getProvinceDropdown().subscribe((data) => (this.dropdownProvinceItems = data));
     }
 
     goBack() {

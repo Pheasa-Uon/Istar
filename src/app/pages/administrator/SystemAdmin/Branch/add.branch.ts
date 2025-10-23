@@ -17,6 +17,10 @@ import {
 } from '../../../model/administrator/systemAdmin/branch.model';
 import { BranchService } from '../../../service/administrator/systemAdmin/branch.service';
 import { ToggleSwitch } from 'primeng/toggleswitch';
+import {
+    FeaturePermissionService
+} from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
+import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
 
 @Component({
     selector: 'app-add-branch',
@@ -166,12 +170,17 @@ export class AddBranch implements OnInit {
     constructor(
         private router: Router,
         private branchService: BranchService,
+        private globalSystemParameterService: GlobalSystemParameterService,
+        private permissionService: FeaturePermissionService,
         private messageService: MessageService
-    ) {}
+    ) {
+        this.permissionService.loadPermissions();
+        this.permissionService.loadFromCache();
+    }
 
     ngOnInit(): void {
         this.branchService.getBranchDropdown().subscribe((data) => (this.dropdownBranchItems = data));
-        this.branchService.getProvinceDropdown().subscribe((data) => (this.dropdownProvinceItems = data));
+        this.globalSystemParameterService.getProvinceDropdown().subscribe((data) => (this.dropdownProvinceItems = data));
     }
 
     goBack() {

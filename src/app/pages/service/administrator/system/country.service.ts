@@ -57,16 +57,4 @@ export class CountryService {
         const url = `${this.apiUrl}/search?keyword=${encodeURIComponent(keyword)}`;
         return this.http.get<CountryModel[]>(url, { headers: this.getAuthHeaders() });
     }
-
-    getLanguageDropdown(): Observable<DropdownItemLanguage[]> {
-        return this.http.get<DropdownItemLanguage[]>(`${this.apiUrl}/language-dropdown`, { headers: this.getAuthHeaders() });
-    }
-
-    getRegionDropdown(): Observable<DropdownItemRegion[]> {
-        return this.http.get<DropdownItemRegion[]>(`${this.apiUrl}/region-dropdown`, { headers: this.getAuthHeaders() });
-    }
-
-    getBlacklistDropdown(): Observable<DropdownItemBlacklist[]> {
-        return this.http.get<DropdownItemBlacklist[]>(`${this.apiUrl}/blacklist-dropdown`, { headers: this.getAuthHeaders() });
-    }
 }

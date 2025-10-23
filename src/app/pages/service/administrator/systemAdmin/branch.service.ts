@@ -61,8 +61,4 @@ export class BranchService {
     getBranchDropdown(): Observable<DropdownItemBranch[]> {
         return this.http.get<DropdownItemBranch[]>(`${this.apiUrl}/branch-dropdown`, { headers: this.getAuthHeaders() });
     }
-
-    getProvinceDropdown(): Observable<DropdownItemProvince[]> {
-        return this.http.get<DropdownItemProvince[]>(`${this.apiUrl}/province-dropdown`, { headers: this.getAuthHeaders() });
-    }
 }

@@ -17,6 +17,7 @@ import {
 } from '../../../model/administrator/system/country.model';
 import { CountryService } from '../../../service/administrator/system/country.service';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
+import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
 
 @Component({
     selector: 'app-add-CountryModel',
@@ -182,15 +183,16 @@ export class AddCountry implements OnInit {
     constructor(
         private router: Router,
         private countryService: CountryService,
+        private globalSystemParameterService: GlobalSystemParameterService,
         private currencyService: CurrencyService,
         private messageService: MessageService
     ) {}
 
     ngOnInit(): void {
         this.currencyService.getCurrencyDropdown().subscribe(data => this.dropdownCurrencyItems = data);
-        this.countryService.getLanguageDropdown().subscribe(data => this.dropdownLanguageItems = data);
-        this.countryService.getRegionDropdown().subscribe(data => this.dropdownRegionItems = data);
-        this.countryService.getBlacklistDropdown().subscribe(data => this.dropdownBlacklistItems = data);
+        this.globalSystemParameterService.getLanguageDropdown().subscribe(data => this.dropdownLanguageItems = data);
+        this.globalSystemParameterService.getRegionDropdown().subscribe(data => this.dropdownRegionItems = data);
+        this.globalSystemParameterService.getBlacklistDropdown().subscribe(data => this.dropdownBlacklistItems = data);
     }
 
     goBack() {
