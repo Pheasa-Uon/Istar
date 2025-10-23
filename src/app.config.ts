@@ -1,5 +1,5 @@
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
     provideRouter,
@@ -11,6 +11,13 @@ import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { appRoutes } from './app.routes';
 import { authInterceptor } from './app/pages/authentication/auth.interceptor'; // ✅ Import interceptor
+
+// ✅ PrimeNG modules (add what you use in your app)
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
+import { PaginatorModule } from 'primeng/paginator';
+import { DatePickerModule } from 'primeng/datepicker';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -36,6 +43,13 @@ export const appConfig: ApplicationConfig = {
                     darkModeSelector: '.app-dark'
                 }
             }
-        })
+        }),
+        importProvidersFrom(
+            ButtonModule,
+            InputTextModule,
+            SelectModule,
+            PaginatorModule,
+            DatePickerModule
+        )
     ]
 };

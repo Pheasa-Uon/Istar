@@ -106,7 +106,7 @@ export class Login {
     onLogin() {
         this.authService.login(this.username, this.password).subscribe({
             next: res => {
-                localStorage.setItem('authToken', res.token); // ✅ Store raw token
+                localStorage.setItem('authToken', res.accessToken); // ✅ Store raw token
                 this.router.navigate(['/dashboard']);
             },
             error: err => {
