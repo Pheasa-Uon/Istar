@@ -17,3 +17,9 @@ export interface GlobalSystemParameter {
     created_at?: string;
     updated_at?: string;
 }
+
+// All Use dropdown model
+export interface DropdownItemGlobalSystemParameter {
+    sysParCode: string;
+    valueName: string;
+}

@@ -4,8 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import {
     BranchModel,
-    DropdownItemBranch,
-    DropdownItemProvince
+    DropdownItemBranch
 } from '../../../model/administrator/systemAdmin/branch.model';
 
 @Injectable({ providedIn: 'root' })

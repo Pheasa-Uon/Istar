@@ -34,9 +34,3 @@ export interface DropdownItemBranch {
     id: number;
     label: string;
 }
-
-// Province dropdown model
-export interface DropdownItemProvince {
-    sysParCode: string;
-    valueName: string;
-}

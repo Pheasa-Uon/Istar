@@ -2,13 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-import { GlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 import {
-    DropdownItemBlacklist,
-    DropdownItemLanguage,
-    DropdownItemRegion
-} from '../../../model/administrator/system/country.model';
-import { DropdownItemProvince } from '../../../model/administrator/systemAdmin/branch.model';
+    DropdownItemGlobalSystemParameter,
+    GlobalSystemParameter
+} from '../../../model/administrator/system/global.system.parameter.model';
 
 @Injectable({ providedIn: 'root' })
 export class GlobalSystemParameterService {
@@ -55,19 +52,19 @@ export class GlobalSystemParameterService {
 
     // Dropdown Item
 
-    getProvinceDropdown(): Observable<DropdownItemProvince[]> {
-        return this.http.get<DropdownItemProvince[]>(`${this.apiUrl}/province-dropdown`, { headers: this.getAuthHeaders() });
+    getProvinceDropdown(): Observable<DropdownItemGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemGlobalSystemParameter[]>(`${this.apiUrl}/province`, { headers: this.getAuthHeaders() });
     }
 
-    getLanguageDropdown(): Observable<DropdownItemLanguage[]> {
-        return this.http.get<DropdownItemLanguage[]>(`${this.apiUrl}/language-dropdown`, { headers: this.getAuthHeaders() });
+    getLanguageDropdown(): Observable<DropdownItemGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemGlobalSystemParameter[]>(`${this.apiUrl}/language`, { headers: this.getAuthHeaders() });
     }
 
-    getRegionDropdown(): Observable<DropdownItemRegion[]> {
-        return this.http.get<DropdownItemRegion[]>(`${this.apiUrl}/region-dropdown`, { headers: this.getAuthHeaders() });
+    getRegionDropdown(): Observable<DropdownItemGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemGlobalSystemParameter[]>(`${this.apiUrl}/region`, { headers: this.getAuthHeaders() });
     }
 
-    getBlacklistDropdown(): Observable<DropdownItemBlacklist[]> {
-        return this.http.get<DropdownItemBlacklist[]>(`${this.apiUrl}/blacklist-dropdown`, { headers: this.getAuthHeaders() });
+    getBlacklistDropdown(): Observable<DropdownItemGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemGlobalSystemParameter[]>(`${this.apiUrl}/blacklist`, { headers: this.getAuthHeaders() });
     }
 }

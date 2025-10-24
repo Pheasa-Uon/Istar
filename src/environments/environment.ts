@@ -6,11 +6,12 @@ export const environment = {
         systemDate:'/system-date',
         permission: '/permissions',
         usersManagement: {
-            users: '/users',
-            roles: '/roles',
-            rolePermissions: '/role-permissions',
-            userRoles: '/user-roles',
-            userBranch: '/user-branches',
+            users: '/user-management/users',
+            roles: '/user-management/roles',
+            rolePermissions: '/user-management/role-permissions',
+            userRoles: '/user-management/user-roles',
+            userBranch: '/user-management/user-branches',
+            staff: '/user-management/staff'
         },
         system: {
             converterName: '/converter-name',

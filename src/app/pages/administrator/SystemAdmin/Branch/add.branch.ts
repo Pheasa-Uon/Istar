@@ -12,8 +12,7 @@ import { Select } from 'primeng/select';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import {
     BranchModel,
-    DropdownItemBranch,
-    DropdownItemProvince
+    DropdownItemBranch
 } from '../../../model/administrator/systemAdmin/branch.model';
 import { BranchService } from '../../../service/administrator/systemAdmin/branch.service';
 import { ToggleSwitch } from 'primeng/toggleswitch';
@@ -21,6 +20,7 @@ import {
     FeaturePermissionService
 } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
+import { DropdownItemGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 
 @Component({
     selector: 'app-add-branch',
@@ -161,7 +161,7 @@ export class AddBranch implements OnInit {
     };
 
     dropdownBranchItems: DropdownItemBranch[] = [];
-    dropdownProvinceItems: DropdownItemProvince[] = [];
+    dropdownProvinceItems: DropdownItemGlobalSystemParameter[] = [];
     dropdownItems = [
         { name: 'Yes', value: true },
         { name: 'No', value: false }

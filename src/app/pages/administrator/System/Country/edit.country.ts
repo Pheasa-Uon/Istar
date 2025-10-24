@@ -13,12 +13,12 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { CountryService } from '../../../service/administrator/system/country.service';
 import {
-    CountryModel, DropdownItemBlacklist,
-    DropdownItemCurrency,
-    DropdownItemLanguage, DropdownItemRegion
+    CountryModel,
+    DropdownItemCurrency
 } from '../../../model/administrator/system/country.model';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
 import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
+import { DropdownItemGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 
 @Component({
     selector: 'app-edit-CountryModel',
@@ -187,9 +187,9 @@ export class EditCountry {
     };
 
     dropdownCurrencyItems: DropdownItemCurrency[] = [];
-    dropdownLanguageItems: DropdownItemLanguage[] = [];
-    dropdownRegionItems: DropdownItemRegion[] = [];
-    dropdownBlacklistItems: DropdownItemBlacklist[] = [];
+    dropdownLanguageItems: DropdownItemGlobalSystemParameter[] = [];
+    dropdownRegionItems: DropdownItemGlobalSystemParameter[] = [];
+    dropdownBlacklistItems: DropdownItemGlobalSystemParameter[] = [];
     dropdownItems = [
         { name: 'Active', code: 'A' },
         { name: 'Inactive', code: 'I' }

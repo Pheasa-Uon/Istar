@@ -230,7 +230,7 @@ export class SetRolePermission implements OnInit {
 
     loadRole() {
         if (this.roleId > 0) {
-            this.http.get(`${environment.apiBase}/roles/${this.roleId}`).subscribe({
+            this.http.get(`${environment.apiBase}/user-management/roles/${this.roleId}`).subscribe({
                 next: (res) => (this.role = res),
                 error: () => (this.role = { name: 'Unknown Role' })
             });
@@ -241,12 +241,12 @@ export class SetRolePermission implements OnInit {
 
     loadTreeTable() {
         forkJoin({
-            mainmenus: this.http.get<any[]>(`${environment.apiBase}/mainmenu/treetable`),
+            menus: this.http.get<any[]>(`${environment.apiBase}/mainmenu/treetable`),
             features: this.http.get<any[]>(`${environment.apiBase}/features/treetable`),
             reports: this.http.get<any[]>(`${environment.apiBase}/reports/treetable`),
-            permissions: this.http.get<PermissionResponse>(`${environment.apiBase}/rolepermissions/role/${this.roleId}`)
-        }).subscribe(({ mainmenus, features, reports, permissions }) => {
-            this.treeTableValueMenu = this.mapPermissionsMenu(this.convertToTreeNodesMenu(mainmenus), permissions.mainMenuPermissions);
+            permissions: this.http.get<PermissionResponse>(`${environment.apiBase}/user-management/role-permissions/role/${this.roleId}`)
+        }).subscribe(({ menus, features, reports, permissions }) => {
+            this.treeTableValueMenu = this.mapPermissionsMenu(this.convertToTreeNodesMenu(menus), permissions.mainMenuPermissions);
             this.treeTableValueFeature = this.mapPermissionsFeature(this.convertToTreeNodesFeature(features), permissions.featurePermissions);
             this.treeTableValueReport = this.mapPermissionsReport(this.convertToTreeNodesReports(reports), permissions.reportPermissions);
         });
@@ -265,8 +265,8 @@ export class SetRolePermission implements OnInit {
         }));
     }
 
-    private convertToTreeNodesMenu(mainmenus: any[]): CustomTreeNode[] {
-        return mainmenus.map((menu) => ({
+    private convertToTreeNodesMenu(menus: any[]): CustomTreeNode[] {
+        return menus.map((menu) => ({
             key: menu.id?.toString(),
             data: {
                 id: menu.id,
@@ -452,7 +452,7 @@ export class SetRolePermission implements OnInit {
             reportPermissions
         };
 
-        this.http.post(`${environment.apiBase}/rolepermissions/bulk`, payload).subscribe({
+        this.http.post(`${environment.apiBase}/user-management/role-permissions/bulk`, payload).subscribe({
             next: () => {
                 alert('Permissions saved successfully!');
                 this.router.navigate(['/role-permission']);

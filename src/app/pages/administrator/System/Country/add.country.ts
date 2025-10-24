@@ -11,13 +11,13 @@ import { MessagesComponent } from '../../../message/message';
 import { Select } from 'primeng/select';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import {
-    CountryModel, DropdownItemBlacklist,
-    DropdownItemCurrency,
-    DropdownItemLanguage, DropdownItemRegion
+    CountryModel,
+    DropdownItemCurrency
 } from '../../../model/administrator/system/country.model';
 import { CountryService } from '../../../service/administrator/system/country.service';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
 import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
+import { DropdownItemGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 
 @Component({
     selector: 'app-add-CountryModel',
@@ -172,9 +172,9 @@ export class AddCountry implements OnInit {
     };
 
     dropdownCurrencyItems: DropdownItemCurrency[] = [];
-    dropdownLanguageItems: DropdownItemLanguage[] = [];
-    dropdownRegionItems: DropdownItemRegion[] = [];
-    dropdownBlacklistItems: DropdownItemBlacklist[] = [];
+    dropdownLanguageItems: DropdownItemGlobalSystemParameter[] = [];
+    dropdownRegionItems: DropdownItemGlobalSystemParameter[] = [];
+    dropdownBlacklistItems: DropdownItemGlobalSystemParameter[] = [];
     dropdownItems = [
         { name: 'Active', code: 'A' },
         { name: 'Inactive', code: 'I' }

@@ -3,10 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import {
-    CountryModel,
-    DropdownItemBlacklist,
-    DropdownItemLanguage,
-    DropdownItemRegion
+    CountryModel
 } from '../../../model/administrator/system/country.model';
 
 @Injectable({ providedIn: 'root' })

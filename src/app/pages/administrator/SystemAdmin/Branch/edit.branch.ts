@@ -13,12 +13,12 @@ import { HasPermissionDirective } from '../../../directives/has-permission.direc
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import {
     BranchModel,
-    DropdownItemBranch,
-    DropdownItemProvince
+    DropdownItemBranch
 } from '../../../model/administrator/systemAdmin/branch.model';
 import { BranchService } from '../../../service/administrator/systemAdmin/branch.service';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
+import { DropdownItemGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 
 @Component({
     selector: 'app-edit-branch',
@@ -159,7 +159,7 @@ export class EditBranch {
     };
 
     dropdownBranchItems: DropdownItemBranch[] = [];
-    dropdownProvinceItems: DropdownItemProvince[] = [];
+    dropdownProvinceItems: DropdownItemGlobalSystemParameter[] = [];
     dropdownItems = [
         { name: 'Yes', value: true },
         { name: 'No', value: false }
