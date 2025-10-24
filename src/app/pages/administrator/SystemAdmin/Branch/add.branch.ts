@@ -20,7 +20,7 @@ import {
     FeaturePermissionService
 } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
 import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
-import { DropdownItemGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
+import { DropdownItemSysParCodeGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 
 @Component({
     selector: 'app-add-branch',
@@ -161,7 +161,7 @@ export class AddBranch implements OnInit {
     };
 
     dropdownBranchItems: DropdownItemBranch[] = [];
-    dropdownProvinceItems: DropdownItemGlobalSystemParameter[] = [];
+    dropdownProvinceItems: DropdownItemSysParCodeGlobalSystemParameter[] = [];
     dropdownItems = [
         { name: 'Yes', value: true },
         { name: 'No', value: false }

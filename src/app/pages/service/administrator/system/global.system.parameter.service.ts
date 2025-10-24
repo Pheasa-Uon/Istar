@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import {
-    DropdownItemGlobalSystemParameter,
+    DropdownItemIdGlobalSystemParameter,
+    DropdownItemSysParCodeGlobalSystemParameter,
     GlobalSystemParameter
 } from '../../../model/administrator/system/global.system.parameter.model';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class GlobalSystemParameterService {
@@ -52,19 +54,42 @@ export class GlobalSystemParameterService {
 
     // Dropdown Item
 
-    getProvinceDropdown(): Observable<DropdownItemGlobalSystemParameter[]> {
-        return this.http.get<DropdownItemGlobalSystemParameter[]>(`${this.apiUrl}/province`, { headers: this.getAuthHeaders() });
+    getPositionDropdown(code: string): Observable<DropdownItemIdGlobalSystemParameter[]> {
+        const params = new HttpParams().set('keyword', code);
+        return this.http
+            .get<{ [key: string]: string }>(`${this.apiUrl}/position`, { params })
+            .pipe(map(data => Object.keys(data).map(key => ({ id: Number(key), valueName: data[key] }))));
     }
 
-    getLanguageDropdown(): Observable<DropdownItemGlobalSystemParameter[]> {
-        return this.http.get<DropdownItemGlobalSystemParameter[]>(`${this.apiUrl}/language`, { headers: this.getAuthHeaders() });
+    getEmployeeTypeDropdown(): Observable<DropdownItemSysParCodeGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemSysParCodeGlobalSystemParameter[]>(`${this.apiUrl}/employee_type`, { headers: this.getAuthHeaders() });
     }
 
-    getRegionDropdown(): Observable<DropdownItemGlobalSystemParameter[]> {
-        return this.http.get<DropdownItemGlobalSystemParameter[]>(`${this.apiUrl}/region`, { headers: this.getAuthHeaders() });
+    getIssueByDropdown(): Observable<DropdownItemIdGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemIdGlobalSystemParameter[]>(`${this.apiUrl}/issue-by`, { headers: this.getAuthHeaders() });
     }
 
-    getBlacklistDropdown(): Observable<DropdownItemGlobalSystemParameter[]> {
-        return this.http.get<DropdownItemGlobalSystemParameter[]>(`${this.apiUrl}/blacklist`, { headers: this.getAuthHeaders() });
+    getIDTypeDropdown(): Observable<DropdownItemSysParCodeGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemSysParCodeGlobalSystemParameter[]>(`${this.apiUrl}/identity_type`, { headers: this.getAuthHeaders() });
+    }
+
+    getGenderDropdown(): Observable<DropdownItemSysParCodeGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemSysParCodeGlobalSystemParameter[]>(`${this.apiUrl}/gender`, { headers: this.getAuthHeaders() });
+    }
+
+    getProvinceDropdown(): Observable<DropdownItemSysParCodeGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemSysParCodeGlobalSystemParameter[]>(`${this.apiUrl}/province`, { headers: this.getAuthHeaders() });
+    }
+
+    getLanguageDropdown(): Observable<DropdownItemSysParCodeGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemSysParCodeGlobalSystemParameter[]>(`${this.apiUrl}/language`, { headers: this.getAuthHeaders() });
+    }
+
+    getRegionDropdown(): Observable<DropdownItemSysParCodeGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemSysParCodeGlobalSystemParameter[]>(`${this.apiUrl}/region`, { headers: this.getAuthHeaders() });
+    }
+
+    getBlacklistDropdown(): Observable<DropdownItemSysParCodeGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemSysParCodeGlobalSystemParameter[]>(`${this.apiUrl}/blacklist`, { headers: this.getAuthHeaders() });
     }
 }

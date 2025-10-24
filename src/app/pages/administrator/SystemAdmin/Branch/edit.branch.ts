@@ -18,7 +18,7 @@ import {
 import { BranchService } from '../../../service/administrator/systemAdmin/branch.service';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
-import { DropdownItemGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
+import { DropdownItemSysParCodeGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 
 @Component({
     selector: 'app-edit-branch',
@@ -159,7 +159,7 @@ export class EditBranch {
     };
 
     dropdownBranchItems: DropdownItemBranch[] = [];
-    dropdownProvinceItems: DropdownItemGlobalSystemParameter[] = [];
+    dropdownProvinceItems: DropdownItemSysParCodeGlobalSystemParameter[] = [];
     dropdownItems = [
         { name: 'Yes', value: true },
         { name: 'No', value: false }

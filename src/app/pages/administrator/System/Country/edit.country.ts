@@ -18,7 +18,7 @@ import {
 } from '../../../model/administrator/system/country.model';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
 import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
-import { DropdownItemGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
+import { DropdownItemSysParCodeGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 
 @Component({
     selector: 'app-edit-CountryModel',
@@ -187,9 +187,9 @@ export class EditCountry {
     };
 
     dropdownCurrencyItems: DropdownItemCurrency[] = [];
-    dropdownLanguageItems: DropdownItemGlobalSystemParameter[] = [];
-    dropdownRegionItems: DropdownItemGlobalSystemParameter[] = [];
-    dropdownBlacklistItems: DropdownItemGlobalSystemParameter[] = [];
+    dropdownLanguageItems: DropdownItemSysParCodeGlobalSystemParameter[] = [];
+    dropdownRegionItems: DropdownItemSysParCodeGlobalSystemParameter[] = [];
+    dropdownBlacklistItems: DropdownItemSysParCodeGlobalSystemParameter[] = [];
     dropdownItems = [
         { name: 'Active', code: 'A' },
         { name: 'Inactive', code: 'I' }

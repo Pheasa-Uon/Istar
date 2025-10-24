@@ -17,6 +17,7 @@ import { GlobalPolicyService } from '../../../service/administrator/system/globa
 import { GlobalPolicyModel } from '../../../model/administrator/system/global.policy.model';
 import { MessageService } from '../../../message/message.service';
 import { MessagesComponent } from '../../../message/message';
+import { DatePicker } from 'primeng/datepicker';
 
 @Component({
     selector: 'app-add-global-policy',
@@ -30,6 +31,7 @@ import { MessagesComponent } from '../../../message/message';
         DropdownModule,
         InputTextarea,
         CalendarModule,
+        DatePicker,
         MessagesComponent,
         HasPermissionDirective
     ],
@@ -63,16 +65,18 @@ import { MessagesComponent } from '../../../message/message';
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-col gap-2 w-full">
                         <label for="validFrom">Valid from <span class="text-red-500">*</span></label>
-                        <p-calendar id="validFrom" name="validFrom" [showIcon]="true" [showButtonBar]="true" dateFormat="dd/mm/yy"
+                        <p-date-picker id="validFrom" name="validFrom" [showIcon]="true"  dateFormat="dd/mm/yy"
                                     [(ngModel)]="globalPolicy.valid_from" required class="w-full"
-                                    [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.valid_from }"></p-calendar>
+                                    [style]="{ 'width': '50%' }"
+                                    [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.valid_from }"></p-date-picker>
                         <small *ngIf="submitted && !globalPolicy.valid_from" class="text-red-500">Valid from is required.</small>
                     </div>
                     <div class="flex flex-col gap-2 w-full">
                         <label for="validTo">Valid to <span class="text-red-500">*</span></label>
-                        <p-calendar id="validTo" name="validTo" [showIcon]="true" [showButtonBar]="true" dateFormat="dd/mm/yy"
+                        <p-date-picker id="validTo" name="validTo" [showIcon]="true" [showButtonBar]="true" dateFormat="dd/mm/yy"
                                     [(ngModel)]="globalPolicy.valid_to" required class="w-full"
-                                    [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.valid_to }"></p-calendar>
+                                    [style]="{ 'width': '50%' }"
+                                    [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.valid_to }"></p-date-picker>
                         <small *ngIf="submitted && !globalPolicy.valid_to" class="text-red-500">Valid to is required.</small>
                     </div>
                 </div>
@@ -144,6 +148,7 @@ import { MessagesComponent } from '../../../message/message';
                         <label for="canLoginFrom">Can login from <span class="text-red-500">*</span></label>
                         <p-calendar id="canLoginFrom" name="canLoginFrom" [(ngModel)]="globalPolicy.can_login_from"
                                     [showIcon]="true" [showButtonBar]="true" [timeOnly]="true" hourFormat="12" class="w-full"
+                                    [style]="{ 'width': '50%' }"
                                     [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.can_login_from }"></p-calendar>
                         <small *ngIf="submitted && !globalPolicy.can_login_from" class="text-red-500">Time is required.</small>
                     </div>
@@ -151,6 +156,7 @@ import { MessagesComponent } from '../../../message/message';
                         <label for="canLoginTo">Can login to <span class="text-red-500">*</span></label>
                         <p-calendar id="canLoginTo" name="canLoginTo" [(ngModel)]="globalPolicy.can_login_to"
                                     [showIcon]="true" [showButtonBar]="true" [timeOnly]="true" hourFormat="12" class="w-full"
+                                    [style]="{ 'width': '50%' }"
                                     [ngClass]="{ 'ng-invalid ng-dirty': submitted && !globalPolicy.can_login_to }"></p-calendar>
                         <small *ngIf="submitted && !globalPolicy.can_login_to" class="text-red-500">Time is required.</small>
                     </div>

@@ -13,6 +13,8 @@ import { HolidayModel } from '../../../model/administrator/systemAdmin/holiday.m
 import { HolidayService } from '../../../service/administrator/systemAdmin/holiday.service';
 import { DialogModule } from 'primeng/dialog';
 import { DatePickerModule } from 'primeng/datepicker';
+import { CalendarModule } from 'primeng/calendar';
+
 
 @Component({
     selector: 'app-add-holiday',
@@ -27,6 +29,7 @@ import { DatePickerModule } from 'primeng/datepicker';
         MessagesComponent,
         HasPermissionDirective,
         DialogModule,
+        CalendarModule,
         DatePickerModule
     ],
     template: `
@@ -44,17 +47,17 @@ import { DatePickerModule } from 'primeng/datepicker';
                         <div class="flex flex-col w-full">
                             <label for="holidayDate">Holiday Date <span class="text-red-500">*</span></label>
 
-                            <p-datepicker
+                            <p-date-picker
                                 id="holidayDate"
                                 name="holidayDate"
                                 [showIcon]="true"
-                                [showButtonBar]="true"
                                 dateFormat="dd/mm/yy"
                                 [(ngModel)]="holiday.holiday_date"
                                 required
                                 class="w-full"
+                                [style]="{ 'width': '50%' }"
                                 [ngClass]="{ 'ng-invalid ng-dirty': submitted && !holiday.holiday_date }"
-                            ></p-datepicker>
+                            ></p-date-picker>
 
                             <small *ngIf="submitted && !holiday.holiday_date" class="text-red-500"> Holiday date is required. </small>
                         </div>

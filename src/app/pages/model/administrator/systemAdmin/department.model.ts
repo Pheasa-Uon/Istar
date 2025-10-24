@@ -4,3 +4,9 @@ export interface DepartmentModel {
     department_name?: string;
     description?: string;
 }
+
+export interface DropdownItemDepartment {
+    id: number;
+    code: string;
+    department_label: string;
+}

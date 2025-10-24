@@ -21,8 +21,8 @@ export interface StaffModel {
     gender?: StringOption;
     identity_type?: StringOption;
     identity_number?: string;
-    valid_from: Date;
-    valid_to: Date;
+    valid_from?: Date;
+    valid_to?: Date;
     issue_by?: LongOption;
     date_of_birth?: Date;
     job_title?: string;

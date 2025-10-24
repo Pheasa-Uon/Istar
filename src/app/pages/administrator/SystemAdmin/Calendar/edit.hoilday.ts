@@ -11,18 +11,15 @@ import { MessageService } from '../../../message/message.service';
 import { MessagesComponent } from '../../../message/message'; // adjust path if needed
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { FeaturePermissionService } from '../../../service/administrator/usersManagement/userpermissions/feature.permission.service';
-
-import { ToggleSwitch } from 'primeng/toggleswitch';
-import { DepartmentModel } from '../../../model/administrator/systemAdmin/department.model';
-import { DepartmentService } from '../../../service/administrator/systemAdmin/department.service';
 import { HolidayModel } from '../../../model/administrator/systemAdmin/holiday.model';
 import { HolidayService } from '../../../service/administrator/systemAdmin/holiday.service';
-import { DatePicker } from 'primeng/datepicker';
+import { CalendarModule } from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
 
 @Component({
     selector: 'app-edit-holiday',
     standalone: true,
-    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Textarea, ButtonGroup, MessagesComponent, HasPermissionDirective, DatePicker],
+    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Textarea, ButtonGroup, MessagesComponent, HasPermissionDirective, CalendarModule, DatePickerModule],
     template: `
         <app-messages></app-messages>
 
@@ -38,17 +35,17 @@ import { DatePicker } from 'primeng/datepicker';
                         <div class="flex flex-col w-full">
                             <label for="holidayDate">Holiday Date <span class="text-red-500">*</span></label>
 
-                            <p-datepicker
+                            <p-date-picker
                                 id="holidayDate"
                                 name="holidayDate"
                                 [showIcon]="true"
-                                [showButtonBar]="true"
                                 dateFormat="dd/mm/yy"
                                 [(ngModel)]="holiday.holiday_date"
                                 required
                                 class="w-full"
+                                [style]="{ 'width': '50%' }"
                                 [ngClass]="{ 'ng-invalid ng-dirty': submitted && !holiday.holiday_date }"
-                            ></p-datepicker>
+                            ></p-date-picker>
 
                             <small *ngIf="submitted && !holiday.holiday_date" class="text-red-500"> Holiday date is required. </small>
                         </div>

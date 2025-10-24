@@ -76,10 +76,10 @@ import { MessagesComponent } from '../../../message/message';
                         <p-datepicker id="validFrom"
                                       name="validFrom"
                                       [showIcon]="true"
-                                      [showButtonBar]="true"
                                       [(ngModel)]="globalPolicy.valid_from"
                                       dateFormat="dd/mm/yy"
                                       required
+                                      [style]="{ 'width': '50%' }"
                                       class="w-full">
                         </p-datepicker>
                         <small *ngIf="submitted && !globalPolicy.valid_from" class="text-red-500">
@@ -92,10 +92,10 @@ import { MessagesComponent } from '../../../message/message';
                         <p-datepicker id="validTo"
                                       name="validTo"
                                       [showIcon]="true"
-                                      [showButtonBar]="true"
                                       [(ngModel)]="globalPolicy.valid_to"
                                       dateFormat="dd/mm/yy"
                                       required
+                                      [style]="{ 'width': '50%' }"
                                       class="w-full">
                         </p-datepicker>
                         <small *ngIf="submitted && !globalPolicy.valid_to" class="text-red-500">
@@ -186,6 +186,7 @@ import { MessagesComponent } from '../../../message/message';
                                     [(ngModel)]="globalPolicy.can_login_from"
                                     [showIcon]="true" [showButtonBar]="true"
                                     [timeOnly]="true" hourFormat="12"
+                                    [style]="{ 'width': '50%' }"
                                     class="w-full">
                         </p-calendar>
                     </div>
@@ -196,6 +197,7 @@ import { MessagesComponent } from '../../../message/message';
                                     [(ngModel)]="globalPolicy.can_login_to"
                                     [showIcon]="true" [showButtonBar]="true"
                                     [timeOnly]="true" hourFormat="12"
+                                    [style]="{ 'width': '50%' }"
                                     class="w-full">
                         </p-calendar>
                     </div>

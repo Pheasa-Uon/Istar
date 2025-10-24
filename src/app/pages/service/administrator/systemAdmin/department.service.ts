@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-import { DepartmentModel } from '../../../model/administrator/systemAdmin/department.model';
+import { DepartmentModel, DropdownItemDepartment } from '../../../model/administrator/systemAdmin/department.model';
+import { DropdownItemStaff } from '../../../model/administrator/userManagement/staff.model';
 
 @Injectable({ providedIn: 'root' })
 export class DepartmentService {
@@ -46,5 +47,9 @@ export class DepartmentService {
     searchDepartment(keyword: string): Observable<DepartmentModel[]> {
         const url = `${this.apiUrl}/search?keyword=${encodeURIComponent(keyword)}`;
         return this.http.get<DepartmentModel[]>(url, { headers: this.getAuthHeaders() });
+    }
+
+    getDepartmentDropdown(): Observable<DropdownItemDepartment[]> {
+        return this.http.get<DropdownItemDepartment[]>(`${this.apiUrl}/dropdown`, { headers: this.getAuthHeaders() });
     }
 }

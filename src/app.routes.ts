@@ -38,6 +38,8 @@ import { ExchangeRateComponent } from './app/pages/administrator/SystemAdmin/Exc
 import { CalendarComponent } from './app/pages/administrator/SystemAdmin/Calendar/calendar';
 import { AddHolidayComponent } from './app/pages/administrator/SystemAdmin/Calendar/add.holiday';
 import { EditHolidayComponent } from './app/pages/administrator/SystemAdmin/Calendar/edit.hoilday';
+import { StaffComponent } from './app/pages/administrator/UsersManagement/Staff/staff';
+import { AddStaff } from './app/pages/administrator/UsersManagement/Staff/add.staff';
 
 export const appRoutes: Routes = [
 
@@ -111,6 +113,10 @@ export const appRoutes: Routes = [
             { path: 'calendar', component: CalendarComponent },
             { path: 'add-holiday', component: AddHolidayComponent },
             { path: 'edit-holiday', component: EditHolidayComponent },
+
+            { path: 'staff', component: StaffComponent },
+            { path: 'add-staff', component: AddStaff },
+            //{ path: 'edit-branch', component: EditBranch },
 
             // Lazy loaded modules - make sure these modules exist and export NgModule classes
             { path: 'uikit', loadChildren: () => import('./app/UI/uikit/uikit.routes') },

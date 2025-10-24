@@ -15,6 +15,7 @@ import { ExchangeRateComponent } from './administrator/SystemAdmin/ExchangeRate/
 import {
     CalendarComponent
 } from './administrator/SystemAdmin/Calendar/calendar';
+import { StaffComponent } from './administrator/UsersManagement/Staff/staff';
 
 export default [
     { path: 'documentation', component: Documentation },
@@ -31,6 +32,7 @@ export default [
     { path: 'department', component: DepartmentComponent },
     { path: 'exchange-rate', component: ExchangeRateComponent },
     { path: 'calendar', component: CalendarComponent },
+    { path: 'staff', component: StaffComponent },
 
     //{ path: '', redirectTo: 'user', pathMatch: 'full' },
     { path: '**', redirectTo: '/notfound' }
