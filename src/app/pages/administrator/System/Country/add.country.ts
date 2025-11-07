@@ -17,7 +17,7 @@ import {
 import { CountryService } from '../../../service/administrator/system/country.service';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
 import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
-import { DropdownItemSysParCodeGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
+import { DropdownItemFieldGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 
 @Component({
     selector: 'app-add-CountryModel',
@@ -172,9 +172,9 @@ export class AddCountry implements OnInit {
     };
 
     dropdownCurrencyItems: DropdownItemCurrency[] = [];
-    dropdownLanguageItems: DropdownItemSysParCodeGlobalSystemParameter[] = [];
-    dropdownRegionItems: DropdownItemSysParCodeGlobalSystemParameter[] = [];
-    dropdownBlacklistItems: DropdownItemSysParCodeGlobalSystemParameter[] = [];
+    dropdownLanguageItems: DropdownItemFieldGlobalSystemParameter[] = [];
+    dropdownRegionItems: DropdownItemFieldGlobalSystemParameter[] = [];
+    dropdownBlacklistItems: DropdownItemFieldGlobalSystemParameter[] = [];
     dropdownItems = [
         { name: 'Active', code: 'A' },
         { name: 'Inactive', code: 'I' }
@@ -202,30 +202,42 @@ export class AddCountry implements OnInit {
     save() {
         this.submitted = true;
 
-        if (!this.country.iso2Alpha || !this.country.iso3Alpha || !this.country.country_name || this.country.display_order === undefined)
-        {
+        if (!this.country.iso2Alpha || !this.country.iso3Alpha || !this.country.country_name || this.country.display_order === undefined) {
+            this.messageService.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Please fill all required fields.'
+            });
             return;
         }
 
-        this.countryService.addCountry(this.country).subscribe({
+        const payload: any = {
+            ...this.country,
+            currency_id: this.country.currency_id?.value ?? null,
+            language: this.country.language?.value ?? null,
+            region: this.country.region?.value ?? null,
+            blacklist: this.country.blacklist?.value ?? null,
+            country_status: this.country.country_status?.code ?? 'A'
+        };
+
+        this.countryService.addCountry(payload).subscribe({
             next: () => {
                 this.messageService.show({
                     severity: 'success',
                     summary: 'Success',
-                    detail: 'CountryModel created successfully!'
+                    detail: 'Country created successfully!'
                 });
                 setTimeout(() => this.goBack(), 1000);
             },
             error: (error) => {
-                console.error('Error creating CountryModel:', error);
+                console.error('Error creating Country:', error);
                 this.messageService.show({
                     severity: 'error',
                     summary: 'Error',
-                    detail: 'CountryModel creation failed. Please try again.'
+                    detail: 'Country creation failed. Please try again.'
                 });
             }
         });
-
-        console.log(this.country);
     }
+
 }

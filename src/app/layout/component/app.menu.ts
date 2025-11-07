@@ -79,6 +79,7 @@ export class AppMenu implements OnInit {
                         { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
                     ]
                 },
+
                 {
                     label: 'Pages',
                     icon: 'pi pi-fw pi-briefcase',

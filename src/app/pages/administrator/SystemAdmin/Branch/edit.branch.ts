@@ -18,18 +18,16 @@ import {
 import { BranchService } from '../../../service/administrator/systemAdmin/branch.service';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
-import { DropdownItemSysParCodeGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
+import { DropdownItemFieldGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 
 @Component({
     selector: 'app-edit-branch',
     standalone: true,
     imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, Select, Textarea, ButtonGroup, MessagesComponent, HasPermissionDirective, ToggleSwitch],
     template: `
-        <form #Form="ngForm" (ngSubmit)="save()" novalidate>
-            <div class="fixed top-0 right-4 z-50 w-[500px]">
-                <app-messages></app-messages>
-            </div>
+        <app-messages></app-messages>
 
+        <form #Form="ngForm" (ngSubmit)="save()" novalidate>
             <div class="p-fluid">
                 <div class="card flex flex-col gap-6 w-full p-4">
                     <div class="font-semibold text-xl">Edit Branch</div>
@@ -159,7 +157,7 @@ export class EditBranch {
     };
 
     dropdownBranchItems: DropdownItemBranch[] = [];
-    dropdownProvinceItems: DropdownItemSysParCodeGlobalSystemParameter[] = [];
+    dropdownProvinceItems: DropdownItemFieldGlobalSystemParameter[] = [];
     dropdownItems = [
         { name: 'Yes', value: true },
         { name: 'No', value: false }

@@ -1,10 +1,12 @@
 export interface LongOption {
     value: number;
+    code: string;
     label: string;
 }
 
 export interface StringOption {
     value: string;
+    code: string;
     label: string;
 }
 
@@ -15,9 +17,9 @@ export interface CountryModel {
     country_name?: string;
     local_country_name?: string;
     currency_id?: LongOption;
-    language?: StringOption;
-    region?: StringOption;
-    blacklist?: StringOption;
+    language?: LongOption;
+    region?: LongOption;
+    blacklist?: LongOption;
     display_order?: number;
     country_status?: StringOption;
     description?: string;

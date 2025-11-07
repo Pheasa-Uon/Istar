@@ -164,15 +164,22 @@ export class EditGlobalSystemParameter {
     ) {
         const navigation = this.router.getCurrentNavigation();
         if (navigation?.extras.state?.['globalSystemParameter']) {
-            const globalSystemParameter = { ...navigation.extras.state['globalSystemParameter'] };
-            this.globalSystemParameter = {
-                ...globalSystemParameter,
-                moduleName: globalSystemParameter.moduleName.value,   // full object
-                fieldName: globalSystemParameter.fieldName.value,     // full object
-                sysParStatus: globalSystemParameter.sysParStatus.value
-            };
+            const gsp = navigation.extras.state['globalSystemParameter'];
 
+            this.globalSystemParameter = {
+                ...this.globalSystemParameter,
+                id: gsp.id,
+                sys_par_code: gsp.sys_par_code ?? '',
+                module_name: gsp.module_name?.value ?? null,  // assign code
+                field_name: gsp.field_name?.value ?? null,    // assign code
+                value_name: gsp.value_name ?? '',
+                local_value_name: gsp.local_value_name ?? '',
+                display_order: gsp.display_order ?? undefined,
+                sys_par_status: gsp.sys_par_status?.value ?? null,
+                description: gsp.description ?? ''
+            };
         }
+
         this.permissionService.loadPermissions();
         this.permissionService.loadFromCache();
     }

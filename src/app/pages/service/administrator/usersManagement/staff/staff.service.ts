@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../../environments/environment';
-import { DropdownItemStaff, StaffModel } from '../../../../model/administrator/userManagement/staff.model';
+import {
+    DropdownItemStaff,
+    StaffModel
+} from '../../../../model/administrator/userManagement/staff.model';
 
 
 @Injectable({ providedIn: 'root' })

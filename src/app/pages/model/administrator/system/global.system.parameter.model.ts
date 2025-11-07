@@ -19,12 +19,8 @@ export interface GlobalSystemParameter {
 }
 
 // All Use dropdown model
-export interface DropdownItemSysParCodeGlobalSystemParameter {
-    sysParCode: string;
-    valueName: string;
-}
-
-export interface DropdownItemIdGlobalSystemParameter {
+export interface DropdownItemFieldGlobalSystemParameter {
     id: number | undefined;
+    sysParCode: string;
     valueName: string;
 }

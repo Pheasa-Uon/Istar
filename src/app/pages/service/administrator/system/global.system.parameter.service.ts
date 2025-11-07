@@ -3,8 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import {
-    DropdownItemIdGlobalSystemParameter,
-    DropdownItemSysParCodeGlobalSystemParameter,
+    DropdownItemFieldGlobalSystemParameter,
     GlobalSystemParameter
 } from '../../../model/administrator/system/global.system.parameter.model';
 import { map } from 'rxjs/operators';
@@ -54,42 +53,71 @@ export class GlobalSystemParameterService {
 
     // Dropdown Item
 
-    getPositionDropdown(code: string): Observable<DropdownItemIdGlobalSystemParameter[]> {
+    getVillageDropdown(code: string): Observable<DropdownItemFieldGlobalSystemParameter[]> {
+        const params = new HttpParams().set('keyword', code);
+        return this.http
+            .get<{ [key: string]: string }>(`${this.apiUrl}/village`, { params })
+            .pipe(map(data => Object.keys(data).map(key => ({ id: Number(key), sysParCode: data[key], valueName: data[key] }))));
+    }
+
+    getCommuneDropdown(code: string): Observable<DropdownItemFieldGlobalSystemParameter[]> {
+        const params = new HttpParams().set('keyword', code);
+        return this.http
+            .get<{ [key: string]: string }>(`${this.apiUrl}/commune`, { params })
+            .pipe(map(data => Object.keys(data).map(key => ({ id: Number(key), sysParCode: data[key], valueName: data[key] }))));
+    }
+
+    getDistrictDropdown(code: string): Observable<DropdownItemFieldGlobalSystemParameter[]> {
+        const params = new HttpParams().set('keyword', code);
+        return this.http
+            .get<{ [key: string]: string }>(`${this.apiUrl}/district`, { params })
+            .pipe(map(data => Object.keys(data).map(key => ({ id: Number(key), sysParCode: data[key], valueName: data[key] }))));
+    }
+
+    getWorkingStatusDropdown(): Observable<DropdownItemFieldGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemFieldGlobalSystemParameter[]>(`${this.apiUrl}/working-status`, { headers: this.getAuthHeaders() });
+    }
+
+    getMaritalStatusDropdown(): Observable<DropdownItemFieldGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemFieldGlobalSystemParameter[]>(`${this.apiUrl}/marital-status`, { headers: this.getAuthHeaders() });
+    }
+
+    getPositionDropdown(code: string): Observable<DropdownItemFieldGlobalSystemParameter[]> {
         const params = new HttpParams().set('keyword', code);
         return this.http
             .get<{ [key: string]: string }>(`${this.apiUrl}/position`, { params })
-            .pipe(map(data => Object.keys(data).map(key => ({ id: Number(key), valueName: data[key] }))));
+            .pipe(map(data => Object.keys(data).map(key => ({ id: Number(key), sysParCode: data[key], valueName: data[key] }))));
     }
 
-    getEmployeeTypeDropdown(): Observable<DropdownItemSysParCodeGlobalSystemParameter[]> {
-        return this.http.get<DropdownItemSysParCodeGlobalSystemParameter[]>(`${this.apiUrl}/employee_type`, { headers: this.getAuthHeaders() });
+    getEmployeeTypeDropdown(): Observable<DropdownItemFieldGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemFieldGlobalSystemParameter[]>(`${this.apiUrl}/employee_type`, { headers: this.getAuthHeaders() });
     }
 
-    getIssueByDropdown(): Observable<DropdownItemIdGlobalSystemParameter[]> {
-        return this.http.get<DropdownItemIdGlobalSystemParameter[]>(`${this.apiUrl}/issue-by`, { headers: this.getAuthHeaders() });
+    getIssueByDropdown(): Observable<DropdownItemFieldGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemFieldGlobalSystemParameter[]>(`${this.apiUrl}/issue-by`, { headers: this.getAuthHeaders() });
     }
 
-    getIDTypeDropdown(): Observable<DropdownItemSysParCodeGlobalSystemParameter[]> {
-        return this.http.get<DropdownItemSysParCodeGlobalSystemParameter[]>(`${this.apiUrl}/identity_type`, { headers: this.getAuthHeaders() });
+    getIDTypeDropdown(): Observable<DropdownItemFieldGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemFieldGlobalSystemParameter[]>(`${this.apiUrl}/identity_type`, { headers: this.getAuthHeaders() });
     }
 
-    getGenderDropdown(): Observable<DropdownItemSysParCodeGlobalSystemParameter[]> {
-        return this.http.get<DropdownItemSysParCodeGlobalSystemParameter[]>(`${this.apiUrl}/gender`, { headers: this.getAuthHeaders() });
+    getGenderDropdown(): Observable<DropdownItemFieldGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemFieldGlobalSystemParameter[]>(`${this.apiUrl}/gender`, { headers: this.getAuthHeaders() });
     }
 
-    getProvinceDropdown(): Observable<DropdownItemSysParCodeGlobalSystemParameter[]> {
-        return this.http.get<DropdownItemSysParCodeGlobalSystemParameter[]>(`${this.apiUrl}/province`, { headers: this.getAuthHeaders() });
+    getProvinceDropdown(): Observable<DropdownItemFieldGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemFieldGlobalSystemParameter[]>(`${this.apiUrl}/province`, { headers: this.getAuthHeaders() });
     }
 
-    getLanguageDropdown(): Observable<DropdownItemSysParCodeGlobalSystemParameter[]> {
-        return this.http.get<DropdownItemSysParCodeGlobalSystemParameter[]>(`${this.apiUrl}/language`, { headers: this.getAuthHeaders() });
+    getLanguageDropdown(): Observable<DropdownItemFieldGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemFieldGlobalSystemParameter[]>(`${this.apiUrl}/language`, { headers: this.getAuthHeaders() });
     }
 
-    getRegionDropdown(): Observable<DropdownItemSysParCodeGlobalSystemParameter[]> {
-        return this.http.get<DropdownItemSysParCodeGlobalSystemParameter[]>(`${this.apiUrl}/region`, { headers: this.getAuthHeaders() });
+    getRegionDropdown(): Observable<DropdownItemFieldGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemFieldGlobalSystemParameter[]>(`${this.apiUrl}/region`, { headers: this.getAuthHeaders() });
     }
 
-    getBlacklistDropdown(): Observable<DropdownItemSysParCodeGlobalSystemParameter[]> {
-        return this.http.get<DropdownItemSysParCodeGlobalSystemParameter[]>(`${this.apiUrl}/blacklist`, { headers: this.getAuthHeaders() });
+    getBlacklistDropdown(): Observable<DropdownItemFieldGlobalSystemParameter[]> {
+        return this.http.get<DropdownItemFieldGlobalSystemParameter[]>(`${this.apiUrl}/blacklist`, { headers: this.getAuthHeaders() });
     }
 }

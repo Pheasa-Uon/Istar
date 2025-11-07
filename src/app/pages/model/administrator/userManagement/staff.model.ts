@@ -18,8 +18,8 @@ export interface StaffModel {
     employee_code?: string;
     employee_name?: string;
     local_employee_name?: string;
-    gender?: StringOption;
-    identity_type?: StringOption;
+    gender?: LongOption;
+    identity_type?: LongOption;
     identity_number?: string;
     valid_from?: Date;
     valid_to?: Date;
@@ -32,13 +32,13 @@ export interface StaffModel {
     email?: string;
     department?: LongOption;
     position?: LongOption;
-    employee_type?: StringOption;
-    marital_status?: StringOption;
-    working_status?: StringOption;
-    province?: StringOption;
-    district?: StringOption;
-    commune?: StringOption;
-    village?: StringOption;
+    employee_type?: LongOption;
+    marital_status?: LongOption;
+    working_status?: LongOption;
+    province?: LongOption;
+    district?: LongOption;
+    commune?: LongOption;
+    village?: LongOption;
     address_detail?: string;
     start_working_date?: Date;
     current_salary?: number;
@@ -50,6 +50,8 @@ export interface StaffModel {
     created_at?: string;
     updated_at?: string;
 }
+
+
 
 // CurrencyModel dropdown model
 export interface DropdownItemStaff {

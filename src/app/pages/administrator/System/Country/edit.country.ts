@@ -18,7 +18,7 @@ import {
 } from '../../../model/administrator/system/country.model';
 import { CurrencyService } from '../../../service/administrator/system/currency.service';
 import { GlobalSystemParameterService } from '../../../service/administrator/system/global.system.parameter.service';
-import { DropdownItemSysParCodeGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
+import { DropdownItemFieldGlobalSystemParameter } from '../../../model/administrator/system/global.system.parameter.model';
 
 @Component({
     selector: 'app-edit-CountryModel',
@@ -187,9 +187,9 @@ export class EditCountry {
     };
 
     dropdownCurrencyItems: DropdownItemCurrency[] = [];
-    dropdownLanguageItems: DropdownItemSysParCodeGlobalSystemParameter[] = [];
-    dropdownRegionItems: DropdownItemSysParCodeGlobalSystemParameter[] = [];
-    dropdownBlacklistItems: DropdownItemSysParCodeGlobalSystemParameter[] = [];
+    dropdownLanguageItems: DropdownItemFieldGlobalSystemParameter[] = [];
+    dropdownRegionItems: DropdownItemFieldGlobalSystemParameter[] = [];
+    dropdownBlacklistItems: DropdownItemFieldGlobalSystemParameter[] = [];
     dropdownItems = [
         { name: 'Active', code: 'A' },
         { name: 'Inactive', code: 'I' }
@@ -210,9 +210,9 @@ export class EditCountry {
             this.country = {
                 ...country,
                 currency_id: country.currency_id?.value,   // primitive id
-                language: country.language?.value,       // primitive code
-                region: country.region?.value,
-                blacklist: country.blacklist?.value,
+                language: country.language?.code,       // primitive code
+                region: country.region?.code,
+                blacklist: country.blacklist?.code,
                 country_status: country.country_status?.value,
             };
         }
@@ -246,7 +246,16 @@ export class EditCountry {
             return;
         }
 
-        this.countryService.updateCountry(this.country).subscribe({
+        const payload: any = {
+            ...this.country,
+            currency_id: this.country.currency_id?.value ?? null,
+            language: this.country.language?.value ?? null,
+            region: this.country.region?.value ?? null,
+            blacklist: this.country.blacklist?.value ?? null,
+            country_status: this.country.country_status?.code ?? 'A'
+        };
+
+        this.countryService.updateCountry(payload).subscribe({
             next: () => {
                 this.messageService.show({
                     severity: 'success',
@@ -263,5 +272,7 @@ export class EditCountry {
                 });
             }
         });
+
+        console.log(this.country);
     }
 }
