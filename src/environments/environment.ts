@@ -1,21 +1,33 @@
 export const environment = {
     production: false,
-    apiBase: 'http://localhost:8080/api/coregateways',
+    apiBase: 'http://192.168.3.16:8080/CoreBankingService/api/coregateways',
     apiEndpoints: {
-        auth: '/authentication',
+        authentication: '/authentication',
+        systemDate:'/system-date',
         permission: '/permissions',
-        users: {
-            usersprofile: '/users',
-            userstatuses: '/users/status',
+        usersManagement: {
+            users: '/user-management/users',
+            roles: '/user-management/roles',
+            rolePermissions: '/user-management/role-permissions',
+            userRoles: '/user-management/user-roles',
+            userBranch: '/user-management/user-branches',
+            staff: '/user-management/staff'
         },
-        roles: {
-            rolesprofile: '/roles',
-            rolesstatus: '/roles/status',
+        system: {
+            converterName: '/converter-name',
+            globalSystemParameter: '/system/global-system-parameter',
+            currency: '/system/currency',
+            country: '/system/country',
+            systemParameter: '/system/system-parameter',
+            globalPolicy: '/system/global-policy',
         },
-        rolepermissions: '/rolepermissions',
-        userroles: '/userroles',
-
-
+        systemAdmin: {
+            branch: '/system-admin/branch',
+            department: '/system-admin/department',
+            exchangeRate: '/system-admin/exchange-rate',
+            workingDay: '/system-admin/working-day',
+            holiday: '/system-admin/holiday',
+        }
 
     }
 };

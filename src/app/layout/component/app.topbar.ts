@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { AppConfigurator } from './app.configurator';
 import { LayoutService } from '../service/layout.service';
+import { SystemDateService } from '../service/system.date.service';
+import { MessageService } from '../../pages/message/message.service';
 
 @Component({
     selector: 'app-topbar',
@@ -15,11 +17,10 @@ import { LayoutService } from '../service/layout.service';
             <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
                 <i class="pi pi-bars"></i>
             </button>
-            <a class="layout-topbar-logo" routerLink="/dashboard">
-                <img src="assets/image/midas.png" alt="Istar Business Intelligence" style="height: 35px; width: auto; margin-right: 25px;">
-                <!--
+                <!-- <a class="layout-topbar-logo" routerLink="/dashboard"> -->
+                <!-- <img src="assets/image/midas.png" alt="Istar Business Intelligence" style="height: 35px; width: auto; margin-right: 25px;">-->
+
                 <a class="layout-topbar-logo" routerLink="/dashboard" style="display: flex; align-items: center; text-decoration: none;">
-                <img src="assets/image/logo_istar.png" alt="Istar Business Intelligence" style="height: 35px; width: auto; margin-right: 10px;">
                 <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         fill-rule="evenodd"
@@ -37,12 +38,17 @@ import { LayoutService } from '../service/layout.service';
                         />
                     </g>
                 </svg>
-                <span style="white-space: nowrap; font-weight: bold;">Istar Business Intelligence</span>
-                -->
+                <span style="white-space: nowrap; font-weight: bold;">CiDi Core Banking System</span>
             </a>
         </div>
 
         <div class="layout-topbar-actions">
+            <!--
+            <div class="layout-topbar-action-highlight">
+                <span class="date">{{ systemDate | date:'dd/MM/yyyy' }}</span>
+                <span class="branch">{{ branchCode }}</span>
+            </div>
+            -->
             <div class="layout-config-menu">
                 <button type="button" class="layout-topbar-action" (click)="toggleDarkMode()">
                     <i [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.isDarkTheme(), 'pi-sun': !layoutService.isDarkTheme() }"></i>
@@ -69,10 +75,12 @@ import { LayoutService } from '../service/layout.service';
 
             <div class="layout-topbar-menu hidden lg:block">
                 <div class="layout-topbar-menu-content">
+
                     <button type="button" class="layout-topbar-action">
                         <i class="pi pi-calendar"></i>
                         <span>Calendar</span>
                     </button>
+
                     <button type="button" class="layout-topbar-action">
                         <i class="pi pi-inbox"></i>
                         <span>Messages</span>
@@ -86,10 +94,35 @@ import { LayoutService } from '../service/layout.service';
         </div>
     </div>`
 })
-export class AppTopbar {
+export class AppTopbar implements OnInit {
     items!: MenuItem[];
 
-    constructor(public layoutService: LayoutService) {}
+    systemDate = '';
+    branchName = 'Main Branch';
+
+    constructor(
+        public layoutService: LayoutService,
+        public systemDateService: SystemDateService,
+        private messageService: MessageService,
+    ) {}
+
+    ngOnInit(): void {
+        this.loadSystemDate();
+    }
+
+    loadSystemDate() {
+        this.systemDateService.getSystemDateIsActive().subscribe({
+            next: (res) => {
+                if (res && res.length > 0) {
+                    // Choose active one (usually 1 record)
+                    const active = res.find(d => d.isActive);
+                    this.systemDate = active?.systemDate ?? '';
+                    // If you want the numeric version: this.systemDate = active?.sysDate ?? '';
+                }
+            },
+            error: () => this.messageService.show({ severity: 'error', summary: 'Error', detail: 'Cannot load system date' })
+        });
+    }
 
     toggleDarkMode() {
         this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));

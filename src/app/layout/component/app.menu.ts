@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
 import { environment } from '../../../environments/environment';
-import { AuthService } from '../../pages/auth/auth.service';
+import { AuthService } from '../../pages/authentication/auth.service';
 import { MenuPermissionDTO, MenuService } from '../service/menu.service';
 
 @Component({
@@ -38,13 +38,18 @@ export class AppMenu implements OnInit {
                 .map(m => this.mapToMenuItem(m));
 
             // Add the static "Quit" menu item
+            const AboutMenuItem: MenuItem = {
+                label: 'About',
+                icon: 'pi pi-fw pi-question-circle',
+                routerLink: ['/']
+            };
             const quitMenuItem: MenuItem = {
                 label: 'Quit',
                 icon: 'pi pi-fw pi-sign-out',
                 command: () => this.logout()
             };
 
-            dynamicMenuItems.push(quitMenuItem);
+            dynamicMenuItems.push(AboutMenuItem,quitMenuItem);
 
             // Create the main menu structure that matches the old format
             this.model = [
@@ -53,6 +58,7 @@ export class AppMenu implements OnInit {
                     items: dynamicMenuItems
                 },
                 // Keep other sections from old code if needed
+                /*
                 {
                     label: 'UI Components',
                     items: [
@@ -73,6 +79,7 @@ export class AppMenu implements OnInit {
                         { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
                     ]
                 },
+
                 {
                     label: 'Pages',
                     icon: 'pi pi-fw pi-briefcase',
@@ -90,17 +97,17 @@ export class AppMenu implements OnInit {
                                 {
                                     label: 'Login',
                                     icon: 'pi pi-fw pi-sign-in',
-                                    routerLink: ['/auth/login']
+                                    routerLink: ['/authentication/login']
                                 },
                                 {
                                     label: 'Error',
                                     icon: 'pi pi-fw pi-times-circle',
-                                    routerLink: ['/auth/error']
+                                    routerLink: ['/authentication/error']
                                 },
                                 {
                                     label: 'Access Denied',
                                     icon: 'pi pi-fw pi-lock',
-                                    routerLink: ['/auth/access']
+                                    routerLink: ['/authentication/access']
                                 }
                             ]
                         },
@@ -120,7 +127,7 @@ export class AppMenu implements OnInit {
                             routerLink: ['/pages/empty']
                         }
                     ]
-                }
+                }*/
             ];
         });
     }
