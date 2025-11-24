@@ -357,7 +357,7 @@ import { DropdownItemDepartment } from '../../../model/administrator/systemAdmin
                                 name="province"
                                 class="w-full"
                                 [options]="dropdownProvinceItems"
-                                optionLabel="valueName"
+                                optionLabel="displayLabel"
                                 optionValue="sysParCode"
                                 [(ngModel)]="staff.province"
                                 placeholder="Select Province"
@@ -563,10 +563,22 @@ export class AddStaff implements OnInit {
             error: (err) => console.error('Error loading working status dropdown', err)
         });
 
+        // this.globalSystemParameterService.getProvinceDropdown().subscribe({
+        //     next: (data) => this.dropdownProvinceItems = data,
+        //     error: (err) => console.error('Error loading province dropdown', err)
+        // });
+
         this.globalSystemParameterService.getProvinceDropdown().subscribe({
-            next: (data) => this.dropdownProvinceItems = data,
+            next: (data) => {
+                // Add a new property to combine sysParCode and valueName
+                this.dropdownProvinceItems = data.map(item => ({
+                    ...item,
+                    displayLabel: `${item.sysParCode} | ${item.valueName}`
+                }));
+            },
             error: (err) => console.error('Error loading province dropdown', err)
         });
+
     }
 
     goBack(): void {

@@ -1,6 +1,9 @@
 export const environment = {
     production: false,
-    apiBase: 'http://192.168.3.16:8080/CoreBankingService/api/coregateways',
+    // Production
+    // apiBase: 'http://localhost:8080/CoreBankingService/api/coregateways',
+    // Development
+    apiBase: 'http://localhost:8080/api/coregateways',
     apiEndpoints: {
         authentication: '/authentication',
         systemDate:'/system-date',
